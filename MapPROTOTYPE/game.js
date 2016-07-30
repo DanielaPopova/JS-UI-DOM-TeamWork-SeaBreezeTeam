@@ -1,8 +1,9 @@
 function preload() {
-    game.load.image('background', 'images/mother-board.png');
+    game.load.image('background', 'images/bg.png');
     game.load.spritesheet('ninja', 'images/dude.png', 32, 48);
     game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'images/tileMapDiagram1.png');
+    game.load.image('sci-fi', 'images/tileMapDiagram1.png');
     game.load.image('key','images/Key-icon.png');
 }
 
@@ -24,7 +25,8 @@ function create() {
     map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
 
     map.addTilesetImage('Work', 'tiles');
-    bg = game.add.tileSprite(0, 0, 800, 600, 'background');
+    map.addTilesetImage('Work','sci-fi');
+    bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
     layer = map.createLayer(0);
     layer.resizeWorld();
@@ -65,7 +67,7 @@ function update() {
     if (cursors.left.isDown) {
         player.body.velocity.x = -500;
         // scrolling the bg
-       // bg.tilePosition.x +=2;
+        //bg.tilePosition.x +=2;
 
         if (facing != 'left') {
             player.animations.play('left');
@@ -110,7 +112,7 @@ function render() {
 
 }
 
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', {
+var game = new Phaser.Game(1024, 500, Phaser.CANVAS, 'phaser-example', {
     preload: preload,
     create: create,
     update: update
