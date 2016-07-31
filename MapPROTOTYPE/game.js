@@ -3,8 +3,12 @@ function preload() {
     game.load.spritesheet('ninja', 'images/dude.png', 32, 48);
     game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'images/tileMapDiagram1.png');
-    game.load.image('sci-fi', 'images/tileMapDiagram1.png');
-    game.load.image('key','images/Key-icon.png');
+    game.load.image('cave', 'images/cave.png');
+    game.load.image('super-set', 'images/supertileset_.png');
+
+    game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
+    game.load.image('space', 'images/TileSets/ToxicLandfil.png');
+
 }
 
 var map;
@@ -25,7 +29,11 @@ function create() {
     map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
 
     map.addTilesetImage('Work', 'tiles');
-    map.addTilesetImage('Work','sci-fi');
+    map.addTilesetImage('cave','cave');
+    map.addTilesetImage('super-set','super-set');
+    map.addTilesetImage('tech','sci-fi');
+    map.addTilesetImage('space','space');
+
     bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
     layer = map.createLayer(0);
@@ -118,3 +126,4 @@ var game = new Phaser.Game(1024, 500, Phaser.CANVAS, 'phaser-example', {
     update: update
     // render: render
 });
+
