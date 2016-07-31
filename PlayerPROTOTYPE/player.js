@@ -208,12 +208,12 @@ function heal () {
     hearts.getFirstAlive().kill();
 
     //  Add and update to the health
-    if (lives.countLiving < 3) {
+    // if (lives.countLiving < 3) {
         
-        var live = lives.create(game.world.width - 200, 35, 'live');
+    //     var live = lives.create(game.world.width - 200, 35, 'live');
         
         
-    }
+    // }
 
     //healthText.text = 'Health: ' + player.health;
 
