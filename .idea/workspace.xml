@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ee439ef-d61b-44dd-9641-3bc1b946ac77" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapPROTOTYPE/images/dude.png" afterPath="$PROJECT_DIR$/MapPROTOTYPE/images/dude.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapPROTOTYPE/game.js" afterPath="$PROJECT_DIR$/MapPROTOTYPE/game.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapPROTOTYPE/level1.json" afterPath="$PROJECT_DIR$/MapPROTOTYPE/level1.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MapPROTOTYPE/work.tmx" afterPath="$PROJECT_DIR$/MapPROTOTYPE/work.tmx" />
     </list>
@@ -40,11 +40,9 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MapPROTOTYPE/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="480">
-              <caret line="36" column="4" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="60" />
-              <folding>
-                <element signature="n#!!block;n#update#0" expanded="false" />
-              </folding>
+            <state relative-caret-position="507">
+              <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -264,12 +262,12 @@
       <option name="presentableId" value="Default" />
       <updated>1469907156402</updated>
       <workItem from="1469907161782" duration="4461000" />
-      <workItem from="1469950825748" duration="6565000" />
+      <workItem from="1469950825748" duration="6574000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11026000" />
+    <option name="totallyTimeSpent" value="11035000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="0" width="1378" height="744" extended-state="0" />
@@ -339,9 +337,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!block;n#update#0" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -425,11 +421,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/MapPROTOTYPE/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="36" column="4" selection-start-line="36" selection-start-column="4" selection-end-line="36" selection-end-column="60" />
-          <folding>
-            <element signature="n#!!block;n#update#0" expanded="false" />
-          </folding>
+        <state relative-caret-position="507">
+          <caret line="85" column="36" selection-start-line="85" selection-start-column="36" selection-end-line="85" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
