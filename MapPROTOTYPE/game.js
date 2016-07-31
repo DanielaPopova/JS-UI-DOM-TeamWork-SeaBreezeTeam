@@ -7,6 +7,8 @@ function preload() {
     game.load.image('super-set', 'images/supertileset_.png');
     game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
     game.load.image('space', 'images/TileSets/ToxicLandfil.png');
+    //enemy octocat
+    game.load.spritesheet('octo-cat','images/octocat.png',169,150,25);
 
 }
 
@@ -19,6 +21,8 @@ var player;
 var jumpButton;
 var facing = 'left';
 var jumpTimer = 0;
+
+var stateText;
 
 function create() {
 
@@ -45,7 +49,7 @@ function create() {
     player = game.add.sprite(32, 32, 'ninja');
     game.physics.enable(player, Phaser.Physics.ARCADE);
 
-    player.body.bounce.y = 0.2;
+    player.body.bounce.y = 0.0;
     player.body.collideWorldBounds = true;
     player.body.setSize(20, 32, 5, 16);
 
@@ -58,6 +62,18 @@ function create() {
     cursors = game.input.keyboard.createCursorKeys();
     jumpButton = game.input.keyboard.addKey(Phaser.KeyCode.UP);
 
+    //////////// adding octocat
+    octoCat=game.add.sprite(600,30,'octo-cat');
+    game.physics.arcade.enable(octoCat);
+
+    octoCat.body.gravity.y=800;
+    octoCat.body.collideWorldBounds = true;
+    octoCat.scale.setTo(0.4,0.4);
+
+    octoCat.animations.add('wlak', [0,1]);
+    octoCat.animations.play('wlak',3,true);
+    game.add.tween(octoCat).to( { x: 1000}, 3000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
+
 }
 
 function particleBurst() {
@@ -68,11 +84,13 @@ function particleBurst() {
 function update() {
 
     game.physics.arcade.collide(player, layer);
+    game.physics.arcade.collide(octoCat, layer);
+    game.physics.arcade.collide(octoCat, player);
 
     player.body.velocity.x = 0;
 
     if (cursors.left.isDown) {
-        player.body.velocity.x = -150;
+        player.body.velocity.x = -550;
         // scrolling the bg
         //bg.tilePosition.x +=2;
 
@@ -82,7 +100,7 @@ function update() {
         }
     }
     else if (cursors.right.isDown) {
-        player.body.velocity.x = 150;
+        player.body.velocity.x = 550;
         // scrolling the bg
         //bg.tilePosition.x -=2;
 
@@ -107,9 +125,11 @@ function update() {
     }
 
     if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
-        player.body.velocity.y = -150;
+        player.body.velocity.y = -250;
         jumpTimer = game.time.now ;
     }
+
+     game.physics.arcade.overlap(player, octoCat, takeDamage, null, this);
 
 }
 
@@ -126,3 +146,13 @@ var game = new Phaser.Game(1024, 500, Phaser.CANVAS, 'phaser-example', {
     // render: render
 });
 
+
+function takeDamage() {
+    
+        player.kill();
+        console.log('killed');
+        player.x = 50;
+        player.y = 20 ;
+        player.revive();
+    
+}
