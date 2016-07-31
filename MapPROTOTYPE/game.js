@@ -5,7 +5,6 @@ function preload() {
     game.load.image('tiles', 'images/tileMapDiagram1.png');
     game.load.image('cave', 'images/cave.png');
     game.load.image('super-set', 'images/supertileset_.png');
-
     game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
     game.load.image('space', 'images/TileSets/ToxicLandfil.png');
 
@@ -57,7 +56,7 @@ function create() {
     game.camera.follow(player);
 
     cursors = game.input.keyboard.createCursorKeys();
-    jumpButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    jumpButton = game.input.keyboard.addKey(Phaser.KeyCode.UP);
 
 }
 
@@ -108,8 +107,8 @@ function update() {
     }
 
     if (jumpButton.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
-        player.body.velocity.y = -250;
-        jumpTimer = game.time.now + 750;
+        player.body.velocity.y = -150;
+        jumpTimer = game.time.now ;
     }
 
 }
