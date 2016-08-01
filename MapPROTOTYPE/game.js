@@ -6,6 +6,7 @@ function preload() {
     game.load.image('star', 'sprites/star.png');
     game.load.image('health', 'assets/health.png');
     game.load.image('live', 'assets/live.png');
+    game.load.image('cave', 'images/cave.png');
     game.load.image('dead', 'assets/dead.png');
     game.load.spritesheet('baddie', 'sprites/baddie.png', 33, 32);
     game.load.spritesheet('pesho', 'assets/pesho.png', 49, 63);
@@ -43,6 +44,7 @@ function create() {
     map = game.add.tilemap('level1');
     map.addTilesetImage('Work', 'tiles');
     map.addTilesetImage('tech', 'sci-fi');
+    map.addTilesetImage('cave', 'cave');
     map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
     bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
@@ -186,7 +188,7 @@ function update() {
 
         //  Allow the player to jump if he is touching the ground.
         if (cursors.up.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
-            player.body.velocity.y = -400;
+            player.body.velocity.y = -300;
             jumpTimer = game.time.now;
             player.animations.play('jump');
         }
