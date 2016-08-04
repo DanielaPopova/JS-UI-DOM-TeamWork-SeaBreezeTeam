@@ -6,7 +6,7 @@ function preload() {
     game.load.image('star', 'sprites/star.png');
     game.load.image('health', 'assets/health.png');
     game.load.image('live', 'assets/live.png');
-    game.load.image('cave', 'images/cave.png');
+    // game.load.image('cave', 'images/cave.png');
     game.load.image('dead', 'assets/dead.png');
     game.load.spritesheet('baddie', 'sprites/baddie.png', 33, 32);
     game.load.spritesheet('pesho', 'assets/pesho.png', 49, 63);
@@ -14,9 +14,9 @@ function preload() {
     game.load.image('background', 'images/bg.png');
     //game.load.spritesheet('ninja', 'images/dude.png', 32, 48);
     game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
-    game.load.image('tiles', 'images/tileMapDiagram1.png');
+    //game.load.image('tiles', 'images/tileMapDiagram1.png');
     game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
-
+    game.load.image('trapsSprite', 'images/TrapsSprite.png');
     game.load.image('octo-cat', 'images/robo-octocat-small.png');
 //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
 
@@ -35,7 +35,9 @@ var player,
     layer,
     map,
     jumpTimer = 0,
-    octoCat;
+    octoCat,
+    badDudes,
+    trapsLayer;
 
 function create() {
 
@@ -43,13 +45,15 @@ function create() {
 
     game.stage.backgroundColor = '#787878';
     map = game.add.tilemap('level1');
-    map.addTilesetImage('Work', 'tiles');
+    // map images
     map.addTilesetImage('tech', 'sci-fi');
-    map.addTilesetImage('cave', 'cave');
+    map.addTilesetImage('traps', 'trapsSprite');
     map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
     bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
     layer = map.createLayer(0);
+    trapsLayer = map.createLayer(1);
+    trapsLayer.resizeWorld();
     layer.resizeWorld();
 
     // Adding PESHO and baddie
@@ -94,6 +98,7 @@ function create() {
 
     }
     healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#000'});
+    healthText.fixedToCamera = true;
 
     //Add lives
     lives = game.add.group();
@@ -123,20 +128,21 @@ function create() {
     }
 
     scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
-
+    scoreText.fixedToCamera = true;
     // Add state text
-    stateText = game.add.text(game.world.centerX, game.world.centerY, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
+    stateText = game.add.text(25, 25, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
+    stateText.fixedToCamera = true;
     stateText.anchor.setTo(0.5, 0.5);
-    stateText.visible = false;
+    stateText.visible = true;
 
     cursors = game.input.keyboard.createCursorKeys();
 
     //  create badDudes
 
-    badDudes= game.add.group();
+    badDudes = game.add.group();
     CreateBadDudes();
-    
-  
+
+
 }
 
 function update() {
@@ -154,6 +160,7 @@ function update() {
     // Damage from baddie or spike
     game.physics.arcade.collide(player, baddie, takeDamage, null, this);
 
+    // map kill
 
     if (player.alive) {
 
@@ -202,19 +209,18 @@ function collectStar(player, star) {
 
 }
 
-function CreateBadDudes()
- {
-    var startXPosition=[650,1300];
-    var endXPositon=[1000,1700];
+function CreateBadDudes() {
+    var startXPosition = [650, 1300];
+    var endXPositon = [1000, 1700];
     for (var i = 0; i < startXPosition.length; i++) {
-         var octoCat = badDudes.create(startXPosition[i] , 100, 'octo-cat');
-         octoCat.scale.setTo(0.5,0.5);
-         game.physics.arcade.enable(octoCat);
-         octoCat.body.gravity.y = 800;
-         octoCat.body.collideWorldBounds = true;
-         game.add.tween(octoCat).to({x:endXPositon[i] }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        var octoCat = badDudes.create(startXPosition[i], 100, 'octo-cat');
+        octoCat.scale.setTo(0.5, 0.5);
+        game.physics.arcade.enable(octoCat);
+        octoCat.body.gravity.y = 800;
+        octoCat.body.collideWorldBounds = true;
+        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
     }
-   
+
 
 }
 function heal() {
