@@ -82,14 +82,15 @@ function create() {
         var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
     }
-    healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#000'});
+    healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
     healthText.fixedToCamera = true;
 
     //Add lives
     lives = game.add.group();
-    for (i = 0; i < 2; i += 1) {
-        var live = lives.create(game.world.width - 700 + (40 * i), 35, 'live');        
-        live.scale.setTo(0.7, 0.7);
+    for (i = 0; i < 3; i += 1) {
+        var live = lives.create(100 + (40 * i), 35, 'live');
+        live.fixedToCamera = true;
+        live.scale.setTo(0.9, 0.9);
 
     }
 
@@ -114,7 +115,7 @@ function create() {
     scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
     scoreText.fixedToCamera = true;
     // Add state text
-    stateText = game.add.text(25, 25, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
+    stateText = game.add.text(100, 100,' ', {font: 'bold 24px Consolas', fill: '#FFF'});
     stateText.fixedToCamera = true;
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = true;
@@ -234,7 +235,7 @@ function update() {
 function checkOverlap(sprite, group) {
 
     var boundsSprite = sprite.getBounds();
-    var boundsGroup = group.getFirstAlive().getBounds();
+    var boundsGroup = group.next().getBounds();
 
     return Phaser.Rectangle.intersects(boundsSprite, boundsGroup);
 }
