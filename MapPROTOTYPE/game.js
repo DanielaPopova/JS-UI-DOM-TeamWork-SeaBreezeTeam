@@ -32,9 +32,8 @@ var player,
     stateText,
     healthText,
     layer,
-    map,
-    octoCat,
-    badDudes,
+    map,    
+    badDudes,    
     trapsLayer,
     countOverlap = 0,
     hits = 0;
@@ -57,7 +56,7 @@ function create() {
     layer.resizeWorld();
 
     // Adding player
-    player = game.add.sprite(32, 32, 'player');
+    player = game.add.sprite(game.world.width - 1000, game.world.height - 200, 'player');
     
     game.physics.arcade.enable(player);     
     player.body.bounce.y = 0.1;
@@ -193,12 +192,11 @@ function update() {
             countOverlap += 1;
             player.enableBody = false;
             player.play('dead');
-            player.alpha = 0.8;
+            player.alpha = 0.9;
 
             if (countOverlap === 1) {
 
                 hits += 1;
-                console.log('hits' + hits);
                
                 if (hits <= 3) {
                     live = lives.getFirstAlive();
@@ -234,10 +232,15 @@ function update() {
 
 function checkOverlap(sprite, group) {
 
-    var boundsSprite = sprite.getBounds();
-    var boundsGroup = group.next().getBounds();
+    var spriteBounds = sprite.getBounds(),
+        childBounds;
+      group.forEach(function (child) {
+        childBounds = child.getBounds();
+    }, this);
 
-    return Phaser.Rectangle.intersects(boundsSprite, boundsGroup);
+        return Phaser.Rectangle.intersects(spriteBounds, childBounds);
+    
+    
 }
 
 function collectStar(player, star) {
@@ -260,7 +263,7 @@ function CreateBadDudes() {
         game.physics.arcade.enable(octoCat);
         octoCat.body.gravity.y = 800;
         octoCat.body.collideWorldBounds = true;
-        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
     }
 
 
