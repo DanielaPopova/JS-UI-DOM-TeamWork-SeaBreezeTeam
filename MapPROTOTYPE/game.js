@@ -8,8 +8,8 @@ function preload() {
     game.load.image('live', 'assets/live.png');
     // game.load.image('cave', 'images/cave.png');
     game.load.image('dead', 'assets/dead.png');
-    game.load.spritesheet('baddie', 'sprites/baddie.png', 33, 32);
-    game.load.spritesheet('pesho', 'assets/pesho.png', 49, 63);
+    
+    game.load.spritesheet('player', 'assets/player.png', 49, 63);
     // loading map resoruces
     game.load.image('background', 'images/bg.png');
     //game.load.spritesheet('ninja', 'images/dude.png', 32, 48);
@@ -22,8 +22,7 @@ function preload() {
 
 }
 
-var player,
-    baddie,
+var player,    
     cursors,
     hearts,
     lives,
@@ -34,10 +33,11 @@ var player,
     healthText,
     layer,
     map,
-    jumpTimer = 0,
     octoCat,
     badDudes,
-    trapsLayer;
+    trapsLayer,
+    countOverlap = 0,
+    hits = 0;
 
 function create() {
 
@@ -56,38 +56,23 @@ function create() {
     trapsLayer.resizeWorld();
     layer.resizeWorld();
 
-    // Adding PESHO and baddie
-    player = game.add.sprite(32, 32, 'pesho');
-
-    baddie = game.add.sprite(game.world.width - 50, game.world.height - 230, 'baddie');
-
-    //  We need to enable physics on the player
-    game.physics.arcade.enable(player);
-    game.physics.arcade.enable(baddie);
-
-    // Add health to player
-    //player.health = 3;
-    //player.maxHealth = 3;
-
-    //  Player physics properties. Give the little guy a slight bounce.
+    // Adding player
+    player = game.add.sprite(32, 32, 'player');
+    
+    game.physics.arcade.enable(player);     
     player.body.bounce.y = 0.1;
     player.body.gravity.y = 400;
     player.body.collideWorldBounds = true;
 
-    //  Our two animations, walking left and right.
-    player.animations.add('left', [4, 3, 2, 1, 0], 12, true);
-    player.animations.add('right', [6, 7, 8, 9, 10], 12, true);
-    player.animations.add('jump', [11], 12, true);
+    //  Add animations to plauer
+    player.animations.add('left', [4, 3, 2, 1, 0], 14, true);
+    player.animations.add('right', [6, 7, 8, 9, 10], 14, true);
+    player.animations.add('jump_right', [11], 14, true);
+    player.animations.add('jump_left', [12], 14, true);
+    player.animations.add('dead', [13], 14, true);
 
     // moving
-    game.camera.follow(player);
-
-    // Baddie
-    baddie.body.collideWorldBounds = true;
-
-    baddie.animations.add('move', [0, 1], 4, true);
-    baddie.animations.play('move', 3, true);
-    game.add.tween(baddie).to({x: 400}, 3000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
+    game.camera.follow(player);    
 
     //Add hearts
     hearts = game.add.group();
@@ -103,8 +88,7 @@ function create() {
     //Add lives
     lives = game.add.group();
     for (i = 0; i < 2; i += 1) {
-        var live = lives.create(game.world.width - 700 + (40 * i), 35, 'live');
-        //live.anchor.setTo(0.5, 0,5);
+        var live = lives.create(game.world.width - 700 + (40 * i), 35, 'live');        
         live.scale.setTo(0.7, 0.7);
 
     }
@@ -146,7 +130,7 @@ function create() {
 }
 
 function update() {
-    //  PESHO and platforms -need group from Stoyan
+    //  player and platforms -need group from Stoyan
     game.physics.arcade.collide(stars, layer);
     game.physics.arcade.collide(badDudes, layer);
     game.physics.arcade.collide(player, layer);
@@ -156,46 +140,103 @@ function update() {
 
     //  Checks to see if the player overlaps with any of the hearts, if he does call the heal function
     game.physics.arcade.collide(player, hearts, heal, null, this);
-    game.physics.arcade.overlap(player, badDudes, takeDamage, null, this);
-    // Damage from baddie or spike
-    game.physics.arcade.collide(player, baddie, takeDamage, null, this);
+    //game.physics.arcade.overlap(player, badDudes, takeDamage, null, this);    
 
     // map kill
 
-    if (player.alive) {
+     if (player.alive) {
 
         player.body.velocity.x = 0;
+        player.enableBody = true;
+        player.alpha = 1;
 
-        if (cursors.left.isDown) {
+        if (cursors.left.isDown)
+        {
             //  Move to the left
-            player.body.velocity.x = -300;
+            if (player.body.onFloor()) {
+              player.animations.play('left');
+            } else {
+              player.animations.play('jump_left');
+            }
 
-            player.animations.play('left');
+            player.body.velocity.x = -200;
+
         }
-        else if (cursors.right.isDown) {
+        else if (cursors.right.isDown)
+        {
             //  Move to the right
-            player.body.velocity.x = 300;
+            if (player.body.onFloor()) {
+              player.animations.play('right');
+            } else {
+              player.animations.play('jump_right');
+            }
+            
+            player.body.velocity.x = 200;
 
-            player.animations.play('right');
-        } else if (cursors.up.isDown) {
-            player.animations.play('jump');
-        }
-        else {
+        } else {
             //  Stand still
             player.animations.stop();
 
             player.frame = 5;
         }
-
+        
         //  Allow the player to jump if he is touching the ground.
-        if (cursors.up.isDown && player.body.onFloor() && game.time.now > jumpTimer) {
-            player.body.velocity.y = -300;
-            jumpTimer = game.time.now;
-            player.animations.play('jump');
+        if (cursors.up.isDown && player.body.onFloor())
+        {
+            player.body.velocity.y = -350;
         }
+              
 
+        if (checkOverlap(player, badDudes))
+        {
+            countOverlap += 1;
+            player.enableBody = false;
+            player.play('dead');
+            player.alpha = 0.8;
+
+            if (countOverlap === 1) {
+
+                hits += 1;
+                console.log('hits' + hits);
+               
+                if (hits <= 3) {
+                    live = lives.getFirstAlive();
+
+                    if (live)
+                    {
+                        live.kill();
+                    }
+                }
+
+                if (hits === 3) {
+                    player.kill();
+                    hits = 0;
+
+                    stateText.text=" GAME OVER \n Click to restart";
+                     stateText.visible = true;
+
+                    //the "click to restart" handler
+                     game.input.onTap.addOnce(restart,this);
+                } 
+                
+            }         
+        }
+        else
+        {
+            player.enableBody = true;
+            player.alpha = 1;
+            countOverlap = 0;
+        }
     }
 
+}
+
+function checkOverlap(sprite, group) {
+
+    var boundsSprite = sprite.getBounds();
+    var boundsGroup = group.getFirstAlive().getBounds();
+
+    return Phaser.Rectangle.intersects(boundsSprite, boundsGroup);
 }
 
 function collectStar(player, star) {
@@ -254,10 +295,6 @@ function takeDamage() {
 function collectKey() {
     // body...
 }
-// load dead png
-//load live ong - fix lives
-// fix falling down of a platform
-//  game.camera.follow(player, Phaser.Camera.FOLLOW_LOCKON, 0.1);
 
 function restart() {
 
@@ -267,8 +304,8 @@ function restart() {
     lives.callAll('revive');
 
     //revives the player
-    player.x = 5;
-    player.y = game.world.height - 150;
+    player.x = 32;
+    player.y = 32;
     player.revive();
 
     //hides the text
