@@ -17,7 +17,8 @@ function preload() {
     game.load.image('tiles', 'images/tileMapDiagram1.png');
     game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
 
-    game.load.spritesheet('octo-cat', 'images/octocat.png', 169, 150, 25);
+    game.load.image('octo-cat', 'images/robo-octocat-small.png');
+//    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
 
 }
 
@@ -130,25 +131,18 @@ function create() {
 
     cursors = game.input.keyboard.createCursorKeys();
 
+    //  create badDudes
 
-    //////////// adding octocat
-    octoCat = game.add.sprite(600, 30, 'octo-cat');
-    game.physics.arcade.enable(octoCat);
-
-    octoCat.body.gravity.y = 800;
-    octoCat.body.collideWorldBounds = true;
-    octoCat.scale.setTo(0.4, 0.4);
-
-    octoCat.animations.add('wlak', [0, 1]);
-    octoCat.animations.play('wlak', 3, true);
-    game.add.tween(octoCat).to({x: 1000}, 3000, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
-
+    badDudes= game.add.group();
+    CreateBadDudes();
+    
+  
 }
 
 function update() {
     //  PESHO and platforms -need group from Stoyan
     game.physics.arcade.collide(stars, layer);
-    game.physics.arcade.collide(octoCat, layer);
+    game.physics.arcade.collide(badDudes, layer);
     game.physics.arcade.collide(player, layer);
 
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
@@ -156,7 +150,7 @@ function update() {
 
     //  Checks to see if the player overlaps with any of the hearts, if he does call the heal function
     game.physics.arcade.collide(player, hearts, heal, null, this);
-    game.physics.arcade.overlap(player, octoCat, takeDamage, null, this);
+    game.physics.arcade.overlap(player, badDudes, takeDamage, null, this);
     // Damage from baddie or spike
     game.physics.arcade.collide(player, baddie, takeDamage, null, this);
 
@@ -208,6 +202,21 @@ function collectStar(player, star) {
 
 }
 
+function CreateBadDudes()
+ {
+    var startXPosition=[650,1300];
+    var endXPositon=[1000,1700];
+    for (var i = 0; i < startXPosition.length; i++) {
+         var octoCat = badDudes.create(startXPosition[i] , 100, 'octo-cat');
+         octoCat.scale.setTo(0.5,0.5);
+         game.physics.arcade.enable(octoCat);
+         octoCat.body.gravity.y = 800;
+         octoCat.body.collideWorldBounds = true;
+         game.add.tween(octoCat).to({x:endXPositon[i] }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    }
+   
+
+}
 function heal() {
 
     // Removes the heart from the screen
