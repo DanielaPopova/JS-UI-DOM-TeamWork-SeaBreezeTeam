@@ -6,8 +6,7 @@ function preload() {
     game.load.image('star', 'sprites/star.png');
     game.load.image('health', 'assets/health.png');
     game.load.image('live', 'assets/live.png');
-    // game.load.image('cave', 'images/cave.png');
-    game.load.image('dead', 'assets/dead.png');
+    // game.load.image('cave', 'images/cave.png');    
     
     game.load.spritesheet('player', 'assets/player.png', 49, 63);
     // loading map resoruces
@@ -56,7 +55,7 @@ function create() {
     layer.resizeWorld();
 
     // Adding player
-    player = game.add.sprite(game.world.width - 1000, game.world.height - 200, 'player');
+    player = game.add.sprite(32, 32, 'player');
     
     game.physics.arcade.enable(player);     
     player.body.bounce.y = 0.1;
@@ -125,7 +124,6 @@ function create() {
 
     badDudes = game.add.group();
     CreateBadDudes();
-
 
 }
 
@@ -230,16 +228,17 @@ function update() {
 
 }
 
-function checkOverlap(sprite, group) {
+function checkOverlap(spriteA, group) {
 
-    var spriteBounds = sprite.getBounds(),
+    var spriteBounds = spriteA.getBounds(),
         childBounds;
-      group.forEach(function (child) {
-        childBounds = child.getBounds();
-    }, this);
-
-        return Phaser.Rectangle.intersects(spriteBounds, childBounds);
-    
+        group.forEach(function (child) {
+            childBounds = child.getBounds();
+            return childBounds;
+        });
+        
+        //console.log(boundsArray);
+  return Phaser.Rectangle.intersects(spriteBounds, childBounds);
     
 }
 
@@ -263,11 +262,10 @@ function CreateBadDudes() {
         game.physics.arcade.enable(octoCat);
         octoCat.body.gravity.y = 800;
         octoCat.body.collideWorldBounds = true;
-        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
+        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
     }
-
-
 }
+
 function heal() {
 
     // Removes the heart from the screen
