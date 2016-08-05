@@ -49,8 +49,8 @@ function create() {
     bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
     layer = map.createLayer(0);
-    trapsLayer = map.createLayer(1);
-    trapsLayer.resizeWorld();
+    // trapsLayer = map.createLayer(1);
+    // trapsLayer.resizeWorld();
     layer.resizeWorld();
 
     // Adding player
