@@ -5,6 +5,7 @@ function preload() {
     game.load.image('star', 'sprites/star.png');
     game.load.image('health', 'assets/health.png');
     game.load.image('live', 'assets/live.png');
+    game.load.image('key', 'assets/key.png');
     // game.load.image('cave', 'images/cave.png');    
     
     game.load.spritesheet('player', 'assets/player.png', 49, 63);
@@ -25,9 +26,13 @@ var player,
     hearts,
     lives,
     stars,
+    key,
+    spaceKey,
+    isKeyTaken = false,
     score = 0,
     scoreText,
     stateText,
+    keyText,
     healthText,
     layer,
     map,    
@@ -64,7 +69,7 @@ function create() {
     
     game.physics.arcade.enable(player);     
     //player.body.bounce.y = 0.1;
-    player.body.gravity.y = 400;
+    player.body.gravity.y = 350;
     player.body.collideWorldBounds = true;
 
     //  Add animations to plauer
@@ -115,16 +120,30 @@ function create() {
         star.body.bounce.y = 0.5 + Math.random() * 0.2;
     }
 
+    // Add key
+    key = game.add.sprite(200, 100, 'key');
+    game.physics.arcade.enable(key);
+    key.enableBody = true;
+
+    // Add warning text for key
+    keyText = game.add.text(400, 100, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
+    keyText.fixedToCamera = true;
+    keyText.anchor.setTo(0.5, 0.5);
+    keyText.visible = true;
+
+    //Add score text
     scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
     scoreText.fixedToCamera = true;
+
     // Add state text
     stateText = game.add.text(100, 100,' ', {font: 'bold 24px Consolas', fill: '#FFF'});
     stateText.fixedToCamera = true;
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = true;
 
+    // Enable keyboard
     cursors = game.input.keyboard.createCursorKeys();
-
+    spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
     //  create badDudes
 
     badDudes = game.add.group();
@@ -138,9 +157,10 @@ function update() {
     game.physics.arcade.collide(badDudes, layer);
     game.physics.arcade.collide(player, layer);
 
+
     //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
-
+    game.physics.arcade.overlap(player, key, collectKey, null, this);
     //  Checks to see if the player overlaps with any of the hearts, if he does call the heal function
     game.physics.arcade.collide(player, hearts, heal, null, this);
     //game.physics.arcade.overlap(player, badDudes, takeDamage, null, this);    
@@ -186,14 +206,20 @@ function update() {
         //  Allow the player to jump if he is touching the ground.
         if (cursors.up.isDown && player.body.onFloor())
         {
-            player.body.velocity.y = -400;
+            player.body.velocity.y = -350;
+        }
+
+        if (spaceKey.isDown && !isKeyTaken) {
+            warningMessage();
+        } else if (spaceKey.isDown && isKeyTaken){
+            openDoor();
         }
               
 
         if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this))
         {
             countOverlap += 1;
-            console.log('countOverlap ' + countOverlap);
+
             player.enableBody = false;
             player.play('dead');
             player.alpha = 0.9;
@@ -201,7 +227,6 @@ function update() {
             if (countOverlap === 1) {
 
                 hits += 1;
-                console.log('hits ' + hits);
                
                 if (hits <= 3) {
                     live = lives.getFirstAlive();
@@ -231,6 +256,8 @@ function update() {
             player.alpha = 1;
             countOverlap = 0;
         }
+
+       
     }
 
 }
@@ -319,7 +346,22 @@ function takeDamage() {
 }
 
 function collectKey() {
+    console.log('action');
+    isKeyTaken = true;
+    key.kill();
+}
+
+function openDoor() {
     // body...
+}
+
+function warningMessage() {
+
+    keyText.text="Go get the key first!";
+    keyText.visible = true;
+    game.time.events.add(Phaser.Timer.SECOND * 2, function () {
+       keyText.visible = false;
+    }, this);   
 }
 
 function restart() {
