@@ -260,52 +260,14 @@ function collectStar(player, star) {
 }
 
 function CreateBadDudes() {
-//<<<<<<< .mine
-    var startXPosition = [650, 1300];
-    var endXPositon = [1000, 1700];
-    for (var i = 0; i < startXPosition.length; i++) {
-        var octoCat = badDudes.create(startXPosition[i], 100, 'octo-cat');
-        octoCat.scale.setTo(0.5, 0.5);
-        game.physics.arcade.enable(octoCat);
-        octoCat.body.gravity.y = 800;
-        octoCat.body.collideWorldBounds = true;
-        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    }
-//=======
-    //                    y   | x
-    var startPosition = [[ 160,  650, 1300],
+  //                    y   | x
+    
+     var startPosition = [[ 160,  650, 1300],
                          [ 416, 1472, 1408,  192],
                          [ 672,  128,  896],
                          [ 992,  672, 1568],
                          [1248,  672, 1376],
                          [1504,  992,  928]];
-
-
-
-//>>>>>>> .theirs
-}
-
-//<<<<<<< .mine
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//=======
     var endXPositon = [[1000, 1664],
                        [1984, 960, 576],
                        [ 384, 1344],
@@ -322,6 +284,11 @@ function CreateBadDudes() {
              game.add.tween(octoCat).to({x: endXPositon[y][x-1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
         }
 }
+//>>>>>>> .theirs
+}
+//<<<<<<< .mine
+//=======
+  
 //>>>>>>> .theirs
 function heal() {
 
