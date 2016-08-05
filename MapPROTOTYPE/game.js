@@ -33,6 +33,8 @@ var player,
     scoreText,
     stateText,
     keyText,
+    keyTextBar,
+    keyTextStyle,
     healthText,
     layer,
     map,    
@@ -126,10 +128,21 @@ function create() {
     key.enableBody = true;
 
     // Add warning text for key
-    keyText = game.add.text(400, 100, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
+     keyTextBar = game.add.graphics();
+    keyTextBar.beginFill(0x173B0B);    
+    keyTextBar.drawRoundedRect(200, 100, 300, 50, 10);
+    game.physics.arcade.enable(keyTextBar);
+    keyTextBar.enableBody = true;    
+    keyTextBar.fixedToCamera = true;
+
+    keyTextBar.visible = false;
+
+    keyTextStyle = { font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+    keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);    
     keyText.fixedToCamera = true;
-    keyText.anchor.setTo(0.5, 0.5);
-    keyText.visible = true;
+    keyText.setTextBounds(200, 100, 300, 50);
+    
+    keyText.visible = false;   
 
     //Add score text
     scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
@@ -356,11 +369,12 @@ function openDoor() {
 }
 
 function warningMessage() {
-
-    keyText.text="Go get the key first!";
+    
     keyText.visible = true;
+    keyTextBar.visible = true;
     game.time.events.add(Phaser.Timer.SECOND * 2, function () {
        keyText.visible = false;
+       keyTextBar.visible = false;
     }, this);   
 }
 
@@ -379,7 +393,7 @@ function restart() {
     // key restart
     key.revive();
     isKeyTaken = false;
-    
+
     //hides the text
     stateText.visible = false;    
 
