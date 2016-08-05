@@ -376,8 +376,12 @@ function restart() {
     player.y = 32;
     player.revive();
 
+    // key restart
+    key.revive();
+    isKeyTaken = false;
+    
     //hides the text
-    stateText.visible = false;
+    stateText.visible = false;    
 
     // reset the score
     score = 0;
