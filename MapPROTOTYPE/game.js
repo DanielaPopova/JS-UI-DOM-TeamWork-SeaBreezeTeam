@@ -1,8 +1,7 @@
 var game = new Phaser.Game(1024, 500, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
 
 function preload() {
-    game.load.image('sky', 'sprites/sky.png');
-    game.load.image('ground', 'sprites/platform.png');
+    
     game.load.image('star', 'sprites/star.png');
     game.load.image('health', 'assets/health.png');
     game.load.image('live', 'assets/live.png');
@@ -55,13 +54,13 @@ function create() {
     layer.resizeWorld();
 
     // Adding player
-<<<<<<< .mine
-    player = game.add.sprite(32, 32, 'player');
+//<<<<<<< .mine
+    //player = game.add.sprite(32, 32, 'player');
 
-=======
+//=======
     //player = game.add.sprite(game.world.width - 1000, game.world.height - 200, 'player');
     player = game.add.sprite(32, 32, 'player');
->>>>>>> .theirs
+//>>>>>>> .theirs
     
     game.physics.arcade.enable(player);     
     //player.body.bounce.y = 0.1;
@@ -191,9 +190,10 @@ function update() {
         }
               
 
-        if (checkOverlap(player, badDudes))
+        if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this))
         {
             countOverlap += 1;
+            console.log('countOverlap ' + countOverlap);
             player.enableBody = false;
             player.play('dead');
             player.alpha = 0.9;
@@ -201,6 +201,7 @@ function update() {
             if (countOverlap === 1) {
 
                 hits += 1;
+                console.log('hits ' + hits);
                
                 if (hits <= 3) {
                     live = lives.getFirstAlive();
@@ -234,18 +235,17 @@ function update() {
 
 }
 
-function checkOverlap(spriteA, group) {
+function collisionHandler(player, octocat) {
 
-    var spriteBounds = spriteA.getBounds(),
-        childBounds;
-        group.forEach(function (child) {
-            childBounds = child.getBounds();
-            return childBounds;
-        });
+    var playerBounds = player.getBounds(),
+        octocatBounds = octocat.getBounds();
         
-        //console.log(boundsArray);
-  return Phaser.Rectangle.intersects(spriteBounds, childBounds);
+  return Phaser.Rectangle.intersects(playerBounds, octocatBounds);
     
+}
+
+function processHandler(player, octoCat) {
+    return true;
 }
 
 function collectStar(player, star) {
@@ -260,7 +260,7 @@ function collectStar(player, star) {
 }
 
 function CreateBadDudes() {
-<<<<<<< .mine
+//<<<<<<< .mine
     var startXPosition = [650, 1300];
     var endXPositon = [1000, 1700];
     for (var i = 0; i < startXPosition.length; i++) {
@@ -271,7 +271,7 @@ function CreateBadDudes() {
         octoCat.body.collideWorldBounds = true;
         game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
     }
-=======
+//=======
     //                    y   | x
     var startPosition = [[ 160,  650, 1300],
                          [ 416, 1472, 1408,  192],
@@ -282,10 +282,10 @@ function CreateBadDudes() {
 
 
 
->>>>>>> .theirs
+//>>>>>>> .theirs
 }
 
-<<<<<<< .mine
+//<<<<<<< .mine
 
 
 
@@ -305,9 +305,9 @@ function CreateBadDudes() {
 
 
 
-=======
+//=======
     var endXPositon = [[1000, 1664],
-                       [1984,  960,  576],
+                       [1984, 960, 576],
                        [ 384, 1344],
                        [ 224, 1792],
                        [1056, 1760],
@@ -321,11 +321,8 @@ function CreateBadDudes() {
              octoCat.body.collideWorldBounds = true;
              game.add.tween(octoCat).to({x: endXPositon[y][x-1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
         }
-       }
-
-
 }
->>>>>>> .theirs
+//>>>>>>> .theirs
 function heal() {
 
     // Removes the heart from the screen
