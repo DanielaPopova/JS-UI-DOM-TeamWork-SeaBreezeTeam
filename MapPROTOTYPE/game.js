@@ -56,10 +56,11 @@ function create() {
     layer.resizeWorld();
 
     // Adding player
-    player = game.add.sprite(game.world.width - 1000, game.world.height - 200, 'player');
+    //player = game.add.sprite(game.world.width - 1000, game.world.height - 200, 'player');
+    player = game.add.sprite(32, 32, 'player');
     
     game.physics.arcade.enable(player);     
-    player.body.bounce.y = 0.1;
+    //player.body.bounce.y = 0.1;
     player.body.gravity.y = 400;
     player.body.collideWorldBounds = true;
 
@@ -255,16 +256,30 @@ function collectStar(player, star) {
 }
 
 function CreateBadDudes() {
-    var startXPosition = [650, 1300];
-    var endXPositon = [1000, 1700];
-    for (var i = 0; i < startXPosition.length; i++) {
-        var octoCat = badDudes.create(startXPosition[i], 100, 'octo-cat');
-        octoCat.scale.setTo(0.5, 0.5);
-        game.physics.arcade.enable(octoCat);
-        octoCat.body.gravity.y = 800;
-        octoCat.body.collideWorldBounds = true;
-        game.add.tween(octoCat).to({x: endXPositon[i]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
-    }
+    //                    y   | x
+    var startPosition = [[ 160,  650, 1300],
+                         [ 416, 1472, 1408,  192],
+                         [ 672,  128,  896],
+                         [ 992,  672, 1568],
+                         [1248,  672, 1376],
+                         [1504,  992,  928]];
+
+    var endXPositon = [[1000, 1664],
+                       [1984,  960,  576],
+                       [ 384, 1344],
+                       [ 224, 1792],
+                       [1056, 1760],
+                       [1248, 640]];
+    for (var y = 0; y < startPosition.length; y++) {
+        for (var x = 1; x < startPosition[y].length; x++) {
+             var octoCat = badDudes.create(startPosition[y][x], startPosition[y][0], 'octo-cat');
+             octoCat.scale.setTo(0.5, 0.5);
+             game.physics.arcade.enable(octoCat);
+             octoCat.body.gravity.y = 800;
+             octoCat.body.collideWorldBounds = true;
+             game.add.tween(octoCat).to({x: endXPositon[y][x-1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
+        }
+       }
 
 
 }
