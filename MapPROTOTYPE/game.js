@@ -6,7 +6,12 @@ function preload() {
     game.load.image('health', 'assets/health.png');
     game.load.image('live', 'assets/live.png');
     game.load.image('key', 'assets/key.png');
-    // game.load.image('cave', 'images/cave.png');    
+    // game.load.image('cave', 'images/cave.png');   
+
+    game.load.image('bossBullets', 'assets/undefined3.png');
+    game.load.image ('boss', 'assets/boss.png');
+    game.load.image('zero', 'assets/zero.png');    
+    game.load.image('one', 'assets/one.png');
     
     game.load.spritesheet('player', 'assets/player.png', 49, 63);
     // loading map resoruces
@@ -41,7 +46,19 @@ var player,
     badDudes,    
     trapsLayer,
     countOverlap = 0,
-    hits = 0;
+    hits = 0,
+    boss,
+    bossSpeed = 2000,
+    bullet,
+    bullets,
+    bulletTime = 1000,
+    firingTimer = 0,
+    zeroes,
+    ones,
+    zeroCount = 1,
+    oneCount = 1, 
+    takenZero = false,
+    takenOne = false;
 
 function create() {
 
@@ -73,7 +90,7 @@ function create() {
     player.body.gravity.y = 350;
     player.body.collideWorldBounds = true;
 
-    //  Add animations to plauer
+    //  Add animations to player
     player.animations.add('left', [4, 3, 2, 1, 0], 14, true);
     player.animations.add('right', [6, 7, 8, 9, 10], 14, true);
     player.animations.add('jump_right', [11], 14, true);
@@ -82,6 +99,40 @@ function create() {
 
     // moving
     game.camera.follow(player);    
+
+//adding bullets, ones and zeroes
+    
+    bullets = game.add.group();
+    bullets.enableBody = true;
+    bullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+    for (var j = 0; j < 50; j++)
+    {
+        var b = bullets.create(0, 0, 'bossBullets');
+        b.name = 'bossBullets' + j;
+        b.exists = false;
+        b.visible = false;
+        b.checkWorldBounds = true;
+        b.events.onOutOfBounds.add(resetBullet, this);
+    }
+
+    zeroes = game.add.group();
+    zeroes.enableBody = true;
+    createZero();
+
+    ones = game.add.group();
+    ones.enableBody = true;
+    createOne();
+    
+ 	boss = game.add.sprite(2960, 3050, 'boss');
+  
+    //  Create an animation called 'move'
+    boss.animations.add('move');
+
+    //  Play the animation at 10fps on a loop
+    boss.animations.play('move', 10, true);
+ 
+    game.add.tween(boss).to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
     //Add hearts
     hearts = game.add.group();
@@ -176,6 +227,31 @@ function update() {
     //  Checks to see if the player overlaps with any of the hearts, if he does call the heal function
     game.physics.arcade.collide(player, hearts, heal, null, this);
     //game.physics.arcade.overlap(player, badDudes, takeDamage, null, this);    
+
+game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
+//    if(bulletTime < game.time.now){
+//        killBulllet();
+//    }
+    
+    if(takenZero){
+       createZero();
+    }
+
+    game.physics.arcade.collide(player, ones, collectOne, null, this);
+
+    if(takenOne){
+       createOne();
+    }
+//If bullets thouch the player, he dies
+   //  game.physics.arcade.overlap(bullets, player, collisionHandler, null, this);
+
+    if (game.time.now > bulletTime)
+    {
+        fireBullet();
+    }
+
+    game.physics.arcade.overlap(player, boss, takeDamage, null, this);
+
 
     // map kill
 
@@ -344,6 +420,90 @@ function heal() {
 
     //healthText.text = 'Health: ' + player.health;
 
+}
+
+function fireBullet() {
+bulletTime = game.time.now + 2000;
+    if (game.time.now < bulletTime)
+    {
+        bullet = bullets.getFirstExists(false);
+
+        if (bullet)
+        {
+            bullet.reset(boss.x - 150, boss.y + 50);
+            bullet.body.velocity.x = -300;
+         //   bulletTime = game.time.now + 200;
+        }
+    }
+}
+
+function resetBullet(bullet) {
+
+    bullet.kill();
+
+}
+
+//  Called if the bullet hits one of the veg sprites
+function collisionHandler (player, bullet) {
+
+   // bullet.kill();
+    player.kill();
+    player.x= 32;
+    player.y = 32;
+    player.revive();
+}
+
+// function killBulllet()
+// {
+//     bullets.kill();
+// }
+
+function createZero(){
+    if(zeroCount == 1 ){
+            zeroCount = 0;
+        }
+    for (var i = 0; i < 1; i++) {
+        //  Create a star inside of the 'stars' group
+        var zero = zeroes.create(i, i, 'zero');
+
+        zero.x = game.rnd.between(2200, 3010);
+        zero.y = game.rnd.between(3000, 3100);
+       
+        takenZero = false;
+        
+       // zero.visible = true;
+    }
+}
+
+function collectZero(player, zero)
+{
+    zeroCount = 1;  
+    zero.kill();
+    takenZero = true;
+}
+
+function createOne(){
+    if(oneCount == 1 ){
+            oneCount = 0;
+        }
+    for (var i = 0; i < 1; i++) {
+        //  Create a star inside of the 'stars' group
+        var one = ones.create(i, i, 'one');
+
+        one.x = game.rnd.between(2200, 3010);
+        one.y = game.rnd.between(3000, 3100);
+       
+        takenOne = false;
+        
+       // zero.visible = true;
+    }
+}
+
+function collectOne(player, one)
+{
+    oneCount = 1;  
+    one.kill();
+    takenOne = true;
 }
 
 function takeDamage() {
