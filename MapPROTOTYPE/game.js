@@ -154,7 +154,7 @@ function create() {
         oneUp.animations.add('full', [0]);
         oneUp.animations.add('empty', [1]);
         oneUp.fixedToCamera = true;
-        oneUp.animations.play(i < lives.length ? 'full' : 'empty', 0, false);
+        oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
 
         healthBar.push(oneUp);
     }
@@ -166,9 +166,9 @@ function create() {
     stars.enableBody = true;
 
     //  Here we'll create 12 of them evenly spaced apart
-    for (var i = 0; i < 12; i++) {
+    for (var l = 0; l < 12; l++) {
         //  Create a star inside of the 'stars' group
-        var star = stars.create(i * 30, 0, 'star');
+        var star = stars.create(l * 30, 0, 'star');
 
         //  Let gravity do its thing
         star.body.gravity.y = 300;
@@ -223,7 +223,6 @@ function update() {
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
-    //game.physics.arcade.collide(player, hearts, heal, null, this);
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
     // Interaction between enemies and layer
