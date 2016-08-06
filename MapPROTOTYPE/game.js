@@ -38,6 +38,7 @@ var player,
     scoreText,
     stateText,
     keyText,
+    keyBar,
     keyTextBar,
     keyTextStyle,
     healthText,
@@ -179,6 +180,8 @@ function create() {
 
     // Add key
     key = game.add.sprite(2432, 64, 'key');    
+    //key = game.add.sprite(400, 100, 'key');    
+
     game.physics.arcade.enable(key);
     key.enableBody = true;
 
@@ -189,14 +192,21 @@ function create() {
     game.physics.arcade.enable(keyTextBar);
     keyTextBar.enableBody = true;    
     keyTextBar.fixedToCamera = true;
-
     keyTextBar.visible = false;
+
+    // Add bar behind the key
+    keyBar = game.add.graphics();
+    keyBar.beginFill(0xFFFFFF);
+    keyBar.drawCircle(990, 35, 50);
+    game.physics.arcade.enable(keyBar);
+    keyBar.enableBody = true;    
+    keyBar.fixedToCamera = true;
+    keyBar.visible = false;
 
     keyTextStyle = { font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
     keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);    
     keyText.fixedToCamera = true;
-    keyText.setTextBounds(200, 100, 300, 50);
-    
+    keyText.setTextBounds(200, 100, 300, 50);    
     keyText.visible = false;   
 
     //Add score text
@@ -483,9 +493,13 @@ function collectOne(player, one)
 }
 
 function collectKey() {
-    console.log('action');
+    
     isKeyTaken = true;
-    key.kill();
+    keyBar.visible = true;
+    game.world.bringToTop(key);
+    key.x = 966; 
+    key.y = 10;
+    key.fixedToCamera = true;
 }
 
 function collectStar(player, star) {
@@ -523,9 +537,10 @@ function restart() {
     updateLife();
 
     // key reset
+    keyBar.visible = false;
+    key.fixedToCamera = false;
     key.x = 2432;
     key.y = 64;
-    key.revive();
     isKeyTaken = false;
 
     // hides the text
