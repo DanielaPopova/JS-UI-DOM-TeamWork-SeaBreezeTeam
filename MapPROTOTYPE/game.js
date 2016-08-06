@@ -28,11 +28,11 @@ function preload() {
 
 var player,    
     cursors,
+    spaceKey,    
     hearts,
     lives,
     stars,
     key,
-    spaceKey,
     isKeyTaken = false,
     score = 0,
     scoreText,
@@ -79,11 +79,11 @@ function create() {
 
     // Adding player
 //<<<<<<< .mine
-    //player = game.add.sprite(32, 32, 'player');
+    player = game.add.sprite(game.world.width - 500, game.world.height - 200, 'player');
 
 //=======
     
-    player = game.add.sprite(32, 32, 'player');
+    //player = game.add.sprite(32, 32, 'player');
 //>>>>>>> .theirs
     
     game.physics.arcade.enable(player);
@@ -125,6 +125,7 @@ function create() {
     createOne();
     
  	boss = game.add.sprite(2960, 3050, 'boss');
+    game.physics.arcade.enable(boss);
   
     //  Create an animation called 'move'
     boss.animations.add('move');
@@ -178,7 +179,7 @@ function create() {
     key.enableBody = true;
 
     // Add warning text for key
-     keyTextBar = game.add.graphics();
+    keyTextBar = game.add.graphics();
     keyTextBar.beginFill(0x173B0B);    
     keyTextBar.drawRoundedRect(200, 100, 300, 50, 10);
     game.physics.arcade.enable(keyTextBar);
@@ -215,46 +216,41 @@ function create() {
 }
 
 function update() {
-    //  player and platforms -need group from Stoyan
-    game.physics.arcade.collide(stars, layer);
-    game.physics.arcade.collide(badDudes, layer);
+    // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
-
-
-    //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
-    game.physics.arcade.overlap(player, key, collectKey, null, this);
-    //  Checks to see if the player overlaps with any of the hearts, if he does call the heal function
     game.physics.arcade.collide(player, hearts, heal, null, this);
-    //game.physics.arcade.overlap(player, badDudes, takeDamage, null, this);    
+    game.physics.arcade.overlap(player, key, collectKey, null, this);
 
-game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
-//    if(bulletTime < game.time.now){
-//        killBulllet();
-//    }
-    
-    if(takenZero){
-       createZero();
-    }
+    // Interaction between enemies and layer
+    game.physics.arcade.collide(badDudes, layer);
+    //game.physics.arcade.collide(stars, layer);
+
+    // Interaction between player and boss
+    game.physics.arcade.overlap(player, boss, takeDamage, null, this);
+
+    // Interaction between player and ones/zeros
+    game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
+    //    if(bulletTime < game.time.now){
+    //        killBulllet();
+    //    }
+        
+        if(takenZero){
+           createZero();
+        }
 
     game.physics.arcade.collide(player, ones, collectOne, null, this);
 
-    if(takenOne){
-       createOne();
-    }
-//If bullets thouch the player, he dies
-   //  game.physics.arcade.overlap(bullets, player, collisionHandler, null, this);
+        if(takenOne){
+           createOne();
+        }    
 
-    if (game.time.now > bulletTime)
-    {
-        fireBullet();
-    }
+        if (game.time.now > bulletTime)
+        {
+            fireBullet();
+        }
 
-    game.physics.arcade.overlap(player, boss, takeDamage, null, this);
-
-
-    // map kill
-
+     // Player behaviour
      if (player.alive) {
 
         player.body.velocity.x = 0;
@@ -285,18 +281,19 @@ game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
             player.body.velocity.x = 200;
 
         } else {
-            //  Stand still
+            // Stand still
             player.animations.stop();
 
             player.frame = 5;
         }
         
-        //  Allow the player to jump if he is touching the ground.
+        // Jump
         if (cursors.up.isDown && player.body.onFloor())
         {
-            player.body.velocity.y = -350;
+            player.body.velocity.y = -300;
         }
 
+        // Handling the key
         if (spaceKey.isDown && !isKeyTaken) {
             warningMessage();
         } else if (spaceKey.isDown && isKeyTaken){
@@ -304,7 +301,9 @@ game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
         }
               
 
-        if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this))
+        // Interaction between player and enemies
+        if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this) ||
+            game.physics.arcade.overlap(player, bullets, collisionHandler, null, this))
         {
             countOverlap += 1;
 
@@ -330,7 +329,7 @@ game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
                     hits = 0;
 
                     stateText.text=" GAME OVER \n Click to restart";
-                     stateText.visible = true;
+                    stateText.visible = true;
 
                     //the "click to restart" handler
                      game.input.onTap.addOnce(restart,this);
@@ -344,33 +343,44 @@ game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
             player.alpha = 1;
             countOverlap = 0;
         }
-
        
     }
 
 }
 
-function collisionHandler(player, octocat) {
+function collisionHandler(sprite, group) {
 
-    var playerBounds = player.getBounds(),
-        octocatBounds = octocat.getBounds();
+    var spriteBounds = sprite.getBounds(),
+        groupBounds = group.getBounds();
         
-  return Phaser.Rectangle.intersects(playerBounds, octocatBounds);
+  return Phaser.Rectangle.intersects(spriteBounds, groupBounds);
     
 }
 
-function processHandler(player, octoCat) {
+function processHandler(sprite, group) {
     return true;
 }
 
-function collectStar(player, star) {
+function takeDamage() {
 
-    // Removes the star from the screen
-    star.kill();
+    player.kill();    
+    restart();
+}
 
-    //  Add and update the score
-    score += 10;
-    scoreText.text = 'Score: ' + score;
+function heal() {
+
+    // Removes the heart from the screen
+    hearts.getFirstAlive().kill();
+
+    //  Add and update to the health
+    // if (lives.countLiving < 3) {
+
+    //     var live = lives.create(game.world.width - 200, 35, 'live');
+
+
+    // }
+
+    //healthText.text = 'Health: ' + player.health;
 
 }
 
@@ -409,22 +419,7 @@ function CreateBadDudes() {
 //=======
   
 //>>>>>>> .theirs
-function heal() {
 
-    // Removes the heart from the screen
-    hearts.getFirstAlive().kill();
-
-    //  Add and update to the health
-    // if (lives.countLiving < 3) {
-
-    //     var live = lives.create(game.world.width - 200, 35, 'live');
-
-
-    // }
-
-    //healthText.text = 'Health: ' + player.health;
-
-}
 
 function fireBullet() {
 bulletTime = game.time.now + 2000;
@@ -448,14 +443,14 @@ function resetBullet(bullet) {
 }
 
 //  Called if the bullet hits one of the veg sprites
-function collisionHandler (player, bullet) {
+// function collisionHandler (player, bullet) {
 
-   // bullet.kill();
-    player.kill();
-    player.x= 32;
-    player.y = 32;
-    player.revive();
-}
+//    // bullet.kill();
+//     player.kill();
+//     player.x= 32;
+//     player.y = 32;
+//     player.revive();
+// }
 
 // function killBulllet()
 // {
@@ -479,13 +474,6 @@ function createZero(){
     }
 }
 
-function collectZero(player, zero)
-{
-    zeroCount = 1;  
-    zero.kill();
-    takenZero = true;
-}
-
 function createOne(){
     if(oneCount == 1 ){
             oneCount = 0;
@@ -503,6 +491,13 @@ function createOne(){
     }
 }
 
+function collectZero(player, zero)
+{
+    zeroCount = 1;  
+    zero.kill();
+    takenZero = true;
+}
+
 function collectOne(player, one)
 {
     oneCount = 1;  
@@ -510,21 +505,20 @@ function collectOne(player, one)
     takenOne = true;
 }
 
-function takeDamage() {
-
-    player.kill();
-    console.log('killed');
-    player.x = 50;
-    player.y = 20;
-    player.revive();
-
-
-}
-
 function collectKey() {
     console.log('action');
     isKeyTaken = true;
     key.kill();
+}
+
+function collectStar(player, star) {
+
+    // Removes the star from the screen
+    star.kill();
+
+    //  Add and update the score
+    score += 10;
+    scoreText.text = 'Score: ' + score;
 }
 
 function openDoor() {
