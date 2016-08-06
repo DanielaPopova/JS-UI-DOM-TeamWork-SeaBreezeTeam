@@ -3,8 +3,8 @@ var game = new Phaser.Game(1024, 500, Phaser.CANVAS, '', {preload: preload, crea
 function preload() {
     
     game.load.image('star', 'sprites/star.png');
-    game.load.image('health', 'assets/health.png');
-    game.load.image('live', 'assets/live.png');
+    game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
+    game.load.image('life', 'assets/life.png');
     game.load.image('key', 'assets/key.png');
     // game.load.image('cave', 'images/cave.png');   
 
@@ -29,8 +29,8 @@ function preload() {
 var player,    
     cursors,
     spaceKey,    
-    hearts,
-    lives,
+    lives = 3,
+    healthBar = [],
     stars,
     key,
     isKeyTaken = false,
@@ -79,11 +79,11 @@ function create() {
 
     // Adding player
 //<<<<<<< .mine
-    player = game.add.sprite(game.world.width - 500, game.world.height - 200, 'player');
+    //player = game.add.sprite(game.world.width - 500, game.world.height - 200, 'player');
 
 //=======
     
-    //player = game.add.sprite(32, 32, 'player');
+    player = game.add.sprite(32, 32, 'player');
 //>>>>>>> .theirs
     
     game.physics.arcade.enable(player);
@@ -100,7 +100,7 @@ function create() {
     // moving
     game.camera.follow(player);    
 
-//adding bullets, ones and zeroes
+    //adding bullets, ones and zeroes
     
     bullets = game.add.group();
     bullets.enableBody = true;
@@ -135,24 +135,28 @@ function create() {
  
     game.add.tween(boss).to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-    //Add hearts
-    hearts = game.add.group();
-    hearts.enableBody = true;
+    //Add lifes
+    // hearts = game.add.group();
+    // hearts.enableBody = true;
 
-    for (i = 0; i < 2; i += 1) {
-        var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
+    // for (i = 0; i < 2; i += 1) {
+    //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
-    }
+    // }
     healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
     healthText.fixedToCamera = true;
 
-    //Add lives
-    lives = game.add.group();
-    for (i = 0; i < 3; i += 1) {
-        var live = lives.create(100 + (40 * i), 35, 'live');
-        live.fixedToCamera = true;
-        live.scale.setTo(0.9, 0.9);
+    //Add health bar    
+    for (var i = 0; i < 3; i += 1)
+    {
+        var oneUp;
+        oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
+        oneUp.animations.add('full', [0]);
+        oneUp.animations.add('empty', [1]);
+        oneUp.fixedToCamera = true;
+        oneUp.animations.play(i < lives.length ? 'full' : 'empty', 0, false);
 
+        healthBar.push(oneUp);
     }
 
     //  Finally some stars to collect
@@ -219,7 +223,7 @@ function update() {
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
-    game.physics.arcade.collide(player, hearts, heal, null, this);
+    //game.physics.arcade.collide(player, hearts, heal, null, this);
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
     // Interaction between enemies and layer
@@ -298,8 +302,7 @@ function update() {
             warningMessage();
         } else if (spaceKey.isDown && isKeyTaken){
             openDoor();
-        }
-              
+        }              
 
         // Interaction between player and enemies
         if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this) ||
@@ -309,38 +312,20 @@ function update() {
 
             player.enableBody = false;
             player.play('dead');
-            player.alpha = 0.9;
 
             if (countOverlap === 1) {
 
                 hits += 1;
                
                 if (hits <= 3) {
-                    live = lives.getFirstAlive();
-
-                    if (live)
-                    {
-                        live.kill();
-                    }
+                    lives--;
+                    updateLife();
                 }
-
-                if (hits === 3) {
-                    player.kill();
-                    hits = 0;
-
-                    stateText.text=" GAME OVER \n Click to restart";
-                    stateText.visible = true;
-
-                    //the "click to restart" handler
-                     game.input.onTap.addOnce(restart,this);
-                } 
-                
             }         
         }
         else
         {
             player.enableBody = true;
-            player.alpha = 1;
             countOverlap = 0;
         }
        
@@ -363,25 +348,28 @@ function processHandler(sprite, group) {
 
 function takeDamage() {
 
-    player.kill();    
+    player.kill();
     restart();
 }
 
-function heal() {
+function updateLife() {
+   
+    var total = healthBar.length;
+    for(var i = 0; i < total; i += 1)
+    {
+        healthBar[i].animations.play(i < lives ? 'full' : 'empty', 0, false);
+    }
 
-    // Removes the heart from the screen
-    hearts.getFirstAlive().kill();
+    if (lives === 0) {
+        player.kill();
+        hits = 0;
 
-    //  Add and update to the health
-    // if (lives.countLiving < 3) {
+        stateText.text=" GAME OVER \n Click to restart";
+        stateText.visible = true;
 
-    //     var live = lives.create(game.world.width - 200, 35, 'live');
-
-
-    // }
-
-    //healthText.text = 'Health: ' + player.health;
-
+        // the "click to restart" handler
+        game.input.onTap.addOnce(restart,this);
+    }
 }
 
 function CreateBadDudes() {
@@ -441,16 +429,6 @@ function resetBullet(bullet) {
     bullet.kill();
 
 }
-
-//  Called if the bullet hits one of the veg sprites
-// function collisionHandler (player, bullet) {
-
-//    // bullet.kill();
-//     player.kill();
-//     player.x= 32;
-//     player.y = 32;
-//     player.revive();
-// }
 
 // function killBulllet()
 // {
@@ -536,14 +514,14 @@ function warningMessage() {
 }
 
 function restart() {
-
-    //resets the life count
-    lives.callAll('revive');
-
-    //revives the player
+    // revives the player
     player.x = 32;
     player.y = 32;
     player.revive();
+
+    // lifes reset
+    lives = 3;
+    updateLife();
 
     // key reset
     key.x = 2432;
@@ -551,11 +529,10 @@ function restart() {
     key.revive();
     isKeyTaken = false;
 
-    //hides the text
+    // hides the text
     stateText.visible = false;
 
     // reset the score
     score = 0;
     scoreText.text = 'Score: ' + score;
-
 }
