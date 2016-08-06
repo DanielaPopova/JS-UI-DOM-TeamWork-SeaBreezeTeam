@@ -69,8 +69,7 @@ function create() {
     player = game.add.sprite(32, 32, 'player');
 //>>>>>>> .theirs
     
-    game.physics.arcade.enable(player);     
-    //player.body.bounce.y = 0.1;
+    game.physics.arcade.enable(player);
     player.body.gravity.y = 350;
     player.body.collideWorldBounds = true;
 
@@ -123,7 +122,7 @@ function create() {
     }
 
     // Add key
-    key = game.add.sprite(200, 100, 'key');
+    key = game.add.sprite(2432, 64, 'key');    
     game.physics.arcade.enable(key);
     key.enableBody = true;
 
@@ -380,8 +379,6 @@ function warningMessage() {
 
 function restart() {
 
-    //  A new level starts
-
     //resets the life count
     lives.callAll('revive');
 
@@ -390,12 +387,14 @@ function restart() {
     player.y = 32;
     player.revive();
 
-    // key restart
+    // key reset
+    key.x = 2432;
+    key.y = 64;
     key.revive();
     isKeyTaken = false;
 
     //hides the text
-    stateText.visible = false;    
+    stateText.visible = false;
 
     // reset the score
     score = 0;
