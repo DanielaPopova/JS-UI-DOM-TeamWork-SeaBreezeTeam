@@ -237,7 +237,7 @@ function update() {
 
     // Interaction between enemies and layer
     game.physics.arcade.collide(badDudes, layer);
-    //game.physics.arcade.collide(stars, layer);
+    game.physics.arcade.collide(stars, layer);
 
     // Interaction between player and boss
     game.physics.arcade.overlap(player, boss, takeDamage, null, this);
@@ -274,24 +274,31 @@ function update() {
         {
             //  Move to the left
             if (player.body.onFloor()) {
+
               player.animations.play('left');
+              player.body.velocity.x = -200;
+
             } else {
+
               player.animations.play('jump_left');
+              player.body.velocity.x = -150;
+              
             }
-
-            player.body.velocity.x = -200;
-
         }
         else if (cursors.right.isDown)
         {
             //  Move to the right
             if (player.body.onFloor()) {
+
               player.animations.play('right');
+              player.body.velocity.x = 200;
+
             } else {
+
               player.animations.play('jump_right');
+              player.body.velocity.x = 150;
+
             }
-            
-            player.body.velocity.x = 200;
 
         } else {
             // Stand still
