@@ -1,7 +1,7 @@
-var game = new Phaser.Game(1024, 500, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
+var game = new Phaser.Game(1024, 500, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
 
 function preload() {
-    
+
     game.load.image('star', 'sprites/star.png');
     game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
     game.load.image('life', 'assets/life.png');
@@ -9,10 +9,10 @@ function preload() {
     // game.load.image('cave', 'images/cave.png');   
 
     game.load.image('bossBullets', 'assets/undefined3.png');
-    game.load.image ('boss', 'assets/boss.png');
-    game.load.image('zero', 'assets/zero.png');    
+    game.load.image('boss', 'assets/boss.png');
+    game.load.image('zero', 'assets/zero.png');
     game.load.image('one', 'assets/one.png');
-    
+
     game.load.spritesheet('player', 'assets/player.png', 49, 63);
     // loading map resoruces
     game.load.image('background', 'images/bg.png');
@@ -22,13 +22,16 @@ function preload() {
     game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
     game.load.image('trapsSprite', 'images/TrapsSprite.png');
     game.load.image('octo-cat', 'images/robo-octocat-small.png');
-//    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
+    //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
+
+    game.load.image('door', 'images/crate.png');
+
 
 }
 
-var player,    
+var player,
     cursors,
-    spaceKey,    
+    spaceKey,
     lives = 3,
     healthBar = [],
     stars,
@@ -43,8 +46,8 @@ var player,
     keyTextStyle,
     healthText,
     layer,
-    map,    
-    badDudes,    
+    map,
+    badDudes,
     trapsLayer,
     countOverlap = 0,
     hits = 0,
@@ -57,9 +60,11 @@ var player,
     zeroes,
     ones,
     zeroCount = 1,
-    oneCount = 1, 
+    oneCount = 1,
     takenZero = false,
-    takenOne = false;
+    takenOne = false,
+    door,
+    winzone;
 
 function create() {
 
@@ -77,16 +82,22 @@ function create() {
     // trapsLayer = map.createLayer(1);
     // trapsLayer.resizeWorld();
     layer.resizeWorld();
+    // door 
+    door = map.objects["obj"][0];
+    winzone = map.objects['obj'][1];
 
+    doors = game.add.group();
+    doors.enableBody = true;
+    map.createFromObjects('obj', 9, 'door', 0, true, false, doors);
     // Adding player
-//<<<<<<< .mine
+    //<<<<<<< .mine
     //player = game.add.sprite(game.world.width - 500, game.world.height - 200, 'player');
 
-//=======
-    
-    player = game.add.sprite(32, 32, 'player');
-//>>>>>>> .theirs
-    
+    //=======
+
+    player = game.add.sprite(4000, 3500, 'player');
+    //>>>>>>> .theirs
+
     game.physics.arcade.enable(player);
     player.body.gravity.y = 350;
     player.body.collideWorldBounds = true;
@@ -99,16 +110,15 @@ function create() {
     player.animations.add('dead', [13], 14, true);
 
     // moving
-    game.camera.follow(player);    
+    game.camera.follow(player);
 
     //adding bullets, ones and zeroes
-    
+
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-    for (var j = 0; j < 50; j++)
-    {
+    for (var j = 0; j < 50; j++) {
         var b = bullets.create(0, 0, 'bossBullets');
         b.name = 'bossBullets' + j;
         b.exists = false;
@@ -124,16 +134,16 @@ function create() {
     ones = game.add.group();
     ones.enableBody = true;
     createOne();
-    
- 	boss = game.add.sprite(2960, 3050, 'boss');
+
+    boss = game.add.sprite(2960, 3050, 'boss');
     game.physics.arcade.enable(boss);
-  
+
     //  Create an animation called 'move'
     boss.animations.add('move');
 
     //  Play the animation at 10fps on a loop
     boss.animations.play('move', 10, true);
- 
+
     game.add.tween(boss).to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
     //Add lifes
@@ -144,12 +154,11 @@ function create() {
     //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
     // }
-    healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
+    healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
     healthText.fixedToCamera = true;
 
     //Add health bar    
-    for (var i = 0; i < 3; i += 1)
-    {
+    for (var i = 0; i < 3; i += 1) {
         var oneUp;
         oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
         oneUp.animations.add('full', [0]);
@@ -179,7 +188,7 @@ function create() {
     }
 
     // Add key
-    key = game.add.sprite(2432, 64, 'key');    
+    key = game.add.sprite(2432, 64, 'key');
     //key = game.add.sprite(400, 100, 'key');    
 
     game.physics.arcade.enable(key);
@@ -187,10 +196,10 @@ function create() {
 
     // Add warning text for key
     keyTextBar = game.add.graphics();
-    keyTextBar.beginFill(0x173B0B);    
+    keyTextBar.beginFill(0x173B0B);
     keyTextBar.drawRoundedRect(200, 100, 300, 50, 10);
     game.physics.arcade.enable(keyTextBar);
-    keyTextBar.enableBody = true;    
+    keyTextBar.enableBody = true;
     keyTextBar.fixedToCamera = true;
     keyTextBar.visible = false;
 
@@ -199,22 +208,22 @@ function create() {
     keyBar.beginFill(0xFFFFFF);
     keyBar.drawCircle(990, 35, 50);
     game.physics.arcade.enable(keyBar);
-    keyBar.enableBody = true;    
+    keyBar.enableBody = true;
     keyBar.fixedToCamera = true;
     keyBar.visible = false;
 
     keyTextStyle = { font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-    keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);    
+    keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);
     keyText.fixedToCamera = true;
-    keyText.setTextBounds(200, 100, 300, 50);    
-    keyText.visible = false;   
+    keyText.setTextBounds(200, 100, 300, 50);
+    keyText.visible = false;
 
     //Add score text
-    scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
+    scoreText = game.add.text(14, 14, 'Score: 0', { font: 'bold 24px Consolas', fill: '#FFF' });
     scoreText.fixedToCamera = true;
 
     // Add state text
-    stateText = game.add.text(100, 100,' ', {font: 'bold 24px Consolas', fill: '#FFF'});
+    stateText = game.add.text(100, 100, ' ', { font: 'bold 24px Consolas', fill: '#FFF' });
     stateText.fixedToCamera = true;
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = true;
@@ -247,56 +256,54 @@ function update() {
     //    if(bulletTime < game.time.now){
     //        killBulllet();
     //    }
-        
-        if(takenZero){
-           createZero();
-        }
+
+    if (takenZero) {
+        createZero();
+    }
 
     game.physics.arcade.collide(player, ones, collectOne, null, this);
 
-        if(takenOne){
-           createOne();
-        }    
+    if (takenOne) {
+        createOne();
+    }
 
-        if (game.time.now > bulletTime)
-        {
-            fireBullet();
-        }
+    if (game.time.now > bulletTime) {
+        fireBullet();
+    }
 
-     // Player behaviour
-     if (player.alive) {
+    // Player behaviour
+    if (player.alive) {
+        checkIfPlayerReachedTheEndOfTheLevel();
 
         player.body.velocity.x = 0;
         player.enableBody = true;
         player.alpha = 1;
 
-        if (cursors.left.isDown)
-        {
+        if (cursors.left.isDown) {
             //  Move to the left
             if (player.body.onFloor()) {
 
-              player.animations.play('left');
-              player.body.velocity.x = -200;
+                player.animations.play('left');
+                player.body.velocity.x = -200;
 
             } else {
 
-              player.animations.play('jump_left');
-              player.body.velocity.x = -150;
-              
+                player.animations.play('jump_left');
+                player.body.velocity.x = -150;
+
             }
         }
-        else if (cursors.right.isDown)
-        {
+        else if (cursors.right.isDown) {
             //  Move to the right
             if (player.body.onFloor()) {
 
-              player.animations.play('right');
-              player.body.velocity.x = 200;
+                player.animations.play('right');
+                player.body.velocity.x = 200;
 
             } else {
 
-              player.animations.play('jump_right');
-              player.body.velocity.x = 150;
+                player.animations.play('jump_right');
+                player.body.velocity.x = 150;
 
             }
 
@@ -306,24 +313,23 @@ function update() {
 
             player.frame = 5;
         }
-        
+
         // Jump
-        if (cursors.up.isDown && player.body.onFloor())
-        {
+        if (cursors.up.isDown && player.body.onFloor()) {
             player.body.velocity.y = -300;
+            console.log(winzone);
         }
 
         // Handling the key
         if (spaceKey.isDown && !isKeyTaken) {
             warningMessage();
-        } else if (spaceKey.isDown && isKeyTaken){
+        } else if (spaceKey.isDown && isKeyTaken) {
             openDoor();
-        }              
+        }
 
         // Interaction between player and enemies
         if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this) ||
-            game.physics.arcade.overlap(player, bullets, collisionHandler, null, this))
-        {
+            game.physics.arcade.overlap(player, bullets, collisionHandler, null, this)) {
             countOverlap += 1;
 
             player.enableBody = false;
@@ -332,19 +338,18 @@ function update() {
             if (countOverlap === 1) {
 
                 hits += 1;
-               
+
                 if (hits <= 3) {
                     lives--;
                     updateLife();
                 }
-            }         
+            }
         }
-        else
-        {
+        else {
             player.enableBody = true;
             countOverlap = 0;
         }
-       
+
     }
 
 }
@@ -353,9 +358,9 @@ function collisionHandler(sprite, group) {
 
     var spriteBounds = sprite.getBounds(),
         groupBounds = group.getBounds();
-        
-  return Phaser.Rectangle.intersects(spriteBounds, groupBounds);
-    
+
+    return Phaser.Rectangle.intersects(spriteBounds, groupBounds);
+
 }
 
 function processHandler(sprite, group) {
@@ -369,10 +374,9 @@ function takeDamage() {
 }
 
 function updateLife() {
-   
+
     var total = healthBar.length;
-    for(var i = 0; i < total; i += 1)
-    {
+    for (var i = 0; i < total; i += 1) {
         healthBar[i].animations.play(i < lives ? 'full' : 'empty', 0, false);
     }
 
@@ -380,62 +384,60 @@ function updateLife() {
         player.kill();
         hits = 0;
 
-        stateText.text=" GAME OVER \n Click to restart";
+        stateText.text = " GAME OVER \n Click to restart";
         stateText.visible = true;
 
         // the "click to restart" handler
-        game.input.onTap.addOnce(restart,this);
+        game.input.onTap.addOnce(restart, this);
     }
 }
 
 function CreateBadDudes() {
-  //                    y   | x
-    
-     var startPosition = [[ 160,  650, 1300],
-                          [ 416, 1472, 1408,  192],
-                          [ 672,  128,  896],
-                          [ 992,  672, 1568],
-                          [1248,  672, 1376],
-                          [1504,  992,  928],
-                          [2496,  704],
-                          [2816, 1312]];
+    //                    y   | x
+
+    var startPosition = [[160, 650, 1300],
+        [416, 1472, 1408, 192],
+        [672, 128, 896],
+        [992, 672, 1568],
+        [1248, 672, 1376],
+        [1504, 992, 928],
+        [2496, 704],
+        [2816, 1312]];
     var endXPositon = [[1000, 1664],
-                       [1984,  960,  576],
-                       [ 384, 1344],
-                       [ 224, 1792],
-                       [1056, 1760],
-                       [1248,  640],
-                       [ 960],
-                       [1824]];
+        [1984, 960, 576],
+        [384, 1344],
+        [224, 1792],
+        [1056, 1760],
+        [1248, 640],
+        [960],
+        [1824]];
     for (var y = 0; y < startPosition.length; y++) {
         for (var x = 1; x < startPosition[y].length; x++) {
-             var octoCat = badDudes.create(startPosition[y][x], startPosition[y][0], 'octo-cat');
-             octoCat.scale.setTo(0.4, 0.4);
-             game.physics.arcade.enable(octoCat);
-             octoCat.body.gravity.y = 800;
-             octoCat.body.collideWorldBounds = true;
-             game.add.tween(octoCat).to({x: endXPositon[y][x-1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);        
+            var octoCat = badDudes.create(startPosition[y][x], startPosition[y][0], 'octo-cat');
+            octoCat.scale.setTo(0.4, 0.4);
+            game.physics.arcade.enable(octoCat);
+            octoCat.body.gravity.y = 800;
+            octoCat.body.collideWorldBounds = true;
+            game.add.tween(octoCat).to({ x: endXPositon[y][x - 1] }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         }
     }
-//>>>>>>> .theirs
+    //>>>>>>> .theirs
 }
 //<<<<<<< .mine
 //=======
-  
+
 //>>>>>>> .theirs
 
 
 function fireBullet() {
-bulletTime = game.time.now + 2000;
-    if (game.time.now < bulletTime)
-    {
+    bulletTime = game.time.now + 2000;
+    if (game.time.now < bulletTime) {
         bullet = bullets.getFirstExists(false);
 
-        if (bullet)
-        {
+        if (bullet) {
             bullet.reset(boss.x - 150, boss.y + 50);
             bullet.body.velocity.x = -300;
-         //   bulletTime = game.time.now + 200;
+            //   bulletTime = game.time.now + 200;
         }
     }
 }
@@ -451,60 +453,58 @@ function resetBullet(bullet) {
 //     bullets.kill();
 // }
 
-function createZero(){
-    if(zeroCount == 1 ){
-            zeroCount = 0;
-        }
+function createZero() {
+    if (zeroCount == 1) {
+        zeroCount = 0;
+    }
     for (var i = 0; i < 1; i++) {
         //  Create a star inside of the 'stars' group
         var zero = zeroes.create(i, i, 'zero');
 
         zero.x = game.rnd.between(2200, 3010);
         zero.y = game.rnd.between(3000, 3100);
-       
+
         takenZero = false;
-        
-       // zero.visible = true;
+
+        // zero.visible = true;
     }
 }
 
-function createOne(){
-    if(oneCount == 1 ){
-            oneCount = 0;
-        }
+function createOne() {
+    if (oneCount == 1) {
+        oneCount = 0;
+    }
     for (var i = 0; i < 1; i++) {
         //  Create a star inside of the 'stars' group
         var one = ones.create(i, i, 'one');
 
         one.x = game.rnd.between(2200, 3010);
         one.y = game.rnd.between(3000, 3100);
-       
+
         takenOne = false;
-        
-       // zero.visible = true;
+
+        // zero.visible = true;
     }
 }
 
-function collectZero(player, zero)
-{
-    zeroCount = 1;  
+function collectZero(player, zero) {
+    zeroCount = 1;
     zero.kill();
     takenZero = true;
 }
 
-function collectOne(player, one)
-{
-    oneCount = 1;  
+function collectOne(player, one) {
+    oneCount = 1;
     one.kill();
     takenOne = true;
 }
 
 function collectKey() {
-    
+
     isKeyTaken = true;
     keyBar.visible = true;
     game.world.bringToTop(key);
-    key.x = 966; 
+    key.x = 966;
     key.y = 10;
     key.fixedToCamera = true;
 }
@@ -524,13 +524,13 @@ function openDoor() {
 }
 
 function warningMessage() {
-    
+
     keyText.visible = true;
     keyTextBar.visible = true;
     game.time.events.add(Phaser.Timer.SECOND * 2, function () {
-       keyText.visible = false;
-       keyTextBar.visible = false;
-    }, this);   
+        keyText.visible = false;
+        keyTextBar.visible = false;
+    }, this);
 }
 
 function restart() {
@@ -556,4 +556,14 @@ function restart() {
     // reset the score
     score = 0;
     scoreText.text = 'Score: ' + score;
+}
+function checkIfPlayerReachedTheEndOfTheLevel() {
+    if (player.x === winzone.x && player.y === winzone.y) {
+        stateText.text = " YOU WIN  \n Click to restart";
+        stateText.visible = true;
+        // TODO: undefined still show up after the boss is killed
+    
+        boss.kill();
+        game.input.onTap.addOnce(restart, this);
+    }
 }
