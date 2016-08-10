@@ -20,15 +20,15 @@ canvas {
     -webkit-mask-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAA5JREFUeNpiYGBgAAgwAAAEAAGbA+oJAAAAAElFTkSuQmCC);
 }
 #logo{
-    position:absolute;
-    top:12%;
-    left:20%;
+    position:relative;
+    left:1%;
     z-index: 1;
 }
 #gameplay{
-    position:absolute;
-    top:45%;
-    left:24%;
+    position:relative;
+    width:10%;
+    top:1%;
+    left:5%;
     z-index: 1;
 }
     #gameplay img{
@@ -36,7 +36,7 @@ canvas {
     }
 
 #wrapper{
-    position:fixed;
+    position:absolute;
     width:1024px;
     height:500px;
     top: 50%;
@@ -68,16 +68,16 @@ canvas {
     color:red;
     font-size:20px;
     position:absolute;
-    top:350px;
-    left:400px;
+    top:35%;
+    left:5%;
     display:none;
 }
 #game-rules{
     color:red;
     font-size:20px;
     position:absolute;
-    top:350px;
-    left:400px;
+    top:35%;
+    left:5%;
     display:none;
 }
 
