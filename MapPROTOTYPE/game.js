@@ -1,4 +1,4 @@
-var game = new Phaser.Game(1024, 500, Phaser.CANVAS, '', { preload: preload, create: create, update: update });
+var game = new Phaser.Game(1024, 500, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
 
 function preload() {
 
@@ -24,8 +24,7 @@ function preload() {
     game.load.image('octo-cat', 'images/robo-octocat-small.png');
     //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
 
-    game.load.image('door', 'images/crate.png');
-
+    game.load.image('doorImage', 'images/door.png');
 
 }
 
@@ -64,8 +63,31 @@ var player,
     takenZero = false,
     takenOne = false,
     door,
-    winzone;
+    doorObjectFromTileMap,
+    winzone,
+    doorLayer;
 
+function createDoor() {
+    door = game.add.group();
+    door.enableBody = true;
+
+    door.create(doorObjectFromTileMap.x, doorObjectFromTileMap.y, "doorImage");
+    // map.createFromObjects("obj", 181, 'doorImage', 0, true, false, door);
+    // door.physicsBodyType = Phaser.Physics.ARCADE;
+}
+function tryEnterDoor() {
+    if (!isKeyTaken || !spaceKey.isDown) {
+        // door.enableBody = true;
+        // door.physicsEnable = true;
+        player.x -= 10;
+    } else if (isKeyTaken && spaceKey.isDown) {
+        // this will teleport Pesho to the other side of the door
+        player.x += 30;
+
+        // this will make the door disappear
+        // door.y += 10;
+    }
+}
 function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -76,26 +98,24 @@ function create() {
     map.addTilesetImage('tech', 'sci-fi');
     map.addTilesetImage('traps', 'trapsSprite');
     map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
+    //.setCollision([1,2],true,'level1');
     bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
     layer = map.createLayer(0);
-    // trapsLayer = map.createLayer(1);
-    // trapsLayer.resizeWorld();
+
     layer.resizeWorld();
     // door 
-    door = map.objects["obj"][0];
+    doorObjectFromTileMap = map.objects["obj"][0];
     winzone = map.objects['obj'][1];
 
-    doors = game.add.group();
-    doors.enableBody = true;
-    map.createFromObjects('obj', 9, 'door', 0, true, false, doors);
+    createDoor();
     // Adding player
     //<<<<<<< .mine
     //player = game.add.sprite(game.world.width - 500, game.world.height - 200, 'player');
 
     //=======
 
-    player = game.add.sprite(4000, 3500, 'player');
+    player = game.add.sprite(2000, 3500, 'player');
     //>>>>>>> .theirs
 
     game.physics.arcade.enable(player);
@@ -144,7 +164,7 @@ function create() {
     //  Play the animation at 10fps on a loop
     boss.animations.play('move', 10, true);
 
-    game.add.tween(boss).to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    game.add.tween(boss).to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
     //Add lifes
     // hearts = game.add.group();
@@ -154,7 +174,7 @@ function create() {
     //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
     // }
-    healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
+    healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
     healthText.fixedToCamera = true;
 
     //Add health bar    
@@ -212,18 +232,18 @@ function create() {
     keyBar.fixedToCamera = true;
     keyBar.visible = false;
 
-    keyTextStyle = { font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+    keyTextStyle = {font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle"};
     keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);
     keyText.fixedToCamera = true;
     keyText.setTextBounds(200, 100, 300, 50);
     keyText.visible = false;
 
     //Add score text
-    scoreText = game.add.text(14, 14, 'Score: 0', { font: 'bold 24px Consolas', fill: '#FFF' });
+    scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
     scoreText.fixedToCamera = true;
 
     // Add state text
-    stateText = game.add.text(100, 100, ' ', { font: 'bold 24px Consolas', fill: '#FFF' });
+    stateText = game.add.text(100, 100, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
     stateText.fixedToCamera = true;
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = true;
@@ -240,7 +260,10 @@ function create() {
 
 function update() {
     // Interaction between player and surroundings
+    //game.physics.arcade.collide(player,door);
+    game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
     game.physics.arcade.collide(player, layer);
+    //game.physics.arcade.collide(player, doorLayer);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
@@ -418,7 +441,7 @@ function CreateBadDudes() {
             game.physics.arcade.enable(octoCat);
             octoCat.body.gravity.y = 800;
             octoCat.body.collideWorldBounds = true;
-            game.add.tween(octoCat).to({ x: endXPositon[y][x - 1] }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+            game.add.tween(octoCat).to({x: endXPositon[y][x - 1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         }
     }
     //>>>>>>> .theirs
@@ -520,7 +543,7 @@ function collectStar(player, star) {
 }
 
 function openDoor() {
-    // body...
+    door.y -= 100;
 }
 
 function warningMessage() {
@@ -562,7 +585,7 @@ function checkIfPlayerReachedTheEndOfTheLevel() {
         stateText.text = " YOU WIN  \n Click to restart";
         stateText.visible = true;
         // TODO: undefined still show up after the boss is killed
-    
+
         boss.kill();
         game.input.onTap.addOnce(restart, this);
     }
