@@ -648,6 +648,9 @@ function restart() {
     stateText.visible = false;
 
     //Reset the score
+    js.destroy(false,true);
+    html.destroy(false,true);
+    css.destroy(false,true);
     score = 0;
     scoreText.text = 'Score: ' + score;
     createCollectables();
