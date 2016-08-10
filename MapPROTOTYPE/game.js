@@ -54,6 +54,7 @@ var player,
     bossSpeed = 2000,
     bullet,
     bullets,
+    bulletCount,
     bulletTime = 1000,
     firingTimer = 0,
     zeroes,
@@ -448,6 +449,13 @@ function CreateBadDudes() {
 
 function fireBullet() {
     bulletTime = game.time.now + 2000;
+    
+    bulletCount += 1;
+
+    for(var i = 1; i < bulletCount; i += 1) {
+            bullet.kill();
+    }
+    
     if (game.time.now < bulletTime) {
         bullet = bullets.getFirstExists(false);
 
