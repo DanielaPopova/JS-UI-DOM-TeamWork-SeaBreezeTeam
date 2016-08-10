@@ -37,6 +37,8 @@ var player,
     lives = 3,
     healthBar = [],
     js,
+    allLivesOnMap,
+    stars,
     key,
     isKeyTaken = true,
     score = 0,
@@ -153,6 +155,24 @@ function create() {
     // moving
     game.camera.follow(player);
 
+    //Add lives
+    addLiviesOnMap();    
+
+    //Add health bar and health text   
+    healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
+    healthText.fixedToCamera = true;
+    
+    for (var i = 0; i < 3; i += 1) {
+        var oneUp;
+        oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
+        oneUp.animations.add('full', [0]);
+        oneUp.animations.add('empty', [1]);
+        oneUp.fixedToCamera = true;
+        oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
+
+        healthBar.push(oneUp);
+    }
+
     //adding bullets, ones and zeroes
 
     bullets = game.add.group();
@@ -187,10 +207,6 @@ function create() {
 
     game.add.tween(boss).to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-    //Add lifes
-    // hearts = game.add.group();
-    // hearts.enableBody = true;
-
     // for (i = 0; i < 2; i += 1) {
     //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
@@ -210,6 +226,7 @@ function create() {
         healthBar.push(oneUp);
     }
 
+
     //  Creating collectabels
     js = game.add.group();
     js.enableBody = true;
@@ -222,6 +239,7 @@ function create() {
     html= game.add.group();
     html.enableBody=true;
     createHTMLCollectabe();
+
     // Add key
     key = game.add.sprite(2432, 64, 'key');
     //key = game.add.sprite(400, 100, 'key');
@@ -278,12 +296,15 @@ function update() {
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
+    game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
+
     //game.physics.arcade.collide(player, trapsLayer);
     game.physics.arcade.overlap(player, traps, takeDamage, null, this);
 
     game.physics.arcade.overlap(player, js, collectStar, null, this);
     game.physics.arcade.overlap(player, css, collectStar, null, this);
     game.physics.arcade.overlap(player, html, collectStar, null, this);
+
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
     // Interaction between enemies and layer
@@ -361,7 +382,7 @@ function update() {
         // Jump
         if (cursors.up.isDown && player.body.onFloor()) {
             player.body.velocity.y = -300;
-            console.log(winzone);
+            //console.log(winzone);
         }
 
         // Interaction between player and enemies
@@ -375,11 +396,11 @@ function update() {
             if (countOverlap === 1) {
 
                 hits += 1;
-
+                console.log(hits);
                 if (hits <= 3) {
                     lives--;
                     updateLife();
-                }
+                } 
             }
         }
         else {
@@ -429,6 +450,28 @@ function updateLife() {
     }
 }
 
+function heal(player, life) {
+    life.kill();    
+    
+    if (lives < 3) {
+        lives += 1;
+        hits -= 1;                
+        updateLife();
+        console.log(lives);
+    }    
+}
+
+function addLiviesOnMap() {
+    var livesCoordinatesX = [2080, 3104, 1216, 64, 2016],
+        livesCoordinatesY = [1024, 1152, 1952, 2528, 2240];
+
+    allLivesOnMap = game.add.group();
+    allLivesOnMap.enableBody = true;
+    for (var m = 0; m < 5; m += 1) {
+        var life = allLivesOnMap.create(livesCoordinatesX[m], livesCoordinatesY[m], 'life');
+    }   
+}
+
 function CreateBadDudes() {
     //                    y   | x
 
@@ -458,7 +501,7 @@ function CreateBadDudes() {
             game.add.tween(octoCat).to({x: endXPositon[y][x - 1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         }
     }
-    //>>>>>>> .theirs
+  
 }
 
 function createJSCollectabe() {
@@ -603,6 +646,7 @@ function restart() {
     boss.revive();
     game.paused = false;
     // lifes reset
+    addLiviesOnMap();
     lives = 3;
     updateLife();
 
@@ -620,6 +664,7 @@ function restart() {
     score = 0;
     scoreText.text = 'Score: ' + score;
 }
+
 function checkIfPlayerReachedTheEndOfTheLevel() {
     if (player.x === winzone.x && player.y === winzone.y) {
         stateText.text = " YOU WIN  \n Click to restart";
