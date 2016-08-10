@@ -133,7 +133,7 @@ function create() {
     createDoor();
 
     //Add player
-    player = game.add.sprite(2816, 3040, 'player');
+    player = game.add.sprite(64, 128, 'player');
 
     game.physics.arcade.enable(player);
     player.body.gravity.y = 350;
@@ -150,6 +150,7 @@ function create() {
     game.camera.follow(player);
 
     //Add lives
+    allLivesOnMap = game.add.group();
     addLiviesOnMap();
 
     //Add health bar and health text   
@@ -368,12 +369,10 @@ function update() {
 
             if (countOverlap === 1) {
 
-                hits += 1;
-                console.log('hits ' + hits);
+                hits += 1;                
                 
                 if (hits <= 3) {
-                    lives--;
-                    console.log("lives when hit " + lives);
+                    lives--;                    
                     updateLife();
                 }
             }
@@ -401,7 +400,8 @@ function processHandler(sprite, group) {
 
 function takeDamage() {
 
-    lives = 0;
+    lives = 0;    
+    allLivesOnMap.callAll('kill');
     updateLife();
 }
 
@@ -418,18 +418,17 @@ function updateLife() {
 
         stateText.text = " GAME OVER \n Click to restart";
         stateText.visible = true;
-        console.log('click to restart');
+        
         //the "click to restart" handler
         game.input.onTap.addOnce(restart, this);
     }
 }
 
-function heal(player) {
-    allLivesOnMap.getFirstAlive().kill();
+function heal(player, life) {
+
+    life.kill();
     if (lives < 3) {
         lives += 1;
-    console.log("when heal lives " + lives);
-
         hits -= 1;
         updateLife();
     }
@@ -438,11 +437,10 @@ function heal(player) {
 function addLiviesOnMap() {
     var livesCoordinatesX = [2080, 3104, 1216, 64, 2016],
         livesCoordinatesY = [1024, 1152, 1952, 2528, 2240];
-
-    allLivesOnMap = game.add.group();
+   
     allLivesOnMap.enableBody = true;
     for (var m = 0; m < 5; m += 1) {
-        var life = allLivesOnMap.create(livesCoordinatesX[m], livesCoordinatesY[m], 'life');
+        life = allLivesOnMap.create(livesCoordinatesX[m], livesCoordinatesY[m], 'life');
     }
 }
 
@@ -617,14 +615,13 @@ function restart() {
 
     //Revives the player
     player.revive();
-    player.x = 32;
-    player.y = 32;
+    player.x = 64;
+    player.y = 128;
     boss.revive();
     game.paused = false;
 
     //Lives reset
-    lives = 3;
-    console.log('lives ' + lives);
+    lives = 3;   
     hits = 0;
     addLiviesOnMap();
     updateLife();
