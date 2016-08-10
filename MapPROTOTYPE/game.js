@@ -24,9 +24,9 @@ function preload() {
     game.load.image('octo-cat', 'images/robo-octocat-small.png');
     //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
 
-    game.load.image('javascript','assets/js.png');
-    game.load.image('css','assets/css3.png');
-    game.load.image('html','assets/html5.png');
+    game.load.image('javascript', 'assets/js.png');
+    game.load.image('css', 'assets/css3.png');
+    game.load.image('html', 'assets/html5.png');
     game.load.image('doorImage', 'images/door.png');
 
 }
@@ -104,8 +104,20 @@ function trapsCreation() {
         traps.create(currentTrap.x, currentTrap.y);
     })
 }
-function testTraps() {
-    console.log("KILLLLLLLLL")
+function trapsHandler() {
+    // player.kill();
+    // hits = 0;
+
+    stateText.text = " GAME OVER \n Click to restart";
+    stateText.visible = true;
+    game.paused = true;
+    player.kill();
+    game.input.onTap.addOnce(create, this);
+    game.paused = false;
+    // the "click to restart" handler
+}
+function newGame() {
+
 }
 function create() {
 
@@ -156,12 +168,12 @@ function create() {
     game.camera.follow(player);
 
     //Add lives
-    addLiviesOnMap();    
+    addLiviesOnMap();
 
     //Add health bar and health text   
-    healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
+    healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
     healthText.fixedToCamera = true;
-    
+
     for (var i = 0; i < 3; i += 1) {
         var oneUp;
         oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
@@ -231,13 +243,13 @@ function create() {
     js = game.add.group();
     js.enableBody = true;
     createJSCollectabe();
-    
-    css= game.add.group();
-    css.enableBody=true;
+
+    css = game.add.group();
+    css.enableBody = true;
     createCSSCollectabe();
 
-    html= game.add.group();
-    html.enableBody=true;
+    html = game.add.group();
+    html.enableBody = true;
     createHTMLCollectabe();
 
     // Add key
@@ -299,7 +311,7 @@ function update() {
     game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
 
     //game.physics.arcade.collide(player, trapsLayer);
-    game.physics.arcade.overlap(player, traps, takeDamage, null, this);
+    game.physics.arcade.overlap(player, traps, trapsHandler, null, this);
 
     game.physics.arcade.overlap(player, js, collectStar, null, this);
     game.physics.arcade.overlap(player, css, collectStar, null, this);
@@ -400,7 +412,7 @@ function update() {
                 if (hits <= 3) {
                     lives--;
                     updateLife();
-                } 
+                }
             }
         }
         else {
@@ -451,14 +463,14 @@ function updateLife() {
 }
 
 function heal(player, life) {
-    life.kill();    
-    
+    life.kill();
+
     if (lives < 3) {
         lives += 1;
-        hits -= 1;                
+        hits -= 1;
         updateLife();
         console.log(lives);
-    }    
+    }
 }
 
 function addLiviesOnMap() {
@@ -469,7 +481,7 @@ function addLiviesOnMap() {
     allLivesOnMap.enableBody = true;
     for (var m = 0; m < 5; m += 1) {
         var life = allLivesOnMap.create(livesCoordinatesX[m], livesCoordinatesY[m], 'life');
-    }   
+    }
 }
 
 function CreateBadDudes() {
@@ -501,7 +513,7 @@ function CreateBadDudes() {
             game.add.tween(octoCat).to({x: endXPositon[y][x - 1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         }
     }
-  
+
 }
 
 function createJSCollectabe() {
@@ -509,8 +521,8 @@ function createJSCollectabe() {
     var jsYPosition = [128];
     for (var i = 0; i < jsXPosition.length; i++) {
 
-        var jsColectable = js.create(jsXPosition[i],jsYPosition[i], 'javascript');
-       
+        var jsColectable = js.create(jsXPosition[i], jsYPosition[i], 'javascript');
+
     }
 }
 function createCSSCollectabe() {
@@ -518,16 +530,17 @@ function createCSSCollectabe() {
     var cssYPosition = [128];
     for (var i = 0; i < cssXPosition.length; i++) {
 
-        var cssColectable = css.create(cssXPosition[i],cssYPosition[i], 'css');
-       
+        var cssColectable = css.create(cssXPosition[i], cssYPosition[i], 'css');
+
     }
-}function createHTMLCollectabe() {
+}
+function createHTMLCollectabe() {
     var htmlXPosition = [574];
     var htmlYPosition = [128];
     for (var i = 0; i < htmlXPosition.length; i++) {
 
-        var htmlColectable = html.create(htmlXPosition[i],htmlYPosition[i], 'html');
-       
+        var htmlColectable = html.create(htmlXPosition[i], htmlYPosition[i], 'html');
+
     }
 }
 
@@ -640,14 +653,14 @@ function warningMessage() {
 
 function restart() {
     // revives the player
+    player.revive();
+    lives = 3;
     player.x = 32;
     player.y = 32;
-    player.revive();
     boss.revive();
     game.paused = false;
     // lifes reset
     addLiviesOnMap();
-    lives = 3;
     updateLife();
 
     // key reset
@@ -663,8 +676,14 @@ function restart() {
     // reset the score
     score = 0;
     scoreText.text = 'Score: ' + score;
+    createCollectables();
 }
 
+function createCollectables() {
+    createJSCollectabe();
+    createCSSCollectabe();
+    createHTMLCollectabe();
+}
 function checkIfPlayerReachedTheEndOfTheLevel() {
     if (player.x === winzone.x && player.y === winzone.y) {
         stateText.text = " YOU WIN  \n Click to restart";
