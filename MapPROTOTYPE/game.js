@@ -528,30 +528,30 @@ function CreateBadDudes() {
 }
 
 function createJSCollectabe() {
-    var jsXPosition = [520];
-    var jsYPosition = [128];
+    var jsXPosition = [16, 74, 24, 42, 40, 51,  1, 98];
+    var jsYPosition = [ 3, 13, 13, 26, 39, 49, 65, 51];
     for (var i = 0; i < jsXPosition.length; i++) {
 
-        var jsColectable = js.create(jsXPosition[i], jsYPosition[i], 'javascript');
-
+        var jsColectable = js.create(jsXPosition[i]*32,jsYPosition[i]*32, 'javascript');
+       
     }
 }
 function createCSSCollectabe() {
-    var cssXPosition = [542];
-    var cssYPosition = [128];
+    var cssXPosition = [36, 30, 14, 74, 28, 60,  8, 76, 98];
+    var cssYPosition = [ 3, 17, 27, 22, 35, 39, 43, 75, 56];
     for (var i = 0; i < cssXPosition.length; i++) {
 
-        var cssColectable = css.create(cssXPosition[i], cssYPosition[i], 'css');
+        var cssColectable = css.create(cssXPosition[i]*32, cssYPosition[i]*32, 'css');
 
     }
 }
 function createHTMLCollectabe() {
-    var htmlXPosition = [574];
-    var htmlYPosition = [128];
+    var htmlXPosition = [57, 51, 74, 62, 17, 33,  4, 82, 98];
+    var htmlYPosition = [ 3, 10, 18, 17, 36, 43, 60, 73, 61];
     for (var i = 0; i < htmlXPosition.length; i++) {
 
-        var htmlColectable = html.create(htmlXPosition[i], htmlYPosition[i], 'html');
-
+        var htmlColectable = html.create(htmlXPosition[i]*32,htmlYPosition[i]*32, 'html');
+       
     }
 }
 
