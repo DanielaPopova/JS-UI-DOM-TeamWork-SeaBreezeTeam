@@ -54,6 +54,7 @@ var player,
     bossSpeed = 2000,
     bullet,
     bullets,
+    bulletCount,
     bulletTime = 1000,
     firingTimer = 0,
     zeroes,
@@ -65,7 +66,8 @@ var player,
     door,
     doorObjectFromTileMap,
     winzone,
-    doorLayer;
+    doorLayer,
+    traps;
 
 function createDoor() {
     door = game.add.group();
@@ -89,6 +91,17 @@ function tryEnterDoor() {
         // door.y += 10;
     }
 }
+function trapsCreation() {
+    traps = game.add.group();
+    traps.enableBody = true;
+
+    trapsLayer.forEach(function (currentTrap) {
+        traps.create(currentTrap.x, currentTrap.y);
+    })
+}
+function testTraps() {
+    console.log("KILLLLLLLLL")
+}
 function create() {
 
     game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -103,11 +116,15 @@ function create() {
     bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
     bg.fixedToCamera = true;
     layer = map.createLayer(0);
-
     layer.resizeWorld();
+
     // door
     doorObjectFromTileMap = map.objects["obj"][0];
     winzone = map.objects['obj'][1];
+    trapsLayer = map.objects['TrapsObj'];
+
+    trapsCreation();
+
 
     createDoor();
     // Adding player
@@ -116,7 +133,7 @@ function create() {
 
     //=======
 
-    player = game.add.sprite(2000, 3500, 'player');
+    player = game.add.sprite(32, 32, 'player');
     //>>>>>>> .theirs
 
     game.physics.arcade.enable(player);
@@ -264,7 +281,9 @@ function update() {
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
-    //game.physics.arcade.collide(player, doorLayer);
+    //game.physics.arcade.collide(player, trapsLayer);
+    game.physics.arcade.overlap(player, traps, takeDamage, null, this);
+
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
@@ -448,6 +467,13 @@ function CreateBadDudes() {
 
 function fireBullet() {
     bulletTime = game.time.now + 2000;
+
+    bulletCount += 1;
+
+    for (var i = 1; i < bulletCount; i += 1) {
+        bullet.kill();
+    }
+
     if (game.time.now < bulletTime) {
         bullet = bullets.getFirstExists(false);
 
@@ -536,12 +562,7 @@ function collectStar(player, star) {
     scoreText.text = 'Score: ' + score;
 }
 
-function openDoor() {
-    door.y -= 100;
-}
-
 function warningMessage() {
-
     keyText.visible = true;
     keyTextBar.visible = true;
     game.time.events.add(Phaser.Timer.SECOND * 2, function () {

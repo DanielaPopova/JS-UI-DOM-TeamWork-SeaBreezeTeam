@@ -26,9 +26,21 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="85" column="23" selection-start-line="85" selection-start-column="23" selection-end-line="85" selection-end-column="23" />
-              <folding />
+            <state relative-caret-position="225">
+              <caret line="284" column="57" selection-start-line="284" selection-start-column="57" selection-end-line="284" selection-end-column="57" />
+              <folding>
+                <element signature="n#!!block;n#updateLife#0" expanded="false" />
+                <element signature="n#!!block;n#CreateBadDudes#0" expanded="false" />
+                <element signature="n#!!block;n#createZero#0" expanded="false" />
+                <element signature="n#!!block;n#createOne#0" expanded="false" />
+                <element signature="n#!!block;n#collectZero#0" expanded="false" />
+                <element signature="n#!!block;n#collectOne#0" expanded="false" />
+                <element signature="n#!!block;n#collectKey#0" expanded="false" />
+                <element signature="n#!!block;n#collectStar#0" expanded="false" />
+                <element signature="n#!!block;n#warningMessage#0" expanded="false" />
+                <element signature="n#!!block;n#restart#0" expanded="false" />
+                <element signature="n#!!block;n#checkIfPlayerReachedTheEndOfTheLevel#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -49,12 +61,12 @@
             <state relative-caret-position="0">
               <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding>
-                <marker date="1470810240510" expanded="true" signature="35709:35742" ph="{&quot;id&quot;: 9...}" />
-                <marker date="1470810240510" expanded="true" signature="36620:37887" ph="[...]" />
-                <marker date="1470810240510" expanded="true" signature="36630:36933" ph="{&quot;name&quot;: &quot;Work&quot;...}" />
-                <marker date="1470810240510" expanded="true" signature="36944:37235" ph="{&quot;name&quot;: &quot;cave&quot;...}" />
-                <marker date="1470810240510" expanded="true" signature="37246:37572" ph="{&quot;name&quot;: &quot;tech&quot;...}" />
-                <marker date="1470810240510" expanded="true" signature="37583:37886" ph="{&quot;name&quot;: &quot;traps&quot;...}" />
+                <marker date="1470816491827" expanded="true" signature="35709:35742" ph="{&quot;id&quot;: 9...}" />
+                <marker date="1470816491827" expanded="true" signature="76279:77546" ph="[...]" />
+                <marker date="1470816491827" expanded="true" signature="76289:76592" ph="{&quot;name&quot;: &quot;Work&quot;...}" />
+                <marker date="1470816491827" expanded="true" signature="76603:76894" ph="{&quot;name&quot;: &quot;cave&quot;...}" />
+                <marker date="1470816491827" expanded="true" signature="76905:77231" ph="{&quot;name&quot;: &quot;tech&quot;...}" />
+                <marker date="1470816491827" expanded="true" signature="77242:77545" ph="{&quot;name&quot;: &quot;traps&quot;...}" />
               </folding>
             </state>
           </provider>
@@ -223,15 +235,15 @@
       <option name="presentableId" value="Default" />
       <updated>1470764890084</updated>
       <workItem from="1470764895288" duration="6557000" />
-      <workItem from="1470809559802" duration="3246000" />
+      <workItem from="1470809559802" duration="6601000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="9803000" />
+    <option name="totallyTimeSpent" value="13158000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -265,7 +277,15 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/game.js</url>
+          <line>498</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -274,7 +294,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="n#!!block;n#updateLife#0" expanded="false" />
+            <element signature="n#!!block;n#CreateBadDudes#0" expanded="false" />
+            <element signature="n#!!block;n#createZero#0" expanded="false" />
+            <element signature="n#!!block;n#createOne#0" expanded="false" />
+            <element signature="n#!!block;n#collectZero#0" expanded="false" />
+            <element signature="n#!!block;n#collectOne#0" expanded="false" />
+            <element signature="n#!!block;n#collectKey#0" expanded="false" />
+            <element signature="n#!!block;n#collectStar#0" expanded="false" />
+            <element signature="n#!!block;n#warningMessage#0" expanded="false" />
+            <element signature="n#!!block;n#restart#0" expanded="false" />
+            <element signature="n#!!block;n#checkIfPlayerReachedTheEndOfTheLevel#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -291,12 +323,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1470810240510" expanded="true" signature="35709:35742" ph="{&quot;id&quot;: 9...}" />
-            <marker date="1470810240510" expanded="true" signature="36620:37887" ph="[...]" />
-            <marker date="1470810240510" expanded="true" signature="36630:36933" ph="{&quot;name&quot;: &quot;Work&quot;...}" />
-            <marker date="1470810240510" expanded="true" signature="36944:37235" ph="{&quot;name&quot;: &quot;cave&quot;...}" />
-            <marker date="1470810240510" expanded="true" signature="37246:37572" ph="{&quot;name&quot;: &quot;tech&quot;...}" />
-            <marker date="1470810240510" expanded="true" signature="37583:37886" ph="{&quot;name&quot;: &quot;traps&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="35709:35742" ph="{&quot;id&quot;: 9...}" />
+            <marker date="1470816491827" expanded="true" signature="76279:77546" ph="[...]" />
+            <marker date="1470816491827" expanded="true" signature="76289:76592" ph="{&quot;name&quot;: &quot;Work&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="76603:76894" ph="{&quot;name&quot;: &quot;cave&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="76905:77231" ph="{&quot;name&quot;: &quot;tech&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="77242:77545" ph="{&quot;name&quot;: &quot;traps&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -306,12 +338,12 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1470810240510" expanded="true" signature="35709:35742" ph="{&quot;id&quot;: 9...}" />
-            <marker date="1470810240510" expanded="true" signature="36620:37887" ph="[...]" />
-            <marker date="1470810240510" expanded="true" signature="36630:36933" ph="{&quot;name&quot;: &quot;Work&quot;...}" />
-            <marker date="1470810240510" expanded="true" signature="36944:37235" ph="{&quot;name&quot;: &quot;cave&quot;...}" />
-            <marker date="1470810240510" expanded="true" signature="37246:37572" ph="{&quot;name&quot;: &quot;tech&quot;...}" />
-            <marker date="1470810240510" expanded="true" signature="37583:37886" ph="{&quot;name&quot;: &quot;traps&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="35709:35742" ph="{&quot;id&quot;: 9...}" />
+            <marker date="1470816491827" expanded="true" signature="76279:77546" ph="[...]" />
+            <marker date="1470816491827" expanded="true" signature="76289:76592" ph="{&quot;name&quot;: &quot;Work&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="76603:76894" ph="{&quot;name&quot;: &quot;cave&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="76905:77231" ph="{&quot;name&quot;: &quot;tech&quot;...}" />
+            <marker date="1470816491827" expanded="true" signature="77242:77545" ph="{&quot;name&quot;: &quot;traps&quot;...}" />
           </folding>
         </state>
       </provider>
@@ -326,9 +358,21 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="85" column="23" selection-start-line="85" selection-start-column="23" selection-end-line="85" selection-end-column="23" />
-          <folding />
+        <state relative-caret-position="225">
+          <caret line="284" column="57" selection-start-line="284" selection-start-column="57" selection-end-line="284" selection-end-column="57" />
+          <folding>
+            <element signature="n#!!block;n#updateLife#0" expanded="false" />
+            <element signature="n#!!block;n#CreateBadDudes#0" expanded="false" />
+            <element signature="n#!!block;n#createZero#0" expanded="false" />
+            <element signature="n#!!block;n#createOne#0" expanded="false" />
+            <element signature="n#!!block;n#collectZero#0" expanded="false" />
+            <element signature="n#!!block;n#collectOne#0" expanded="false" />
+            <element signature="n#!!block;n#collectKey#0" expanded="false" />
+            <element signature="n#!!block;n#collectStar#0" expanded="false" />
+            <element signature="n#!!block;n#warningMessage#0" expanded="false" />
+            <element signature="n#!!block;n#restart#0" expanded="false" />
+            <element signature="n#!!block;n#checkIfPlayerReachedTheEndOfTheLevel#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
