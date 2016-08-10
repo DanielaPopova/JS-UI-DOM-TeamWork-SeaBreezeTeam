@@ -219,6 +219,32 @@ function create() {
 
     game.add.tween(boss).to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
+<<<<<<< HEAD
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=======
+>>>>>>> 31d9c494aa0b38d3ec26431a48d76ca3ab88e511
     // for (i = 0; i < 2; i += 1) {
     //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
@@ -238,6 +264,20 @@ function create() {
         healthBar.push(oneUp);
     }
 
+<<<<<<< HEAD
+
+    //  Finally some stars to collect
+    stars = game.add.group();
+
+    //  We will enable physics for any star that is created in this group
+    stars.enableBody = true;
+
+    //  Here we'll create 12 of them evenly spaced apart
+    for (var l = 0; l < 12; l++) {
+        //  Create a star inside of the 'stars' group
+        var star = stars.create(l * 30, 0, 'star');
+=======
+>>>>>>> 31d9c494aa0b38d3ec26431a48d76ca3ab88e511
 
     //  Creating collectabels
     js = game.add.group();
@@ -308,6 +348,18 @@ function update() {
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
+<<<<<<< HEAD
+
+    game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
+
+
+
+    //game.physics.arcade.collide(player, trapsLayer);
+    game.physics.arcade.overlap(player, traps, takeDamage, null, this);
+
+
+    game.physics.arcade.overlap(player, stars, collectStar, null, this);
+=======
     game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
 
     //game.physics.arcade.collide(player, trapsLayer);
@@ -317,6 +369,7 @@ function update() {
     game.physics.arcade.overlap(player, css, collectStar, null, this);
     game.physics.arcade.overlap(player, html, collectStar, null, this);
 
+>>>>>>> 31d9c494aa0b38d3ec26431a48d76ca3ab88e511
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
     // Interaction between enemies and layer
