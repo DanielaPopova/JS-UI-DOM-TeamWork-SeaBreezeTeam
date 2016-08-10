@@ -26,28 +26,28 @@
       <file leaf-file-name="game.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/game.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="260">
-              <caret line="113" column="18" selection-start-line="113" selection-start-column="18" selection-end-line="113" selection-end-column="18" />
+            <state relative-caret-position="4">
+              <caret line="311" column="0" selection-start-line="311" selection-start-column="0" selection-end-line="311" selection-end-column="0" />
               <folding>
-                <element signature="n#!!block;n#preload#0" expanded="false" />
-                <element signature="n#!!block;n#tryEnterDoor#0" expanded="false" />
-                <element signature="n#!!block;n#trapsCreation#0" expanded="false" />
-                <element signature="n#!!block;n#heal#0" expanded="false" />
-                <element signature="n#!!block;n#addLiviesOnMap#0" expanded="false" />
-                <element signature="n#!!block;n#CreateBadDudes#0" expanded="false" />
-                <element signature="n#!!block;n#createJSCollectabe#0" expanded="false" />
-                <element signature="n#!!block;n#createHTMLCollectabe#0" expanded="false" />
-                <element signature="n#!!block;n#fireBullet#0" expanded="false" />
                 <element signature="n#!!block;n#resetBullet#0" expanded="false" />
-                <element signature="n#!!block;n#createZero#0" expanded="false" />
-                <element signature="n#!!block;n#createOne#0" expanded="false" />
-                <element signature="n#!!block;n#collectZero#0" expanded="false" />
-                <element signature="n#!!block;n#collectOne#0" expanded="false" />
-                <element signature="n#!!block;n#collectKey#0" expanded="false" />
-                <element signature="n#!!block;n#collectStar#0" expanded="false" />
-                <element signature="n#!!block;n#warningMessage#0" expanded="false" />
-                <element signature="n#!!block;n#createCollectables#0" expanded="false" />
                 <element signature="n#!!block;n#checkIfPlayerReachedTheEndOfTheLevel#0" expanded="false" />
+                <marker date="1470826111514" expanded="false" signature="130:1472" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="2441:2801" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="2827:2997" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="13323:13460" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="13488:13821" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="13849:14825" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="14857:15061" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="15330:15542" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="15567:15982" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="16121:16477" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="16500:16847" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="16884:16945" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="16980:17038" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="17062:17211" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="17248:17400" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="17428:17637" ph="{...}" />
+                <marker date="1470826111514" expanded="false" signature="18190:18274" ph="{...}" />
               </folding>
             </state>
           </provider>
@@ -247,15 +247,15 @@
       <option name="presentableId" value="Default" />
       <updated>1470764890084</updated>
       <workItem from="1470764895288" duration="6557000" />
-      <workItem from="1470809559802" duration="12755000" />
+      <workItem from="1470809559802" duration="13041000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="19312000" />
+    <option name="totallyTimeSpent" value="19598000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -292,7 +292,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/game.js</url>
-          <line>552</line>
+          <line>563</line>
           <properties />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
@@ -307,25 +307,25 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#preload#0" expanded="false" />
-            <element signature="n#!!block;n#tryEnterDoor#0" expanded="false" />
-            <element signature="n#!!block;n#trapsCreation#0" expanded="false" />
-            <element signature="n#!!block;n#heal#0" expanded="false" />
-            <element signature="n#!!block;n#addLiviesOnMap#0" expanded="false" />
-            <element signature="n#!!block;n#CreateBadDudes#0" expanded="false" />
-            <element signature="n#!!block;n#createJSCollectabe#0" expanded="false" />
-            <element signature="n#!!block;n#createHTMLCollectabe#0" expanded="false" />
-            <element signature="n#!!block;n#fireBullet#0" expanded="false" />
             <element signature="n#!!block;n#resetBullet#0" expanded="false" />
-            <element signature="n#!!block;n#createZero#0" expanded="false" />
-            <element signature="n#!!block;n#createOne#0" expanded="false" />
-            <element signature="n#!!block;n#collectZero#0" expanded="false" />
-            <element signature="n#!!block;n#collectOne#0" expanded="false" />
-            <element signature="n#!!block;n#collectKey#0" expanded="false" />
-            <element signature="n#!!block;n#collectStar#0" expanded="false" />
-            <element signature="n#!!block;n#warningMessage#0" expanded="false" />
-            <element signature="n#!!block;n#createCollectables#0" expanded="false" />
             <element signature="n#!!block;n#checkIfPlayerReachedTheEndOfTheLevel#0" expanded="false" />
+            <marker date="1470826111514" expanded="false" signature="130:1472" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="2441:2801" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="2827:2997" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="13323:13460" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="13488:13821" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="13849:14825" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="14857:15061" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="15330:15542" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="15567:15982" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16121:16477" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16500:16847" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16884:16945" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16980:17038" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="17062:17211" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="17248:17400" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="17428:17637" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="18190:18274" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -386,28 +386,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/game.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="260">
-          <caret line="113" column="18" selection-start-line="113" selection-start-column="18" selection-end-line="113" selection-end-column="18" />
+        <state relative-caret-position="4">
+          <caret line="311" column="0" selection-start-line="311" selection-start-column="0" selection-end-line="311" selection-end-column="0" />
           <folding>
-            <element signature="n#!!block;n#preload#0" expanded="false" />
-            <element signature="n#!!block;n#tryEnterDoor#0" expanded="false" />
-            <element signature="n#!!block;n#trapsCreation#0" expanded="false" />
-            <element signature="n#!!block;n#heal#0" expanded="false" />
-            <element signature="n#!!block;n#addLiviesOnMap#0" expanded="false" />
-            <element signature="n#!!block;n#CreateBadDudes#0" expanded="false" />
-            <element signature="n#!!block;n#createJSCollectabe#0" expanded="false" />
-            <element signature="n#!!block;n#createHTMLCollectabe#0" expanded="false" />
-            <element signature="n#!!block;n#fireBullet#0" expanded="false" />
             <element signature="n#!!block;n#resetBullet#0" expanded="false" />
-            <element signature="n#!!block;n#createZero#0" expanded="false" />
-            <element signature="n#!!block;n#createOne#0" expanded="false" />
-            <element signature="n#!!block;n#collectZero#0" expanded="false" />
-            <element signature="n#!!block;n#collectOne#0" expanded="false" />
-            <element signature="n#!!block;n#collectKey#0" expanded="false" />
-            <element signature="n#!!block;n#collectStar#0" expanded="false" />
-            <element signature="n#!!block;n#warningMessage#0" expanded="false" />
-            <element signature="n#!!block;n#createCollectables#0" expanded="false" />
             <element signature="n#!!block;n#checkIfPlayerReachedTheEndOfTheLevel#0" expanded="false" />
+            <marker date="1470826111514" expanded="false" signature="130:1472" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="2441:2801" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="2827:2997" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="13323:13460" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="13488:13821" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="13849:14825" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="14857:15061" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="15330:15542" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="15567:15982" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16121:16477" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16500:16847" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16884:16945" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="16980:17038" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="17062:17211" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="17248:17400" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="17428:17637" ph="{...}" />
+            <marker date="1470826111514" expanded="false" signature="18190:18274" ph="{...}" />
           </folding>
         </state>
       </provider>
