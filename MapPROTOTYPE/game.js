@@ -24,6 +24,9 @@ function preload() {
     game.load.image('octo-cat', 'images/robo-octocat-small.png');
     //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
 
+    game.load.image('javascript','assets/js.png');
+    game.load.image('css','assets/css3.png');
+    game.load.image('html','assets/html5.png');
     game.load.image('doorImage', 'images/door.png');
 
 }
@@ -33,6 +36,7 @@ var player,
     spaceKey,
     lives = 3,
     healthBar = [],
+    js,
     allLivesOnMap,
     stars,
     key,
@@ -203,6 +207,7 @@ function create() {
 
     game.add.tween(boss).to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
+<<<<<<< HEAD
     
 
 
@@ -226,6 +231,8 @@ function create() {
 
 
 
+=======
+>>>>>>> 31d9c494aa0b38d3ec26431a48d76ca3ab88e511
     // for (i = 0; i < 2; i += 1) {
     //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
@@ -245,6 +252,7 @@ function create() {
         healthBar.push(oneUp);
     }
 
+<<<<<<< HEAD
 
     //  Finally some stars to collect
     stars = game.add.group();
@@ -256,13 +264,21 @@ function create() {
     for (var l = 0; l < 12; l++) {
         //  Create a star inside of the 'stars' group
         var star = stars.create(l * 30, 0, 'star');
+=======
+>>>>>>> 31d9c494aa0b38d3ec26431a48d76ca3ab88e511
 
-        //  Let gravity do its thing
-        star.body.gravity.y = 300;
+    //  Creating collectabels
+    js = game.add.group();
+    js.enableBody = true;
+    createJSCollectabe();
+    
+    css= game.add.group();
+    css.enableBody=true;
+    createCSSCollectabe();
 
-        //  This just gives each star a slightly random bounce value
-        star.body.bounce.y = 0.5 + Math.random() * 0.2;
-    }
+    html= game.add.group();
+    html.enableBody=true;
+    createHTMLCollectabe();
 
     // Add key
     key = game.add.sprite(2432, 64, 'key');
@@ -320,6 +336,7 @@ function update() {
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
+<<<<<<< HEAD
 
     game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
 
@@ -330,11 +347,24 @@ function update() {
 
 
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
+=======
+    game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
+
+    //game.physics.arcade.collide(player, trapsLayer);
+    game.physics.arcade.overlap(player, traps, takeDamage, null, this);
+
+    game.physics.arcade.overlap(player, js, collectStar, null, this);
+    game.physics.arcade.overlap(player, css, collectStar, null, this);
+    game.physics.arcade.overlap(player, html, collectStar, null, this);
+
+>>>>>>> 31d9c494aa0b38d3ec26431a48d76ca3ab88e511
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
     // Interaction between enemies and layer
     game.physics.arcade.collide(badDudes, layer);
-    game.physics.arcade.collide(stars, layer);
+    game.physics.arcade.collide(js, layer);
+    game.physics.arcade.collide(css, layer);
+    game.physics.arcade.collide(html, layer);
 
     // Interaction between player and boss
     game.physics.arcade.overlap(player, boss, takeDamage, null, this);
@@ -524,12 +554,35 @@ function CreateBadDudes() {
             game.add.tween(octoCat).to({x: endXPositon[y][x - 1]}, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
         }
     }
-    //>>>>>>> .theirs
+  
 }
-//<<<<<<< .mine
-//=======
 
-//>>>>>>> .theirs
+function createJSCollectabe() {
+    var jsXPosition = [520];
+    var jsYPosition = [128];
+    for (var i = 0; i < jsXPosition.length; i++) {
+
+        var jsColectable = js.create(jsXPosition[i],jsYPosition[i], 'javascript');
+       
+    }
+}
+function createCSSCollectabe() {
+    var cssXPosition = [542];
+    var cssYPosition = [128];
+    for (var i = 0; i < cssXPosition.length; i++) {
+
+        var cssColectable = css.create(cssXPosition[i],cssYPosition[i], 'css');
+       
+    }
+}function createHTMLCollectabe() {
+    var htmlXPosition = [574];
+    var htmlYPosition = [128];
+    for (var i = 0; i < htmlXPosition.length; i++) {
+
+        var htmlColectable = html.create(htmlXPosition[i],htmlYPosition[i], 'html');
+       
+    }
+}
 
 
 function fireBullet() {
