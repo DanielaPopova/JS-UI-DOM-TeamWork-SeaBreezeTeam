@@ -499,21 +499,21 @@ function CreateBadDudes() {
     //                    y   | x
 
     var startPosition = [[160, 650, 1300],
-        [416, 1472, 1408, 192],
-        [672, 128, 896],
-        [992, 672, 1568],
-        [1248, 672, 1376],
-        [1504, 992, 928],
-        [2496, 704],
-        [2816, 1312]];
+                         [416, 1472, 1408, 192],
+                         [672, 128, 896],
+                         [992, 672, 1568],
+                         [1248, 672, 1376],
+                         [1504, 992, 928],
+                         [2496, 704],
+                         [2816, 1312]];
     var endXPositon = [[1000, 1664],
-        [1984, 960, 576],
-        [384, 1344],
-        [224, 1792],
-        [1056, 1760],
-        [1248, 640],
-        [960],
-        [1824]];
+                       [1984, 960, 576],
+                       [384, 1344],
+                       [224, 1792],
+                       [1056, 1760],
+                       [1248, 640],
+                       [960],
+                       [1824]];
     for (var y = 0; y < startPosition.length; y++) {
         for (var x = 1; x < startPosition[y].length; x++) {
             var octoCat = badDudes.create(startPosition[y][x], startPosition[y][0], 'octo-cat');
@@ -528,8 +528,8 @@ function CreateBadDudes() {
 }
 
 function createJSCollectabe() {
-    var jsXPosition = [16, 74, 24, 42, 40, 51,  1, 98];
-    var jsYPosition = [ 3, 13, 13, 26, 39, 49, 65, 51];
+    var jsXPosition = [16, 74, 24, 42, 40, 51,  1, 98, 35, 56, 53, 49, 47, 43, 74, 74, 25, 29, 31, 43, 13, 15, 15, 19, 27, 60, 35, 31,  8, 75, 80, 98, 98];
+    var jsYPosition = [ 3, 13, 13, 26, 39, 49, 65, 51,  4,  4, 12, 12, 12, 12, 16, 23, 13, 18, 18, 17, 28, 28, 38, 38, 35, 40, 45, 45, 44, 76, 75, 57, 63];
     for (var i = 0; i < jsXPosition.length; i++) {
 
         var jsColectable = js.create(jsXPosition[i]*32,jsYPosition[i]*32, 'javascript');
@@ -537,8 +537,8 @@ function createJSCollectabe() {
     }
 }
 function createCSSCollectabe() {
-    var cssXPosition = [36, 30, 14, 74, 28, 60,  8, 76, 98];
-    var cssYPosition = [ 3, 17, 27, 22, 35, 39, 43, 75, 56];
+    var cssXPosition = [36, 30, 14, 74, 28, 60,  8, 76, 98, 15, 58, 52, 50, 46, 44, 74, 24, 74, 25, 42, 44, 42, 16, 18, 40, 34, 32, 81, 98, 98];
+    var cssYPosition = [ 3, 17, 27, 22, 35, 39, 43, 75, 56,  4,  4, 11, 11, 11, 11, 12, 12, 17, 12, 18, 18, 27, 37, 37, 38, 44, 44, 74, 52, 62];
     for (var i = 0; i < cssXPosition.length; i++) {
 
         var cssColectable = css.create(cssXPosition[i]*32, cssYPosition[i]*32, 'css');
@@ -546,8 +546,8 @@ function createCSSCollectabe() {
     }
 }
 function createHTMLCollectabe() {
-    var htmlXPosition = [57, 51, 74, 62, 17, 33,  4, 82, 98];
-    var htmlYPosition = [ 3, 10, 18, 17, 36, 43, 60, 73, 61];
+    var htmlXPosition = [57, 51, 74, 62, 17, 33,  4, 82, 98, 17, 37, 45, 74, 24, 74, 25, 28, 32, 41, 45, 42, 12, 16, 29, 40, 60,  8, 74, 98, 98];
+    var htmlYPosition = [ 3, 10, 18, 17, 36, 43, 60, 73, 61,  4,  4, 10, 11, 11, 24, 11, 19, 19, 19, 19, 28, 29, 29, 35, 37, 41, 45, 77, 53, 58];
     for (var i = 0; i < htmlXPosition.length; i++) {
 
         var htmlColectable = html.create(htmlXPosition[i]*32,htmlYPosition[i]*32, 'html');
