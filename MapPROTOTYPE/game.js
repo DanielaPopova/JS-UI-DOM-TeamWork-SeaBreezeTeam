@@ -205,7 +205,6 @@ function create() {
 
     
 
-<<<<<<< .mine
 
 
 
@@ -225,7 +224,8 @@ function create() {
 
 
 
-=======
+
+
     // for (i = 0; i < 2; i += 1) {
     //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
 
@@ -245,7 +245,7 @@ function create() {
         healthBar.push(oneUp);
     }
 
->>>>>>> .theirs
+
     //  Finally some stars to collect
     stars = game.add.group();
 
@@ -320,15 +320,15 @@ function update() {
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
-<<<<<<< .mine
+
     game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
 
 
-=======
+
     //game.physics.arcade.collide(player, trapsLayer);
     game.physics.arcade.overlap(player, traps, takeDamage, null, this);
 
->>>>>>> .theirs
+
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
