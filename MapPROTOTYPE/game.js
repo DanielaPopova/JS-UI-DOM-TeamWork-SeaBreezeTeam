@@ -6,7 +6,7 @@ function preload() {
     game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
     game.load.image('life', 'assets/life.png');
     game.load.image('key', 'assets/key.png');
-    // game.load.image('cave', 'images/cave.png');   
+    // game.load.image('cave', 'images/cave.png');
 
     game.load.image('bossBullets', 'assets/undefined3.png');
     game.load.image('boss', 'assets/boss.png');
@@ -35,7 +35,7 @@ var player,
     healthBar = [],
     stars,
     key,
-    isKeyTaken = false,
+    isKeyTaken = true,
     score = 0,
     scoreText,
     stateText,
@@ -76,13 +76,14 @@ function createDoor() {
     // door.physicsBodyType = Phaser.Physics.ARCADE;
 }
 function tryEnterDoor() {
+    if (spaceKey.isDown && !isKeyTaken) {
+        warningMessage();
+    }
     if (!isKeyTaken || !spaceKey.isDown) {
-        // door.enableBody = true;
-        // door.physicsEnable = true;
         player.x -= 10;
     } else if (isKeyTaken && spaceKey.isDown) {
         // this will teleport Pesho to the other side of the door
-        player.x += 30;
+        player.x += 100;
 
         // this will make the door disappear
         // door.y += 10;
@@ -104,7 +105,7 @@ function create() {
     layer = map.createLayer(0);
 
     layer.resizeWorld();
-    // door 
+    // door
     doorObjectFromTileMap = map.objects["obj"][0];
     winzone = map.objects['obj'][1];
 
@@ -177,7 +178,7 @@ function create() {
     healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
     healthText.fixedToCamera = true;
 
-    //Add health bar    
+    //Add health bar
     for (var i = 0; i < 3; i += 1) {
         var oneUp;
         oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
@@ -209,7 +210,7 @@ function create() {
 
     // Add key
     key = game.add.sprite(2432, 64, 'key');
-    //key = game.add.sprite(400, 100, 'key');    
+    //key = game.add.sprite(400, 100, 'key');
 
     game.physics.arcade.enable(key);
     key.enableBody = true;
@@ -259,9 +260,9 @@ function create() {
 }
 
 function update() {
-    // Interaction between player and surroundings
-    //game.physics.arcade.collide(player,door);
+    // Door - key Handler
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
+    // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
     //game.physics.arcade.collide(player, doorLayer);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
@@ -341,13 +342,6 @@ function update() {
         if (cursors.up.isDown && player.body.onFloor()) {
             player.body.velocity.y = -300;
             console.log(winzone);
-        }
-
-        // Handling the key
-        if (spaceKey.isDown && !isKeyTaken) {
-            warningMessage();
-        } else if (spaceKey.isDown && isKeyTaken) {
-            openDoor();
         }
 
         // Interaction between player and enemies
@@ -561,7 +555,8 @@ function restart() {
     player.x = 32;
     player.y = 32;
     player.revive();
-
+    boss.revive();
+    game.paused = false;
     // lifes reset
     lives = 3;
     updateLife();
@@ -584,9 +579,9 @@ function checkIfPlayerReachedTheEndOfTheLevel() {
     if (player.x === winzone.x && player.y === winzone.y) {
         stateText.text = " YOU WIN  \n Click to restart";
         stateText.visible = true;
-        // TODO: undefined still show up after the boss is killed
-
         boss.kill();
+        bullet.kill();
+        game.paused = true;
         game.input.onTap.addOnce(restart, this);
     }
 }
