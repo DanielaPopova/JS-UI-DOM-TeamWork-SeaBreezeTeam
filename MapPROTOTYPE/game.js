@@ -38,7 +38,6 @@ var player,
     healthBar = [],
     js,
     allLivesOnMap,
-    stars,
     key,
     isKeyTaken = true,
     score = 0,
@@ -102,20 +101,9 @@ function trapsCreation() {
 
     trapsLayer.forEach(function (currentTrap) {
         traps.create(currentTrap.x, currentTrap.y);
-    })
+    });
 }
-function trapsHandler() {
-    // player.kill();
-    // hits = 0;
 
-    stateText.text = " GAME OVER \n Click to restart";
-    stateText.visible = true;
-    game.paused = true;
-    player.kill();
-    game.input.onTap.addOnce(create, this);
-    game.paused = false;
-    // the "click to restart" handler
-}
 function newGame() {
 
 }
@@ -125,7 +113,7 @@ function create() {
 
     game.stage.backgroundColor = '#787878';
     map = game.add.tilemap('level1');
-    // map images
+    //Map images
     map.addTilesetImage('tech', 'sci-fi');
     map.addTilesetImage('traps', 'trapsSprite');
     map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
@@ -135,36 +123,30 @@ function create() {
     layer = map.createLayer(0);
     layer.resizeWorld();
 
-    // door
+    //Door
     doorObjectFromTileMap = map.objects["obj"][0];
     winzone = map.objects['obj'][1];
     trapsLayer = map.objects['TrapsObj'];
 
     trapsCreation();
 
-
     createDoor();
-    // Adding player
-    //<<<<<<< .mine
-    //player = game.add.sprite(game.world.width - 500, game.world.height - 200, 'player');
 
-    //=======
-
-    player = game.add.sprite(32, 32, 'player');
-    //>>>>>>> .theirs
+    //Add player
+    player = game.add.sprite(2816, 3040, 'player');
 
     game.physics.arcade.enable(player);
     player.body.gravity.y = 350;
     player.body.collideWorldBounds = true;
 
-    //  Add animations to player
+    //Add animations to player
     player.animations.add('left', [4, 3, 2, 1, 0], 14, true);
     player.animations.add('right', [6, 7, 8, 9, 10], 14, true);
     player.animations.add('jump_right', [11], 14, true);
     player.animations.add('jump_left', [12], 14, true);
     player.animations.add('dead', [13], 14, true);
 
-    // moving
+    //Moving with player
     game.camera.follow(player);
 
     //Add lives
@@ -185,8 +167,7 @@ function create() {
         healthBar.push(oneUp);
     }
 
-    //adding bullets, ones and zeroes
-
+    //Adding bullets, ones and zeroes
     bullets = game.add.group();
     bullets.enableBody = true;
     bullets.physicsBodyType = Phaser.Physics.ARCADE;
@@ -211,36 +192,15 @@ function create() {
     boss = game.add.sprite(2960, 3050, 'boss');
     game.physics.arcade.enable(boss);
 
-    //  Create an animation called 'move'
+    //Create an animation called 'move'
     boss.animations.add('move');
 
-    //  Play the animation at 10fps on a loop
+    //Play the animation at 10fps on a loop
     boss.animations.play('move', 10, true);
 
     game.add.tween(boss).to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-    // for (i = 0; i < 2; i += 1) {
-    //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
-
-    // }
-    healthText = game.add.text(14, 40, 'Lives: ', {font: 'bold 24px Consolas', fill: '#FFF'});
-    healthText.fixedToCamera = true;
-
-    //Add health bar
-    for (var i = 0; i < 3; i += 1) {
-        var oneUp;
-        oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
-        oneUp.animations.add('full', [0]);
-        oneUp.animations.add('empty', [1]);
-        oneUp.fixedToCamera = true;
-        oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
-
-        healthBar.push(oneUp);
-    }
-
-
-
-    //  Creating collectabels
+    //Creating collectabels
     js = game.add.group();
     js.enableBody = true;
     createJSCollectabe();
@@ -253,14 +213,14 @@ function create() {
     html.enableBody = true;
     createHTMLCollectabe();
 
-    // Add key
+    //Add key
     key = game.add.sprite(2432, 64, 'key');
     //key = game.add.sprite(400, 100, 'key');
 
     game.physics.arcade.enable(key);
     key.enableBody = true;
 
-    // Add warning text for key
+    //Add warning text for key
     keyTextBar = game.add.graphics();
     keyTextBar.beginFill(0x173B0B);
     keyTextBar.drawRoundedRect(200, 100, 300, 50, 10);
@@ -269,7 +229,7 @@ function create() {
     keyTextBar.fixedToCamera = true;
     keyTextBar.visible = false;
 
-    // Add bar behind the key
+    //Add bar behind the key
     keyBar = game.add.graphics();
     keyBar.beginFill(0xFFFFFF);
     keyBar.drawCircle(990, 35, 50);
@@ -288,58 +248,49 @@ function create() {
     scoreText = game.add.text(14, 14, 'Score: 0', {font: 'bold 24px Consolas', fill: '#FFF'});
     scoreText.fixedToCamera = true;
 
-    // Add state text
+    //Add state text
     stateText = game.add.text(100, 100, ' ', {font: 'bold 24px Consolas', fill: '#FFF'});
     stateText.fixedToCamera = true;
     stateText.anchor.setTo(0.5, 0.5);
     stateText.visible = true;
 
-    // Enable keyboard
+    //Enable keyboard
     cursors = game.input.keyboard.createCursorKeys();
     spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-    //  create badDudes
 
+    //Create badDudes
     badDudes = game.add.group();
     CreateBadDudes();
 
 }
 
 function update() {
-    // Door - key Handler
+    //Door - key Handler
     game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
-    // Interaction between player and surroundings
+
+    //Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
-
     game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
-
-
-
-    //game.physics.arcade.collide(player, trapsLayer);
-    game.physics.arcade.overlap(player, traps, takeDamage, null, this);
-
-
-    game.physics.arcade.overlap(player, stars, collectStar, null, this);
-    game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
-
-    //game.physics.arcade.collide(player, trapsLayer);
-    game.physics.arcade.overlap(player, traps, trapsHandler, null, this);
-
-    game.physics.arcade.overlap(player, js, collectStar, null, this);
-    game.physics.arcade.overlap(player, css, collectStar, null, this);
-    game.physics.arcade.overlap(player, html, collectStar, null, this);
-
     game.physics.arcade.overlap(player, key, collectKey, null, this);
+    game.physics.arcade.overlap(player, js, collectItem, null, this);
+    game.physics.arcade.overlap(player, css, collectItem, null, this);
+    game.physics.arcade.overlap(player, html, collectItem, null, this);
 
-    // Interaction between enemies and layer
+
+    //game.physics.arcade.collide(player, trapsLayer);
+    game.physics.arcade.collide(player, traps, takeDamage, null, this);
+    //game.physics.arcade.overlap(player, traps, trapsHandler, null, this);
+
+    //Interaction between surroundings and layer
     game.physics.arcade.collide(badDudes, layer);
     game.physics.arcade.collide(js, layer);
     game.physics.arcade.collide(css, layer);
     game.physics.arcade.collide(html, layer);
 
-    // Interaction between player and boss
+    //Interaction between player and boss
     game.physics.arcade.overlap(player, boss, takeDamage, null, this);
 
-    // Interaction between player and ones/zeros
+    //Interaction between player and ones/zeros
     game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
     //    if(bulletTime < game.time.now){
     //        killBulllet();
@@ -359,7 +310,7 @@ function update() {
         fireBullet();
     }
 
-    // Player behaviour
+    //Player behaviour
     if (player.alive) {
         checkIfPlayerReachedTheEndOfTheLevel();
 
@@ -378,11 +329,11 @@ function update() {
 
                 player.animations.play('jump_left');
                 player.body.velocity.x = -150;
-
             }
         }
         else if (cursors.right.isDown) {
-            //  Move to the right
+
+            //Move to the right
             if (player.body.onFloor()) {
 
                 player.animations.play('right');
@@ -392,23 +343,22 @@ function update() {
 
                 player.animations.play('jump_right');
                 player.body.velocity.x = 150;
-
             }
 
         } else {
-            // Stand still
+            //Stand still
             player.animations.stop();
 
             player.frame = 5;
         }
 
-        // Jump
+        //Jump
         if (cursors.up.isDown && player.body.onFloor()) {
             player.body.velocity.y = -300;
             //console.log(winzone);
         }
 
-        // Interaction between player and enemies
+        //Interaction between player and enemies
         if (game.physics.arcade.overlap(player, badDudes, collisionHandler, processHandler, this) ||
             game.physics.arcade.overlap(player, bullets, collisionHandler, null, this)) {
             countOverlap += 1;
@@ -419,9 +369,11 @@ function update() {
             if (countOverlap === 1) {
 
                 hits += 1;
-                console.log(hits);
+                console.log('hits ' + hits);
+                
                 if (hits <= 3) {
                     lives--;
+                    console.log("lives when hit " + lives);
                     updateLife();
                 }
             }
@@ -430,7 +382,6 @@ function update() {
             player.enableBody = true;
             countOverlap = 0;
         }
-
     }
 
 }
@@ -450,8 +401,8 @@ function processHandler(sprite, group) {
 
 function takeDamage() {
 
-    player.kill();
-    restart();
+    lives = 0;
+    updateLife();
 }
 
 function updateLife() {
@@ -467,20 +418,20 @@ function updateLife() {
 
         stateText.text = " GAME OVER \n Click to restart";
         stateText.visible = true;
-
-        // the "click to restart" handler
+        console.log('click to restart');
+        //the "click to restart" handler
         game.input.onTap.addOnce(restart, this);
     }
 }
 
-function heal(player, life) {
-    life.kill();
-
+function heal(player) {
+    allLivesOnMap.getFirstAlive().kill();
     if (lives < 3) {
         lives += 1;
+    console.log("when heal lives " + lives);
+
         hits -= 1;
         updateLife();
-        console.log(lives);
     }
 }
 
@@ -643,12 +594,12 @@ function collectKey() {
     key.fixedToCamera = true;
 }
 
-function collectStar(player, star) {
+function collectItem(player, item) {
 
-    // Removes the star from the screen
-    star.kill();
+    //Removes the item
+    item.kill();
 
-    //  Add and update the score
+    //Add and update the score
     score += 10;
     scoreText.text = 'Score: ' + score;
 }
@@ -663,28 +614,32 @@ function warningMessage() {
 }
 
 function restart() {
-    // revives the player
+
+    //Revives the player
     player.revive();
-    lives = 3;
     player.x = 32;
     player.y = 32;
     boss.revive();
     game.paused = false;
-    // lifes reset
+
+    //Lives reset
+    lives = 3;
+    console.log('lives ' + lives);
+    hits = 0;
     addLiviesOnMap();
     updateLife();
 
-    // key reset
+    //Key reset
     keyBar.visible = false;
     key.fixedToCamera = false;
     key.x = 2432;
     key.y = 64;
     isKeyTaken = false;
 
-    // hides the text
+    //Hides the text
     stateText.visible = false;
 
-    // reset the score
+    //Reset the score
     score = 0;
     scoreText.text = 'Score: ' + score;
     createCollectables();
@@ -705,3 +660,15 @@ function checkIfPlayerReachedTheEndOfTheLevel() {
         game.input.onTap.addOnce(restart, this);
     }
 }
+// function trapsHandler() {
+//     // player.kill();
+//     // hits = 0;
+
+//     stateText.text = " GAME OVER \n Click to restart";
+//     stateText.visible = true;
+//     game.paused = true;
+//     player.kill();
+//     game.input.onTap.addOnce(create, this);
+//     game.paused = false;
+//     // the "click to restart" handler
+// }
