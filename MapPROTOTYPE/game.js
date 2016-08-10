@@ -34,6 +34,7 @@ var player,
     spaceKey,
     lives = 3,
     healthBar = [],
+    allLivesOnMap,
     stars,
     key,
     isKeyTaken = false,
@@ -95,7 +96,7 @@ function create() {
 
     //=======
 
-    player = game.add.sprite(4000, 3500, 'player');
+    player = game.add.sprite(32, 32, 'player');
     //>>>>>>> .theirs
 
     game.physics.arcade.enable(player);
@@ -111,6 +112,24 @@ function create() {
 
     // moving
     game.camera.follow(player);
+
+    //Add lives
+    addLiviesOnMap();    
+
+    //Add health bar and health text   
+    healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
+    healthText.fixedToCamera = true;
+    
+    for (var i = 0; i < 3; i += 1) {
+        var oneUp;
+        oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
+        oneUp.animations.add('full', [0]);
+        oneUp.animations.add('empty', [1]);
+        oneUp.fixedToCamera = true;
+        oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
+
+        healthBar.push(oneUp);
+    }
 
     //adding bullets, ones and zeroes
 
@@ -146,28 +165,7 @@ function create() {
 
     game.add.tween(boss).to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
-    //Add lifes
-    // hearts = game.add.group();
-    // hearts.enableBody = true;
-
-    // for (i = 0; i < 2; i += 1) {
-    //     var heart = hearts.create(((Math.random() * (game.world.width / 2) | 0) + game.world.width - 400), game.world.height - 100, 'health');
-
-    // }
-    healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
-    healthText.fixedToCamera = true;
-
-    //Add health bar    
-    for (var i = 0; i < 3; i += 1) {
-        var oneUp;
-        oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
-        oneUp.animations.add('full', [0]);
-        oneUp.animations.add('empty', [1]);
-        oneUp.fixedToCamera = true;
-        oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
-
-        healthBar.push(oneUp);
-    }
+    
 
     //  Finally some stars to collect
     stars = game.add.group();
@@ -241,6 +239,7 @@ function create() {
 function update() {
     // Interaction between player and surroundings
     game.physics.arcade.collide(player, layer);
+    game.physics.arcade.overlap(player, allLivesOnMap, heal, null, this);
     game.physics.arcade.overlap(player, stars, collectStar, null, this);
     game.physics.arcade.overlap(player, key, collectKey, null, this);
 
@@ -317,7 +316,7 @@ function update() {
         // Jump
         if (cursors.up.isDown && player.body.onFloor()) {
             player.body.velocity.y = -300;
-            console.log(winzone);
+            //console.log(winzone);
         }
 
         // Handling the key
@@ -338,11 +337,11 @@ function update() {
             if (countOverlap === 1) {
 
                 hits += 1;
-
+                console.log(hits);
                 if (hits <= 3) {
                     lives--;
                     updateLife();
-                }
+                } 
             }
         }
         else {
@@ -390,6 +389,28 @@ function updateLife() {
         // the "click to restart" handler
         game.input.onTap.addOnce(restart, this);
     }
+}
+
+function heal(player, life) {
+    life.kill();    
+    
+    if (lives < 3) {
+        lives += 1;
+        hits -= 1;                
+        updateLife();
+        console.log(lives);
+    }    
+}
+
+function addLiviesOnMap() {
+    var livesCoordinatesX = [2080, 3104, 1216, 64, 2016],
+        livesCoordinatesY = [1024, 1152, 1952, 2528, 2240];
+
+    allLivesOnMap = game.add.group();
+    allLivesOnMap.enableBody = true;
+    for (var m = 0; m < 5; m += 1) {
+        var life = allLivesOnMap.create(livesCoordinatesX[m], livesCoordinatesY[m], 'life');
+    }   
 }
 
 function CreateBadDudes() {
@@ -540,6 +561,7 @@ function restart() {
     player.revive();
 
     // lifes reset
+    addLiviesOnMap();
     lives = 3;
     updateLife();
 
@@ -557,6 +579,7 @@ function restart() {
     score = 0;
     scoreText.text = 'Score: ' + score;
 }
+
 function checkIfPlayerReachedTheEndOfTheLevel() {
     if (player.x === winzone.x && player.y === winzone.y) {
         stateText.text = " YOU WIN  \n Click to restart";
