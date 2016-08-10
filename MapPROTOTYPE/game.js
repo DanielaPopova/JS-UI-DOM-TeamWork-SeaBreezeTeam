@@ -54,15 +54,18 @@ var player,
     trapsLayer,
     countOverlap = 0,
     hits = 0,
+    bla0 = 0,
     boss,
     bossSpeed = 2000,
     bullet,
     bullets,
-    bulletCount,
+    bulletCount = 0,
     bulletTime = 1000,
     firingTimer = 0,
     zeroes,
     ones,
+    zero, 
+    one,
     zeroCount = 1,
     oneCount = 1,
     takenZero = false,
@@ -167,7 +170,17 @@ function create() {
 
         healthBar.push(oneUp);
     }
+    
+    boss = game.add.sprite(2960, 3050, 'boss');
+    game.physics.arcade.enable(boss);
 
+    //Create an animation called 'move'
+    boss.animations.add('move');
+
+    //Play the animation at 10fps on a loop
+    boss.animations.play('move', 10, true);
+
+    startBounceTween();
     //Adding bullets, ones and zeroes
     bullets = game.add.group();
     bullets.enableBody = true;
@@ -178,8 +191,6 @@ function create() {
         b.name = 'bossBullets' + j;
         b.exists = false;
         b.visible = false;
-        b.checkWorldBounds = true;
-        b.events.onOutOfBounds.add(resetBullet, this);
     }
 
     zeroes = game.add.group();
@@ -189,17 +200,6 @@ function create() {
     ones = game.add.group();
     ones.enableBody = true;
     createOne();
-
-    boss = game.add.sprite(2960, 3050, 'boss');
-    game.physics.arcade.enable(boss);
-
-    //Create an animation called 'move'
-    boss.animations.add('move');
-
-    //Play the animation at 10fps on a loop
-    boss.animations.play('move', 10, true);
-
-    game.add.tween(boss).to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
     //Creating collectabels
     js = game.add.group();
@@ -298,12 +298,14 @@ function update() {
     //    }
 
     if (takenZero) {
+        startBounceTween();
         createZero();
     }
 
     game.physics.arcade.collide(player, ones, collectOne, null, this);
 
     if (takenOne) {
+        startBounceTween();
         createOne();
     }
 
@@ -383,6 +385,29 @@ function update() {
         }
     }
 
+}
+function startBounceTween(){
+    bounce=game.add.tween(boss);
+   
+    if(bla0){
+        bossSpeed = 200;
+        
+        bounce.to({y: 2820}, bossSpeed,Phaser.Easing.Linear.None, true, 0, 1000, true);
+    
+        bounce.onComplete.add(startBounceTween, this);
+        bla0 = 0;
+
+        console.log("if");
+    }
+    else{
+        bossSpeed = 2000;
+        bounce.to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
+       
+        bounce.onComplete.add(startBounceTween, this);
+        bla0 = 1;
+        
+        console.log("else");
+    }
 }
 
 function collisionHandler(sprite, group) {
@@ -520,36 +545,22 @@ function fireBullet() {
         if (bullet) {
             bullet.reset(boss.x - 150, boss.y + 50);
             bullet.body.velocity.x = -300;
-            //   bulletTime = game.time.now + 200;
         }
     }
 }
-
-function resetBullet(bullet) {
-
-    bullet.kill();
-
-}
-
-// function killBulllet()
-// {
-//     bullets.kill();
-// }
 
 function createZero() {
     if (zeroCount == 1) {
         zeroCount = 0;
     }
     for (var i = 0; i < 1; i++) {
-        //  Create a star inside of the 'stars' group
-        var zero = zeroes.create(i, i, 'zero');
+       
+        zero = zeroes.create(i, i, 'zero');
 
         zero.x = game.rnd.between(2200, 3010);
         zero.y = game.rnd.between(3000, 3100);
 
         takenZero = false;
-
-        // zero.visible = true;
     }
 }
 
@@ -558,15 +569,13 @@ function createOne() {
         oneCount = 0;
     }
     for (var i = 0; i < 1; i++) {
-        //  Create a star inside of the 'stars' group
-        var one = ones.create(i, i, 'one');
+    
+       one = ones.create(i, i, 'one');
 
         one.x = game.rnd.between(2200, 3010);
         one.y = game.rnd.between(3000, 3100);
 
         takenOne = false;
-
-        // zero.visible = true;
     }
 }
 
@@ -618,6 +627,8 @@ function restart() {
     player.x = 64;
     player.y = 128;
     boss.revive();
+    zero.revive();
+    one.revive();
     game.paused = false;
 
     //Lives reset
@@ -653,6 +664,8 @@ function checkIfPlayerReachedTheEndOfTheLevel() {
         stateText.visible = true;
         boss.kill();
         bullet.kill();
+        zero.kill();
+        one.kill();
         game.paused = true;
         game.input.onTap.addOnce(restart, this);
     }
