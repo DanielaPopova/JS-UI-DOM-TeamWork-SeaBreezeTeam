@@ -54,6 +54,7 @@ var player,
     trapsLayer,
     countOverlap = 0,
     hits = 0,
+    bla0 = 0,
     boss,
     bossSpeed = 2000,
     bullet,
@@ -392,10 +393,11 @@ function startBounceTween(){
     if(bla0){
         bossSpeed = 200;
         
-        bounce.to({y: 2820}, bossSpeed,Phaser.Easing.Linear.None, true, bla0, bla1000, true);
+        bounce.to({y: 2820}, bossSpeed,Phaser.Easing.Linear.None, true, 0, 1000, true);
     
         bounce.onComplete.add(startBounceTween, this);
-   
+        bla0 = 0;
+
         console.log("if");
     }
     else{
@@ -403,6 +405,7 @@ function startBounceTween(){
         bounce.to({y: 2820}, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
        
         bounce.onComplete.add(startBounceTween, this);
+        bla0 = 1;
         
         console.log("else");
     }
