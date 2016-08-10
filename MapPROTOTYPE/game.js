@@ -538,6 +538,8 @@ function restart() {
     player.x = 32;
     player.y = 32;
     player.revive();
+    boss.revive();
+    game.paused = false;
 
     // lifes reset
     lives = 3;
@@ -561,9 +563,11 @@ function checkIfPlayerReachedTheEndOfTheLevel() {
     if (player.x === winzone.x && player.y === winzone.y) {
         stateText.text = " YOU WIN  \n Click to restart";
         stateText.visible = true;
-        // TODO: undefined still show up after the boss is killed
     
         boss.kill();
+        bullet.kill();
+        game.paused = true;
+        
         game.input.onTap.addOnce(restart, this);
     }
 }
