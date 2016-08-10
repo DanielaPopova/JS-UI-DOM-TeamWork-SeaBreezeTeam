@@ -299,14 +299,14 @@ function update() {
 
     if (takenZero) {
         startBounceTween();
-        createZero();
+       // createZero();
     }
 
     game.physics.arcade.collide(player, ones, collectOne, null, this);
 
     if (takenOne) {
         startBounceTween();
-        createOne();
+      //  createOne();
     }
 
     if (game.time.now > bulletTime) {
@@ -561,7 +561,21 @@ function createZero() {
         zero.y = game.rnd.between(3000, 3100);
 
         takenZero = false;
+        
+        game.time.events.add(Phaser.Timer.SECOND * 3, zeroHide, this);
+
     }
+}
+
+function zeroHide() {
+    game.add.tween(zero).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+    createZero();
+}
+
+function collectZero(player, zero) {
+    zeroCount = 1;
+    zero.kill();
+    takenZero = true;
 }
 
 function createOne() {
@@ -570,19 +584,21 @@ function createOne() {
     }
     for (var i = 0; i < 1; i++) {
     
-       one = ones.create(i, i, 'one');
+        one = ones.create(i, i, 'one');
 
         one.x = game.rnd.between(2200, 3010);
         one.y = game.rnd.between(3000, 3100);
 
         takenOne = false;
+        
+        game.time.events.add(Phaser.Timer.SECOND * 3, oneHide, this);
+
     }
 }
 
-function collectZero(player, zero) {
-    zeroCount = 1;
-    zero.kill();
-    takenZero = true;
+function oneHide() {
+    game.add.tween(one).to( { alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+    createOne();
 }
 
 function collectOne(player, one) {
