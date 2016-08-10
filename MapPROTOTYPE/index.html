@@ -1,14 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <link rel="stylesheet" type="text/css" href="Styles/style.css">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="Styles/style.css">
+    <script src="jquery-3.1.0.min.js"></script>
 </head>
+
 <body>
-
-<script src="phaser.js"></script>
-<script src="game.js"></script>
-
+    <div id="logo"><img src="images/Logo.png" alt=""></div>
+    <div id="gameplay"><img src="images/gameplay.png" alt=""></div>
+    <div id="wrapper">
+        <ul>
+            <li>
+                <a href="game.html"><img src="images/play.png" alt=""></a>
+            </li>
+            <li>
+                <img id="howto-button" src="images/howtoplay.png" alt="">
+            </li>
+            <li>
+                <img id="au-button" src="images/aboutus.png" alt="">
+            </li>
+        </ul>
+    </div>
+    <div id="game-rules">
+        <p>Mission: Razhodka s lodka</p>
+    </div>
+    <div id="about-us">
+        <p>This awesome game is created by:</p>
+        <ul>
+            <li>
+                <p>Stoqn</p>
+            </li>
+            <li>
+                <p>Daniela</p>
+            </li>
+            <li>
+                <p>Viktoriq</p>
+            </li>
+            <li>
+                <p>Martin</p>
+            </li>
+            <li>
+                <p>Emil</p>
+            </li>
+            
+        </ul>
+    </div>
+<script>
+    $('#au-button').click(function(){
+        $('#game-rules').hide();
+        $('#gameplay').hide();
+        $('#about-us').slideDown(1000);
+        
+    });
+    
+    $('#howto-button').click(function(){
+        $('#about-us').hide();
+        $('#gameplay').hide();
+        $('#game-rules').slideDown();
+    });
+</script>
 </body>
+
 </html>
