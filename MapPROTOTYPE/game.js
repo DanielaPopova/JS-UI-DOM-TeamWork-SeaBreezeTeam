@@ -9,7 +9,7 @@ window.onload = function () {
         game.load.image('key', 'assets/key.png');
         // game.load.image('cave', 'images/cave.png');
 
-        game.load.image('bossBullets', 'assets/undefined3.png');
+        game.load.image('bossBullets', 'assets/undefined.png');
         game.load.image('boss', 'assets/boss.png');
         game.load.image('zero', 'assets/zero.png');
         game.load.image('one', 'assets/one.png');
@@ -57,7 +57,7 @@ window.onload = function () {
         hits = 0,
         bla0 = 0,
         boss,
-        bossSpeed = 100,
+        bossSpeed = 400,
         bossMove,
         bullet,
         bullets,
@@ -630,7 +630,7 @@ window.onload = function () {
         player.revive();
         player.x = 64;
         player.y = 128;
-        bossSpeed = 100;
+        bossSpeed = 400;
         boss.revive();
         zero.revive();
         one.revive();
