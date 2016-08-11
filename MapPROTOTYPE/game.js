@@ -3,30 +3,24 @@ window.onload = function () {
 
     function preload() {
 
+        game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('star', 'sprites/star.png');
         game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
         game.load.image('life', 'assets/life.png');
         game.load.image('key', 'assets/key.png');
-
         game.load.image('bossBullets', 'assets/undefined.png');
         game.load.image('boss', 'assets/boss.png');
         game.load.image('zero', 'assets/zero.png');
         game.load.image('one', 'assets/one.png');
-
         game.load.spritesheet('player', 'assets/player.png', 49, 63);
-        // loading map resoruces
         game.load.image('background', 'images/bg.png');
-        game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
         game.load.image('trapsSprite', 'images/TrapsSprite.png');
         game.load.image('octo-cat', 'images/robo-octocat-small.png');
-        //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
-
         game.load.image('javascript', 'assets/js.png');
         game.load.image('css', 'assets/css3.png');
         game.load.image('html', 'assets/html5.png');
         game.load.image('doorImage', 'images/door.png');
-
     }
 
     var player,
@@ -296,26 +290,23 @@ window.onload = function () {
         }
         
         if(bossSpeed <= 0){
-        bossSpeed = 400;
-    }
-    if(bossSpeed >= 3000){
-        bossSpeed = 2600;
+            bossSpeed = 400;
+        }
+        if(bossSpeed >= 3000){
+            bossSpeed = 2600;
     }    
 
          if (takenZero) {      
-          bossSpeed -= 300;
-          console.log('speedminus ' + bossSpeed);
+            bossSpeed -= 300;
            
-          bossMove.updateTweenData('duration', bossSpeed); 
+            bossMove.updateTweenData('duration', bossSpeed); 
           
-          takenZero = false;
-        
+            takenZero = false; 
     } else if (takenOne) {        
           bossSpeed += 300;
-          
-          console.log('speedplus ' + bossSpeed); 
-              
+            
           bossMove.updateTweenData('duration', bossSpeed); 
+          
           takenOne= false;  
     }
 
@@ -573,7 +564,6 @@ window.onload = function () {
             takenZero = false;
 
             game.time.events.add(Phaser.Timer.SECOND * 3, zeroHide, this);
-
         }
     }
 
@@ -603,7 +593,6 @@ window.onload = function () {
             takenOne = false;
 
             game.time.events.add(Phaser.Timer.SECOND * 3, oneHide, this);
-
         }
     }
 
