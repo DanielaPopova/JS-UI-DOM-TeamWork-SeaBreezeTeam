@@ -95,10 +95,10 @@ window.onload = function () {
         } else if (isKeyTaken && spaceKey.isDown) {
             // this will teleport Pesho to the other side of the door
             player.x += 100;
-
             // this will make the door disappear
             // door.y += 10;
         }
+
     }
     function trapsCreation() {
         traps = game.add.group();
@@ -265,7 +265,7 @@ window.onload = function () {
 
     }   
 
-    function update() {
+function update() {
         //Door - key Handler
         game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
 
@@ -301,13 +301,14 @@ window.onload = function () {
         }
         
         if(bossSpeed <= 0){
-        bossSpeed = 400;
-    }
-    if(bossSpeed >= 3000){
-        bossSpeed = 2600;
-    }    
+            bossSpeed = 400;
+        }
 
-         if (takenZero) {      
+        if(bossSpeed >= 3000){
+            bossSpeed = 2600;
+        }    
+
+        if (takenZero) {      
           bossSpeed -= 300;
           console.log('speedminus ' + bossSpeed);
            
@@ -315,14 +316,14 @@ window.onload = function () {
           
           takenZero = false;
         
-    } else if (takenOne) {        
+        } else if (takenOne) {        
           bossSpeed += 300;
           
           console.log('speedplus ' + bossSpeed); 
               
           bossMove.updateTweenData('duration', bossSpeed); 
           takenOne= false;  
-    }
+        }
 
         //Player behaviour
         if (player.alive) {
@@ -344,8 +345,7 @@ window.onload = function () {
                     player.animations.play('jump_left');
                     player.body.velocity.x = -150;
                 }
-            }
-            else if (cursors.right.isDown) {
+            } else if (cursors.right.isDown) {
 
                 //Move to the right
                 if (player.body.onFloor()) {
@@ -414,8 +414,8 @@ window.onload = function () {
     function takeDamage() {
 
         lives = 0;
-        allLivesOnMap.callAll('kill');
         updateLife();
+        allLivesOnMap.callAll('kill');        
     }
 
     function updateLife() {
@@ -426,14 +426,15 @@ window.onload = function () {
         }
 
         if (lives === 0) {
+
             player.kill();
             hits = 0;
             
             stateText.visible = true;
             stateTextBar.visible = true;
-            game.paused = true;
-            //the "click to restart" handler
+            //the "click to restart" handler            
             game.input.onTap.addOnce(restart, this);
+
         }
     }
 
@@ -470,7 +471,7 @@ window.onload = function () {
         textBar.visible = false;
 
         return textBar;
-    }
+}
 
     function createText(positionX, positionY, textString, width, height) {
 
@@ -659,17 +660,20 @@ window.onload = function () {
         player.revive();
         player.x = 64;
         player.y = 128;
+
+        //Revives the boss
         bossSpeed = 400;
         boss.revive();
         zero.revive();
         one.revive();
-        game.paused = false;
 
         //Lives reset
         lives = 3;
         hits = 0;
         addLiviesOnMap();
         updateLife();
+
+        game.paused = false;
 
         //Key reset
         keyBar.visible = false;
@@ -710,6 +714,8 @@ window.onload = function () {
             game.input.onTap.addOnce(restart, this);
         }
     }
+
+}
     // function trapsHandler() {
     //     // player.kill();
     //     // hits = 0;
@@ -723,4 +729,5 @@ window.onload = function () {
     //     // the "click to restart" handler
     // }
 
-}
+
+
