@@ -69,50 +69,18 @@ window.onload = function () {
         doorLayer,
         traps;
 
-    function createDoor() {
-        door = game.add.group();
-        door.enableBody = true;
-
-        door.create(doorObjectFromTileMap.x, doorObjectFromTileMap.y, "doorImage");
-    }
-    function tryEnterDoor() {
-        if (spaceKey.isDown && !isKeyTaken) {
-            warningMessage();
-        }
-        if (!isKeyTaken || !spaceKey.isDown) {
-            player.x -= 10;
-        } else if (isKeyTaken && spaceKey.isDown) {
-            // this will teleport Pesho to the other side of the door
-            player.x += 100;
-            // this will make the door disappear
-            // door.y += 10;
-        }
-
-    }
-    function trapsCreation() {
-        traps = game.add.group();
-        traps.enableBody = true;
-
-        trapsLayer.forEach(function (currentTrap) {
-            traps.create(currentTrap.x, currentTrap.y);
-        });
-    }
-
-    function newGame() {
-
-    }
-
     function create() {
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         game.stage.backgroundColor = '#787878';
         map = game.add.tilemap('level1');
+
         //Map images
         map.addTilesetImage('tech', 'sci-fi');
         map.addTilesetImage('traps', 'trapsSprite');
         map.setCollisionByExclusion([13, 14, 15, 16, 46, 47, 48, 49, 50, 51]);
-        //.setCollision([1,2],true,'level1');
+        
         bg = game.add.tileSprite(0, 0, 1024, 500, 'background');
         bg.fixedToCamera = true;
         layer = map.createLayer(0);
@@ -144,30 +112,12 @@ window.onload = function () {
         //Moving with player
         game.camera.follow(player);
 
-        //Add lives
-        allLivesOnMap = game.add.group();
-        addLiviesOnMap();
-
-        //Add health bar and health text   
-        healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
-        healthText.fixedToCamera = true;
-
-        for (var i = 0; i < 3; i += 1) {
-            var oneUp;
-            oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
-            oneUp.animations.add('full', [0]);
-            oneUp.animations.add('empty', [1]);
-            oneUp.fixedToCamera = true;
-            oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
-
-            healthBar.push(oneUp);
-        }
-
+        //Add boss
         boss = game.add.sprite(2960, 3050, 'boss');
         game.physics.arcade.enable(boss);
 
-    bossMove = game.add.tween(boss);
-    bossMove.to({y: 2820}, bossSpeed,Phaser.Easing.Linear.None, true, 0, -1, true);
+        bossMove = game.add.tween(boss);
+        bossMove.to({y: 2820}, bossSpeed,Phaser.Easing.Linear.None, true, 0, -1, true);
     
         //Adding bullets, ones and zeroes
         bullets = game.add.group();
@@ -201,6 +151,25 @@ window.onload = function () {
         html = game.add.group();
         html.enableBody = true;
         createHTMLCollectabe();
+
+         //Add lives
+        allLivesOnMap = game.add.group();
+        addLiviesOnMap();
+
+        //Add health bar and health text   
+        healthText = game.add.text(14, 40, 'Lives: ', { font: 'bold 24px Consolas', fill: '#FFF' });
+        healthText.fixedToCamera = true;
+
+        for (var i = 0; i < 3; i += 1) {
+            var oneUp;
+            oneUp = game.add.sprite(100 + (40 * i), 35, 'healthBar');
+            oneUp.animations.add('full', [0]);
+            oneUp.animations.add('empty', [1]);
+            oneUp.fixedToCamera = true;
+            oneUp.animations.play(i < lives ? 'full' : 'empty', 0, false);
+
+            healthBar.push(oneUp);
+        }
 
         //Add key
         key = game.add.sprite(2432, 64, 'key');
@@ -237,8 +206,7 @@ window.onload = function () {
         scoreText = game.add.text(14, 14, 'Score: 0', { font: 'bold 24px Consolas', fill: '#FFF' });
         scoreText.fixedToCamera = true;
 
-        //Add state text and state text bar       
-
+        //Add state text and state text bar
         stateTextBar = createTextBar(300, 150);
         stateText = createText(50, 30, 'GAME OVER\n restart', 300, 150);
         stateText.addColor('#254D61', 9);
@@ -250,11 +218,12 @@ window.onload = function () {
 
         //Create badDudes
         badDudes = game.add.group();
-        CreateBadDudes();
+        createBadDudes();
 
     }   
 
-function update() {
+    function update() {
+
         //Door - key Handler
         game.physics.arcade.overlap(player, door, tryEnterDoor, null, this);
 
@@ -265,11 +234,9 @@ function update() {
         game.physics.arcade.overlap(player, js, collectItem, null, this);
         game.physics.arcade.overlap(player, css, collectItem, null, this);
         game.physics.arcade.overlap(player, html, collectItem, null, this);
-
-
-        //game.physics.arcade.collide(player, trapsLayer);
         game.physics.arcade.collide(player, traps, takeDamage, null, this);
-        //game.physics.arcade.overlap(player, traps, trapsHandler, null, this);
+        game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
+        game.physics.arcade.collide(player, ones, collectOne, null, this);
 
         //Interaction between surroundings and layer
         game.physics.arcade.collide(badDudes, layer);
@@ -278,13 +245,9 @@ function update() {
         game.physics.arcade.collide(html, layer);
 
         //Interaction between player and boss
-        game.physics.arcade.overlap(player, boss, takeDamage, null, this);
+        game.physics.arcade.overlap(player, boss, takeDamage, null, this);        
 
-        //Interaction between player and ones/zeros
-        game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
-
-        game.physics.arcade.collide(player, ones, collectOne, null, this);
-
+        //Boss behaviour
         if (game.time.now > bulletTime) {
             fireBullet();
         }
@@ -292,38 +255,33 @@ function update() {
         if(bossSpeed <= 0){
             bossSpeed = 400;
         }
-<<<<<<< HEAD
 
         if(bossSpeed >= 3000){
             bossSpeed = 2600;
         }    
 
         if (takenZero) {      
-          bossSpeed -= 300;
-          console.log('speedminus ' + bossSpeed);
-=======
+            bossSpeed -= 300;
+        } 
+
         if(bossSpeed >= 3000){
             bossSpeed = 2600;
-    }    
+        }    
 
-         if (takenZero) {      
-            bossSpeed -= 300;
->>>>>>> c73ac848840e384fddcab7092b7c42ec12e4f49a
-           
+        if (takenZero) {
+
+            bossSpeed -= 300;           
             bossMove.updateTweenData('duration', bossSpeed); 
-          
-<<<<<<< HEAD
-          takenZero = false;
-        
-        } else if (takenOne) {        
-=======
-            takenZero = false; 
-    } else if (takenOne) {        
->>>>>>> c73ac848840e384fddcab7092b7c42ec12e4f49a
-          bossSpeed += 300;
-            
-          bossMove.updateTweenData('duration', bossSpeed); 
-          
+            takenZero = false;
+
+        } else if (takenOne) {
+
+            takenZero = false;
+
+        } else if (takenOne) {
+
+          bossSpeed += 300;            
+          bossMove.updateTweenData('duration', bossSpeed);
           takenOne= false;  
         }
 
@@ -346,9 +304,9 @@ function update() {
 
                     player.animations.play('jump_left');
                     player.body.velocity.x = -150;
+
                 }
             } else if (cursors.right.isDown) {
-
                 //Move to the right
                 if (player.body.onFloor()) {
 
@@ -370,8 +328,7 @@ function update() {
 
             //Jump
             if (cursors.up.isDown && player.body.onFloor()) {
-                player.body.velocity.y = -300;
-                //console.log(winzone);
+                player.body.velocity.y = -300;                
             }
 
             //Interaction between player and enemies
@@ -450,6 +407,25 @@ function update() {
         }
     }
 
+    function fireBullet() {
+        bulletTime = game.time.now + 2000;
+
+        bulletCount += 1;
+
+        for (var i = 1; i < bulletCount; i += 1) {
+            bullet.kill();
+        }
+
+        if (game.time.now < bulletTime) {
+            bullet = bullets.getFirstExists(false);
+
+            if (bullet) {
+                bullet.reset(boss.x - 150, boss.y + 50);
+                bullet.body.velocity.x = -300;
+            }
+        }
+    }
+
     function addLiviesOnMap() {
         var livesCoordinatesX = [2080, 3104, 1216, 64, 2016],
             livesCoordinatesY = [1024, 1184, 1952, 2528, 2240];
@@ -460,7 +436,7 @@ function update() {
         }
     }
 
- function createTextBar(barWidth, barHeight) {
+    function createTextBar(barWidth, barHeight) {
 
         var textBar = game.add.graphics();
         textBar.beginFill(0xF9FAD2);
@@ -468,27 +444,26 @@ function update() {
         game.physics.arcade.enable(textBar);
         textBar.enableBody = true;
         textBar.alpha = 0.9;
-        textBar.fixedToCamera = true;
+        textBar.fixedToCamera = true;        
 
         textBar.visible = false;
 
         return textBar;
-}
+    }
 
     function createText(positionX, positionY, textString, width, height) {
 
         var text = game.add.text(positionX, positionY, textString, { font: 'bolder 40px Consolas', fill: '#11242C' });
         text.setShadow(2, -2, 'rgba(0,0,0,0.5)', 0);
         text.fixedToCamera = true;
-        text.setTextBounds(game.width / 2 - width / 2, game.height / 2 - height / 2, width, height);
+        text.setTextBounds(game.width / 2 - width / 2, game.height / 2 - height / 2, width, height);        
 
         text.visible = false;
 
         return text;
     }
 
-    function CreateBadDudes() {
-        //                    y   | x
+    function createBadDudes() {
 
         var startPosition = [[160, 640, 1300],
             [416, 1472, 1408, 192],
@@ -516,7 +491,6 @@ function update() {
                 game.add.tween(octoCat).to({ x: endXPositon[y][x - 1] }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
             }
         }
-
     }
 
     function createJSCollectabe() {
@@ -528,6 +502,7 @@ function update() {
 
         }
     }
+
     function createCSSCollectabe() {
         var cssXPosition = [36, 30, 14, 74, 28, 60, 8, 76, 98, 15, 58, 52, 50, 46, 44, 74, 24, 74, 25, 42, 44, 42, 16, 18, 40, 34, 32, 81, 98, 98];
         var cssYPosition = [3, 17, 27, 22, 35, 39, 43, 75, 56, 4, 4, 11, 11, 11, 11, 12, 12, 17, 12, 18, 18, 27, 37, 37, 38, 44, 44, 74, 52, 62];
@@ -537,6 +512,7 @@ function update() {
 
         }
     }
+
     function createHTMLCollectabe() {
         var htmlXPosition = [57, 51, 74, 62, 17, 33, 4, 82, 98, 17, 37, 45, 74, 24, 74, 25, 28, 32, 41, 45, 42, 12, 16, 29, 40, 60, 8, 74, 98, 98];
         var htmlYPosition = [3, 10, 18, 17, 36, 43, 60, 73, 61, 4, 4, 10, 11, 11, 24, 11, 19, 19, 19, 19, 28, 29, 29, 35, 37, 41, 45, 77, 53, 58];
@@ -545,26 +521,28 @@ function update() {
             var htmlColectable = html.create(htmlXPosition[i] * 32, htmlYPosition[i] * 32, 'html');
 
         }
-    }
+    } 
 
+     function createCollectables() {
+        createJSCollectabe();
+        createCSSCollectabe();
+        createHTMLCollectabe();
+    }  
 
-    function fireBullet() {
-        bulletTime = game.time.now + 2000;
+    function createDoor() {
+        door = game.add.group();
+        door.enableBody = true;
 
-        bulletCount += 1;
+        door.create(doorObjectFromTileMap.x, doorObjectFromTileMap.y, "doorImage");
+    } 
 
-        for (var i = 1; i < bulletCount; i += 1) {
-            bullet.kill();
-        }
+    function trapsCreation() {
+        traps = game.add.group();
+        traps.enableBody = true;
 
-        if (game.time.now < bulletTime) {
-            bullet = bullets.getFirstExists(false);
-
-            if (bullet) {
-                bullet.reset(boss.x - 150, boss.y + 50);
-                bullet.body.velocity.x = -300;
-            }
-        }
+        trapsLayer.forEach(function (currentTrap) {
+            traps.create(currentTrap.x, currentTrap.y);
+        });
     }
 
     function createZero() {
@@ -584,18 +562,6 @@ function update() {
         }
     }
 
-    function zeroHide() {
-        game.add.tween(zero).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-        zero.kill();
-        createZero();
-    }
-
-    function collectZero(player, zero) {
-        zeroCount = 1;
-        zero.kill();
-        takenZero = true;
-    }
-
     function createOne() {
         if (oneCount == 1) {
             oneCount = 0;
@@ -613,10 +579,22 @@ function update() {
         }
     }
 
+    function zeroHide() {
+        game.add.tween(zero).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+        zero.kill();
+        createZero();
+    }
+
     function oneHide() {
         game.add.tween(one).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
         one.kill();
         createOne();
+    }
+
+     function collectZero(player, zero) {
+        zeroCount = 1;
+        zero.kill();
+        takenZero = true;
     }
 
     function collectOne(player, one) {
@@ -652,6 +630,34 @@ function update() {
             keyText.visible = false;
             keyTextBar.visible = false;
         }, this);
+    }
+
+    function checkIfPlayerReachedTheEndOfTheLevel() {
+        if (player.x === winzone.x && player.y === winzone.y) {
+            stateText.text = " YOU WIN! \n restart";
+            stateText.visible = true;
+            stateTextBar.visible = true;
+            boss.kill();
+            bullet.kill();
+            zero.kill();
+            one.kill();
+            game.paused = true;
+            game.input.onTap.addOnce(restart, this);
+        }
+    }
+
+    function tryEnterDoor() {
+        if (spaceKey.isDown && !isKeyTaken) {
+            warningMessage();
+        }
+        if (!isKeyTaken || !spaceKey.isDown) {
+            player.x -= 10;
+        } else if (isKeyTaken && spaceKey.isDown) {
+            // this will teleport Pesho to the other side of the door
+            player.x += 100;
+            // this will make the door disappear
+            // door.y += 10;
+        }
     }
 
     function restart() {
@@ -696,38 +702,4 @@ function update() {
         createCollectables();
     }
 
-    function createCollectables() {
-        createJSCollectabe();
-        createCSSCollectabe();
-        createHTMLCollectabe();
-    }
-    function checkIfPlayerReachedTheEndOfTheLevel() {
-        if (player.x === winzone.x && player.y === winzone.y) {
-            stateText.text = " YOU WIN! \n restart";
-            stateText.visible = true;
-            stateTextBar.visible = true;
-            boss.kill();
-            bullet.kill();
-            zero.kill();
-            one.kill();
-            game.paused = true;
-            game.input.onTap.addOnce(restart, this);
-        }
-    }
-
 }
-    // function trapsHandler() {
-    //     // player.kill();
-    //     // hits = 0;
-
-    //     stateText.text = " GAME OVER \n Click to restart";
-    //     stateText.visible = true;
-    //     game.paused = true;
-    //     player.kill();
-    //     game.input.onTap.addOnce(create, this);
-    //     game.paused = false;
-    //     // the "click to restart" handler
-    // }
-
-
-
