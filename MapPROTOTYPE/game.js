@@ -7,7 +7,6 @@ window.onload = function () {
         game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
         game.load.image('life', 'assets/life.png');
         game.load.image('key', 'assets/key.png');
-        // game.load.image('cave', 'images/cave.png');
 
         game.load.image('bossBullets', 'assets/undefined.png');
         game.load.image('boss', 'assets/boss.png');
@@ -17,9 +16,7 @@ window.onload = function () {
         game.load.spritesheet('player', 'assets/player.png', 49, 63);
         // loading map resoruces
         game.load.image('background', 'images/bg.png');
-        //game.load.spritesheet('ninja', 'images/dude.png', 32, 48);
         game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
-        //game.load.image('tiles', 'images/tileMapDiagram1.png');
         game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
         game.load.image('trapsSprite', 'images/TrapsSprite.png');
         game.load.image('octo-cat', 'images/robo-octocat-small.png');
@@ -83,8 +80,6 @@ window.onload = function () {
         door.enableBody = true;
 
         door.create(doorObjectFromTileMap.x, doorObjectFromTileMap.y, "doorImage");
-        // map.createFromObjects("obj", 181, 'doorImage', 0, true, false, door);
-        // door.physicsBodyType = Phaser.Physics.ARCADE;
     }
     function tryEnterDoor() {
         if (spaceKey.isDown && !isKeyTaken) {
