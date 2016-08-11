@@ -57,7 +57,8 @@ window.onload = function () {
         hits = 0,
         bla0 = 0,
         boss,
-        bossSpeed = 2000,
+        bossSpeed = 100,
+        bossMove,
         bullet,
         bullets,
         bulletCount = 0,
@@ -175,13 +176,9 @@ window.onload = function () {
         boss = game.add.sprite(2960, 3050, 'boss');
         game.physics.arcade.enable(boss);
 
-        //Create an animation called 'move'
-        boss.animations.add('move');
-
-        //Play the animation at 10fps on a loop
-        boss.animations.play('move', 10, true);
-
-        startBounceTween();
+    bossMove = game.add.tween(boss);
+    bossMove.to({y: 2820}, bossSpeed,Phaser.Easing.Linear.None, true, 0, -1, true);
+    
         //Adding bullets, ones and zeroes
         bullets = game.add.group();
         bullets.enableBody = true;
@@ -294,25 +291,36 @@ window.onload = function () {
 
         //Interaction between player and ones/zeros
         game.physics.arcade.overlap(player, zeroes, collectZero, null, this);
-        //    if(bulletTime < game.time.now){
-        //        killBulllet();
-        //    }
-
-        if (takenZero) {
-            startBounceTween();
-            // createZero();
-        }
 
         game.physics.arcade.collide(player, ones, collectOne, null, this);
-
-        if (takenOne) {
-            startBounceTween();
-            //  createOne();
-        }
 
         if (game.time.now > bulletTime) {
             fireBullet();
         }
+        
+        if(bossSpeed <= 0){
+        bossSpeed = 400;
+    }
+    if(bossSpeed >= 3000){
+        bossSpeed = 2600;
+    }    
+
+         if (takenZero) {      
+          bossSpeed -= 300;
+          console.log('speedminus ' + bossSpeed);
+           
+          bossMove.updateTweenData('duration', bossSpeed); 
+          
+          takenZero = false;
+        
+    } else if (takenOne) {        
+          bossSpeed += 300;
+          
+          console.log('speedplus ' + bossSpeed); 
+              
+          bossMove.updateTweenData('duration', bossSpeed); 
+          takenOne= false;  
+    }
 
         //Player behaviour
         if (player.alive) {
@@ -386,29 +394,6 @@ window.onload = function () {
             }
         }
 
-    }
-    function startBounceTween() {
-        bounce = game.add.tween(boss);
-
-        if (bla0) {
-            bossSpeed = 200;
-
-            bounce.to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
-
-            bounce.onComplete.add(startBounceTween, this);
-            bla0 = 0;
-
-            console.log("if");
-        }
-        else {
-            bossSpeed = 2000;
-            bounce.to({ y: 2820 }, bossSpeed, Phaser.Easing.Linear.None, true, 0, 1000, true);
-
-            bounce.onComplete.add(startBounceTween, this);
-            bla0 = 1;
-
-            console.log("else");
-        }
     }
 
     function collisionHandler(sprite, group) {
@@ -570,6 +555,7 @@ window.onload = function () {
 
     function zeroHide() {
         game.add.tween(zero).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+        zero.kill();
         createZero();
     }
 
@@ -599,6 +585,7 @@ window.onload = function () {
 
     function oneHide() {
         game.add.tween(one).to({ alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+        one.kill();
         createOne();
     }
 
@@ -643,6 +630,7 @@ window.onload = function () {
         player.revive();
         player.x = 64;
         player.y = 128;
+        bossSpeed = 100;
         boss.revive();
         zero.revive();
         one.revive();
