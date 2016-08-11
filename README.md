@@ -51,3 +51,13 @@ When you enter the final stage of the game – boss’s room, you’ll notice on
 zeroes appearing randomly around you – by taking the zeroes you’ll increase the
 velocity of the ninja boss, the ones help decrease it so you can pass through the
 boss and win the game. Good luck and may the code be with you!
+
+## Live demos
+
+* [Video](https://www.youtube.com/watch?v=uLz1NKW2CkE)
+* [LiveDemo](https://rawgit.com/DanielaPopova/JS-UI-DOM-TeamWork-SeaBreezeTeam/master/MapPROTOTYPE/index.html)
+
+## Used libraries
+
+* [Phaser.js](https://github.com/photonstorm/phaser)
+* [jQuery](https://github.com/jquery/jquery)
