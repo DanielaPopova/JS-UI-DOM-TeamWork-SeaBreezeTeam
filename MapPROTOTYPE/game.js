@@ -487,22 +487,22 @@ window.onload = function () {
     function CreateBadDudes() {
         //                    y   | x
 
-        var startPosition = [[160, 650, 1300],
+        var startPosition = [[160, 640, 1300],
             [416, 1472, 1408, 192],
             [672, 128, 896],
-            [992, 672, 1568],
+            [992, 640, 1568],
             [1248, 672, 1376],
             [1504, 992, 928],
             [2496, 704],
             [2816, 1312]];
         var endXPositon = [[1000, 1664],
-            [1984, 960, 576],
-            [384, 1344],
-            [224, 1792],
+            [1984,  960,  576],
+            [ 384, 1344],
+            [ 224, 1792],
             [1056, 1760],
-            [1248, 640],
-            [960],
-            [1824]];
+            [1248,  640],
+            [ 960],
+            [1792]];
         for (var y = 0; y < startPosition.length; y++) {
             for (var x = 1; x < startPosition[y].length; x++) {
                 var octoCat = badDudes.create(startPosition[y][x], startPosition[y][0], 'octo-cat');
