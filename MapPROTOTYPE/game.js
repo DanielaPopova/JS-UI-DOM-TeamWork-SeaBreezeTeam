@@ -449,7 +449,7 @@ window.onload = function () {
 
     function addLiviesOnMap() {
         var livesCoordinatesX = [2080, 3104, 1216, 64, 2016],
-            livesCoordinatesY = [1024, 1152, 1952, 2528, 2240];
+            livesCoordinatesY = [1024, 1184, 1952, 2528, 2240];
 
         allLivesOnMap.enableBody = true;
         for (var m = 0; m < 5; m += 1) {
