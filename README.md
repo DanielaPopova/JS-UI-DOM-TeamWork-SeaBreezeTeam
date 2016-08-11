@@ -1,86 +1,47 @@
-#   JavaScript DOM & UI: Teamwork Assignment
+# Team Sea Breeze
 
-This document describes the teamwork assignment for Telerik Academy students in JavaScript UI & DOM course
+## Team Project – The Programmer’s Nightmare
+### Team Members
 
-##   Project Description
+* Виктория Недялкова – Victoria_Nedialkova
+* Даниела Попова – Daniela_Popova
+* Емил Тодоров – EmoTodorov
+* Мартин Йорданов – mojojojo
+* Стоян Рузманов – stoyan.ruzmanov
 
-Implement a client-side JavaScript application using the HTML graphic APIs – **canvas** and **SVG**.
+## Project Description
 
-The project can be a **game**, **web statistics** or **anything else**.
--   Sample applications are:
-    -   Chess
-    -   Backgammon
-    -   Any jumping game:
-        -   Super Mario, Bomberman or else
-    -   Statistics application
-        -   App showing different charts, based on received data
-    -   Minesweeper
-    -   Solitaire
-    -   Bridge-Belote
-    -   Paint-like application – drawing shapes, lines, etc
+The Programmer’s Nightmare is a browser game written in JavaScript using the
+Phaser framework - an open-source HTML5 framework for Canvas and WebGL. The
+project is a part of the “JS DOM and UI” course in Telerik Academy.
 
-##  General Requirements
 
-Please define and implement the following assets in your project:
+## Storyline
 
--   Use the **HTML5 canvas**
-    -   Or a canvas framework like `KineticJS`, `paper.js` or other
--   Use SVG
-    -   Or a SVG framework like `Raphael JS` or other
--   Create animations
-    -   Either for the canvas, SVG or both
--   The application must work in the latest versions of the browsers: 
-    -   Google Chrome
-    -   Mozilla Firefox
-    -   Microsoft Edge/Internet Explorer 11
-    -   Opera
-    -   Apple Safari
+Currently, Peter studies software engineering at a prestigious academy. He is
+extremely hard-working and dedicated student, and despite the difficulties he’s
+encountered on the way to the fulfillment of his dream - becoming a software ninja,
+Peter manages to successfully take each exam and continue to the next course. Of
+course, success does not come lightly – poor social life, unhealthy food, long nights
+writing countless lines of code. Peter is so obsessed with writing code all day and
+night that one evening, while drifting comfortably on the desk in front of his laptop,
+Peter falls asleep and in his dream it seems as if he is inside his own computer and
+he’s looking like a ninja! "How cool is that!?", would be your first thought, but very
+soon Peter’s wonderful dream turns into a horrifying nightmare! Help our friend
+overcome the attacks of the ruthless ninja boss and escape this computer world.
 
-##  Additional Requirements
 
-Follow the best practices for producing high-quality code: 
+## Controls
 
--   **Correct naming**
--   **Data encapsulation**
-    -   Use modules
--   Use ES 2015 syntax where possible
--   **Strong cohesion** and **loose coupling**
--   Use **GIT** as a source control system
-    -   Host it on <a href="http://github.com" title="http://github.com" target="_blank">http://github.com</a>
-
-##  Optional Requirements
-
-If you have a chance, time and a suitable situation, you might add some of the following to your project:
-
--   Use DOM manipulations like native DOM API and/or jQuery
--   Unit and integration testing
--   Backward compatibility (make the application usable on browsers like IE8, IE7 and IE6)
-
-##  Non-required Work
--   Completely finished project is not obligatory required. It will not be a big problem if your project is not completely finished or is not working greatly
-    -   This team work project is for educational purpose
-    -   Its main purpose it to experience using graphics, DOM manipulation and OOP in a real-world-like project and to get some experience in team working and team collaboration with a source control system.
--   Implementation of server-side logic with ASP.NET, PHP, Java or Node.js
-
-##  Deliverables
-
--   Upload a brief video (2-3 mins) of your application and upload it in [YouTube](http://youtube.com)
-    -   **Each project without an uploaded video in YouTube will be considered not done**
--   Upload your project in http://best.telerikacademy.com
-    -   A brief description of your application
-    -   Link the video in the description
-    -   Mandatory refer the github repository of your application
-    -   Link with live preview of your application
-        -   You can use https://rawgit.com/
-
-##  Public Project Defense
--   Each submitted project will be evaluated by the trainers. Evaluation will strictly follow the above requirements.
--   Each team will have to deliver a public defense of its work to the other students and trainers. You will have only 10 minutes for the following:
-    -   Demonstrate the application (very shortly)
-    -   Show the source code
-    -   Show the commits logs to confirm that team member have contributed.
-    -   Optionally you might prepare a presentation (3-4 slides)
-Please be **strict in timing!** Be well prepared for presenting maximum of your work for minimum time. Bring your own laptop. Test it preliminary with the multimedia projector. Open the project assets beforehand to save time. You have 10 minutes, no more
-
-##  Give Feedback about Your Teammates
-You will be invited to provide feedback about all your teammates, their attitude to this project, their technical skills, their team working skills, their contribution to the project, etc. The feedback is important part of the project evaluation so take it seriously and be honest
+You can navigate the player by pressing the LEFT/RIGHT arrow keys and the UP key
+for jumping. Use the action key – SPACEBAR – to pass through the door, located at
+the bottom of the map. Your goal is to reach the boss’s room and escape through
+the exit at the far end of it. To achieve that, you should first find the key that opens
+the front door. Along the way you’ll meet the octocats – unstoppable moving
+creatures that can cost you one health bar, so try to avoid them! Some lives are
+scattered around the map to give you strength and thus help you with your mission.
+There are also items to collect – each of them brings you 10 points to your score.
+When you enter the final stage of the game – boss’s room, you’ll notice ones and 
+zeroes appearing randomly around you – by taking the zeroes you’ll increase the
+velocity of the ninja boss, the ones help decrease it so you can pass through the
+boss and win the game. Good luck and may the code be with you!
