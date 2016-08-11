@@ -24,40 +24,58 @@
             </li>
         </ul>
         <div id="game-rules">
-        <p>Mission: Razhodka s lodka</p>
-    </div>
-    <div id="about-us">
-        <p>This awesome game is created by:</p>
-        <div>
-            Stoqncho
+            <div class="rule1">
+                <p class="use">Use</p>
+                <div>
+                    <img class="arrows" src="images/arrows.png" alt="">
+                </div>
+                <p>to move around the map.</p>
+            </div>
+            <div class="rule2">
+                <p class="use">Use</p>
+                <div class="space-container">
+                    <div class="space">
+                        Space
+                    </div>
+                </div>
+                <p>to open the final door.</p>
+            </div>
+            <div class="rule3">
+                <p>bqgaiiiiiiiiiiiiiiiiiiii542542grhfdahaehba7665ewh5e5e5eh5wh77hh86888668h868h6h88hw8hw88h6w8h8686wiiii</p>
+            </div>
         </div>
-        <div>
-            Daniela
+        <div id="about-us">
+            <p>This awesome game is created by:</p>
+            <div>
+                Stoqncho
+            </div>
+            <div>
+                Daniela
+            </div>
+            <div>
+                Viktoriq
+            </div>
+            <div>
+                Martin
+            </div>
+            <div>
+                Emil
+            </div>
         </div>
-        <div>
-            Viktoriq
-        </div>
-        <div>
-            Martin
-        </div>
-        <div>
-            Emil
-        </div>
-    </div>
     </div>
     
 <script>
     $('#au-button').click(function(){
         $('#game-rules').hide();
         $('#gameplay').hide();
-        $('#about-us').slideDown(1000);
+        $('#about-us').slideDown(2000);
         
     });
     
     $('#howto-button').click(function(){
         $('#about-us').hide();
         $('#gameplay').hide();
-        $('#game-rules').slideDown();
+        $('#game-rules').show();
     });
 </script>
 </body>
