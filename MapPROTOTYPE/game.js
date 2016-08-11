@@ -40,10 +40,11 @@ window.onload = function () {
         js,
         allLivesOnMap,
         key,
-        isKeyTaken = true,
+        isKeyTaken = false,
         score = 0,
         scoreText,
         stateText,
+        stateTextBar,
         keyText,
         keyBar,
         keyTextBar,
@@ -111,6 +112,7 @@ window.onload = function () {
     function newGame() {
 
     }
+
     function create() {
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -137,7 +139,7 @@ window.onload = function () {
         createDoor();
 
         //Add player
-        player = game.add.sprite(64, 128, 'player');
+        player = game.add.sprite(2240, 3040, 'player');
 
         game.physics.arcade.enable(player);
         player.body.gravity.y = 350;
@@ -225,11 +227,17 @@ window.onload = function () {
         //Add warning text for key
         keyTextBar = game.add.graphics();
         keyTextBar.beginFill(0x173B0B);
-        keyTextBar.drawRoundedRect(200, 100, 300, 50, 10);
+        keyTextBar.drawRoundedRect(220, 288, 300, 50, 10);
         game.physics.arcade.enable(keyTextBar);
         keyTextBar.enableBody = true;
         keyTextBar.fixedToCamera = true;
         keyTextBar.visible = false;
+
+        keyTextStyle = { font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+        keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);
+        keyText.fixedToCamera = true;
+        keyText.setTextBounds(220, 288, 300, 50);
+        keyText.visible = false;
 
         //Add bar behind the key
         keyBar = game.add.graphics();
@@ -240,21 +248,16 @@ window.onload = function () {
         keyBar.fixedToCamera = true;
         keyBar.visible = false;
 
-        keyTextStyle = { font: "bold 24px Consolas", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-        keyText = game.add.text(0, 0, 'Go get the key first!', keyTextStyle);
-        keyText.fixedToCamera = true;
-        keyText.setTextBounds(200, 100, 300, 50);
-        keyText.visible = false;
-
-        //Add score text
+        //Add score text        
         scoreText = game.add.text(14, 14, 'Score: 0', { font: 'bold 24px Consolas', fill: '#FFF' });
         scoreText.fixedToCamera = true;
 
-        //Add state text
-        stateText = game.add.text(100, 100, ' ', { font: 'bold 24px Consolas', fill: '#FFF' });
-        stateText.fixedToCamera = true;
-        stateText.anchor.setTo(0.5, 0.5);
-        stateText.visible = true;
+        //Add state text and state text bar       
+
+        stateTextBar = createTextBar(300, 150);
+        stateText = createText(50, 30, 'GAME OVER\n restart', 300, 150);
+        stateText.addColor('#254D61', 9);
+        stateText.addFontWeight('normal', 9);        
 
         //Enable keyboard
         cursors = game.input.keyboard.createCursorKeys();
@@ -264,7 +267,7 @@ window.onload = function () {
         badDudes = game.add.group();
         CreateBadDudes();
 
-    }
+    }   
 
     function update() {
         //Door - key Handler
@@ -441,10 +444,10 @@ window.onload = function () {
         if (lives === 0) {
             player.kill();
             hits = 0;
-
-            stateText.text = " GAME OVER \n Click to restart";
+            
             stateText.visible = true;
-
+            stateTextBar.visible = true;
+            game.paused = true;
             //the "click to restart" handler
             game.input.onTap.addOnce(restart, this);
         }
@@ -468,6 +471,33 @@ window.onload = function () {
         for (var m = 0; m < 5; m += 1) {
             life = allLivesOnMap.create(livesCoordinatesX[m], livesCoordinatesY[m], 'life');
         }
+    }
+
+ function createTextBar(barWidth, barHeight) {
+
+        var textBar = game.add.graphics();
+        textBar.beginFill(0xF9FAD2);
+        textBar.drawRoundedRect(game.width / 2 - barWidth / 2, game.height / 2 - barHeight / 2, barWidth, barHeight, 10);
+        game.physics.arcade.enable(textBar);
+        textBar.enableBody = true;
+        textBar.alpha = 0.9;
+        textBar.fixedToCamera = true;
+
+        textBar.visible = false;
+
+        return textBar;
+    }
+
+    function createText(positionX, positionY, textString, width, height) {
+
+        var text = game.add.text(positionX, positionY, textString, { font: 'bolder 40px Consolas', fill: '#11242C' });
+        text.setShadow(2, -2, 'rgba(0,0,0,0.5)', 0);
+        text.fixedToCamera = true;
+        text.setTextBounds(game.width / 2 - width / 2, game.height / 2 - height / 2, width, height);
+
+        text.visible = false;
+
+        return text;
     }
 
     function CreateBadDudes() {
@@ -662,7 +692,9 @@ window.onload = function () {
         isKeyTaken = false;
 
         //Hides the text
+        stateText.text = "GAME OVER\n restart";
         stateText.visible = false;
+        stateTextBar.visible = false;        
 
         //Reset the score
         js.destroy(false, true);
@@ -680,8 +712,9 @@ window.onload = function () {
     }
     function checkIfPlayerReachedTheEndOfTheLevel() {
         if (player.x === winzone.x && player.y === winzone.y) {
-            stateText.text = " YOU WIN  \n Click to restart";
+            stateText.text = " YOU WIN! \n restart";
             stateText.visible = true;
+            stateTextBar.visible = true;
             boss.kill();
             bullet.kill();
             zero.kill();
