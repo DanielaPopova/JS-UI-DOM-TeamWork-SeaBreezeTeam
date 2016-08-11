@@ -139,7 +139,7 @@ window.onload = function () {
         createDoor();
 
         //Add player
-        player = game.add.sprite(2240, 3040, 'player');
+        player = game.add.sprite(64, 128, 'player');
 
         game.physics.arcade.enable(player);
         player.body.gravity.y = 350;
