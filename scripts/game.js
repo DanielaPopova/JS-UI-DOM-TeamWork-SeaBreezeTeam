@@ -3,23 +3,23 @@ window.onload = function () {
 
     function preload() {
 
-        game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.spritesheet('healthBar', 'images/health-bar.png', 36, 30);
-        game.load.image('life', 'images/life.png');
-        game.load.image('key', 'images/key.png');
-        game.load.image('bossBullets', 'images/undefined.png');
-        game.load.image('boss', 'images/boss.png');
-        game.load.image('zero', 'images/zero.png');
-        game.load.image('one', 'images/one.png');
-        game.load.spritesheet('player', 'images/player.png', 49, 63);
-        game.load.image('background', 'images/bg.png');
-        game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
-        game.load.image('trapsSprite', 'images/TrapsSprite.png');
-        game.load.image('octo-cat', 'images/robo-octocat-small.png');
-        game.load.image('javascript', 'images/js.png');
-        game.load.image('css', 'images/css3.png');
-        game.load.image('html', 'images/html5.png');
-        game.load.image('doorImage', 'images/door.png');
+        game.load.tilemap('level1', 'scripts/level1.json', null, Phaser.Tilemap.TILED_JSON);
+        game.load.spritesheet('healthBar', '../assets/game-sources/health-bar.png', 36, 30);
+        game.load.image('life', '../assets/game-sources/life.png');
+        game.load.image('key', '../assets/game-sources/key.png');
+        game.load.image('bossBullets', '../assets/game-sources/undefined.png');
+        game.load.image('boss', '../assets/game-sources/boss.png');
+        game.load.image('zero', '../assets/game-sources/zero.png');
+        game.load.image('one', '../assets/game-sources/one.png');
+        game.load.spritesheet('player', '../assets/game-sources/player.png', 49, 63);
+        game.load.image('background', '../assets/game-sources/bg.png');
+        game.load.image('sci-fi', '../assets/game-sources/TileSets/scifi_platformTiles_32x32.png');
+        game.load.image('trapsSprite', '../assets/game-sources/TileSets/TrapsSprite.png');
+        game.load.image('octo-cat', '../assets/game-sources/robo-octocat-small.png');
+        game.load.image('javascript', '../assets/game-sources/js.png');
+        game.load.image('css', '../assets/game-sources/css3.png');
+        game.load.image('html', '../assets/game-sources/html5.png');
+        game.load.image('doorImage', '../assets/game-sources/door.png');
     }
 
     var player,
@@ -257,15 +257,7 @@ window.onload = function () {
 
         if(bossSpeed >= 3000){
             bossSpeed = 2600;
-        }    
-
-        if (takenZero) {      
-            bossSpeed -= 300;
-        } 
-
-        if(bossSpeed >= 3000){
-            bossSpeed = 2600;
-        }    
+        }
 
         if (takenZero) {
 
@@ -275,13 +267,9 @@ window.onload = function () {
 
         } else if (takenOne) {
 
-            takenZero = false;
-
-        } else if (takenOne) {
-
-          bossSpeed += 300;            
-          bossMove.updateTweenData('duration', bossSpeed);
-          takenOne= false;  
+            bossSpeed += 300;            
+            bossMove.updateTweenData('duration', bossSpeed);
+            takenOne= false;
         }
 
         //Player behaviour
