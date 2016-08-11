@@ -3,33 +3,24 @@ window.onload = function () {
 
     function preload() {
 
+        game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
         game.load.image('star', 'sprites/star.png');
         game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
         game.load.image('life', 'assets/life.png');
         game.load.image('key', 'assets/key.png');
-        // game.load.image('cave', 'images/cave.png');
-
         game.load.image('bossBullets', 'assets/undefined.png');
         game.load.image('boss', 'assets/boss.png');
         game.load.image('zero', 'assets/zero.png');
         game.load.image('one', 'assets/one.png');
-
         game.load.spritesheet('player', 'assets/player.png', 49, 63);
-        // loading map resoruces
         game.load.image('background', 'images/bg.png');
-        //game.load.spritesheet('ninja', 'images/dude.png', 32, 48);
-        game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
-        //game.load.image('tiles', 'images/tileMapDiagram1.png');
         game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
         game.load.image('trapsSprite', 'images/TrapsSprite.png');
         game.load.image('octo-cat', 'images/robo-octocat-small.png');
-        //    game.load.spritesheet('octo-cat', 'images/robo-octocat.png', 169, 150, 25, 169, 150, 25);
-
         game.load.image('javascript', 'assets/js.png');
         game.load.image('css', 'assets/css3.png');
         game.load.image('html', 'assets/html5.png');
         game.load.image('doorImage', 'images/door.png');
-
     }
 
     var player,
@@ -83,8 +74,6 @@ window.onload = function () {
         door.enableBody = true;
 
         door.create(doorObjectFromTileMap.x, doorObjectFromTileMap.y, "doorImage");
-        // map.createFromObjects("obj", 181, 'doorImage', 0, true, false, door);
-        // door.physicsBodyType = Phaser.Physics.ARCADE;
     }
     function tryEnterDoor() {
         if (spaceKey.isDown && !isKeyTaken) {
@@ -303,6 +292,7 @@ function update() {
         if(bossSpeed <= 0){
             bossSpeed = 400;
         }
+<<<<<<< HEAD
 
         if(bossSpeed >= 3000){
             bossSpeed = 2600;
@@ -311,17 +301,29 @@ function update() {
         if (takenZero) {      
           bossSpeed -= 300;
           console.log('speedminus ' + bossSpeed);
+=======
+        if(bossSpeed >= 3000){
+            bossSpeed = 2600;
+    }    
+
+         if (takenZero) {      
+            bossSpeed -= 300;
+>>>>>>> c73ac848840e384fddcab7092b7c42ec12e4f49a
            
-          bossMove.updateTweenData('duration', bossSpeed); 
+            bossMove.updateTweenData('duration', bossSpeed); 
           
+<<<<<<< HEAD
           takenZero = false;
         
         } else if (takenOne) {        
+=======
+            takenZero = false; 
+    } else if (takenOne) {        
+>>>>>>> c73ac848840e384fddcab7092b7c42ec12e4f49a
           bossSpeed += 300;
-          
-          console.log('speedplus ' + bossSpeed); 
-              
+            
           bossMove.updateTweenData('duration', bossSpeed); 
+          
           takenOne= false;  
         }
 
@@ -579,7 +581,6 @@ function update() {
             takenZero = false;
 
             game.time.events.add(Phaser.Timer.SECOND * 3, zeroHide, this);
-
         }
     }
 
@@ -609,7 +610,6 @@ function update() {
             takenOne = false;
 
             game.time.events.add(Phaser.Timer.SECOND * 3, oneHide, this);
-
         }
     }
 
