@@ -4,22 +4,21 @@ window.onload = function () {
     function preload() {
 
         game.load.tilemap('level1', 'level1.json', null, Phaser.Tilemap.TILED_JSON);
-        game.load.image('star', 'sprites/star.png');
-        game.load.spritesheet('healthBar', 'assets/health-bar.png', 36, 30);
-        game.load.image('life', 'assets/life.png');
-        game.load.image('key', 'assets/key.png');
-        game.load.image('bossBullets', 'assets/undefined.png');
-        game.load.image('boss', 'assets/boss.png');
-        game.load.image('zero', 'assets/zero.png');
-        game.load.image('one', 'assets/one.png');
-        game.load.spritesheet('player', 'assets/player.png', 49, 63);
+        game.load.spritesheet('healthBar', 'images/health-bar.png', 36, 30);
+        game.load.image('life', 'images/life.png');
+        game.load.image('key', 'images/key.png');
+        game.load.image('bossBullets', 'images/undefined.png');
+        game.load.image('boss', 'images/boss.png');
+        game.load.image('zero', 'images/zero.png');
+        game.load.image('one', 'images/one.png');
+        game.load.spritesheet('player', 'images/player.png', 49, 63);
         game.load.image('background', 'images/bg.png');
         game.load.image('sci-fi', 'images/TileSets/scifi_platformTiles_32x32.png');
         game.load.image('trapsSprite', 'images/TrapsSprite.png');
         game.load.image('octo-cat', 'images/robo-octocat-small.png');
-        game.load.image('javascript', 'assets/js.png');
-        game.load.image('css', 'assets/css3.png');
-        game.load.image('html', 'assets/html5.png');
+        game.load.image('javascript', 'images/js.png');
+        game.load.image('css', 'images/css3.png');
+        game.load.image('html', 'images/html5.png');
         game.load.image('doorImage', 'images/door.png');
     }
 
