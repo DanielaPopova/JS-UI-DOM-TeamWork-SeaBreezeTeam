@@ -55,7 +55,6 @@ window.onload = function () {
         trapsLayer,
         countOverlap = 0,
         hits = 0,
-        bla0 = 0,
         boss,
         bossSpeed = 400,
         bossMove,
