@@ -55,7 +55,7 @@ boss and win the game. Good luck and may the code be with you!
 ## Live demos
 
 * [Video](https://www.youtube.com/watch?v=uLz1NKW2CkE)
-* [LiveDemo](https://cdn.rawgit.com/DanielaPopova/JS-UI-DOM-TeamWork-SeaBreezeTeam/0af937b971571b1723ab9a0434aa1733b52dafef/game.html)
+* [LiveDemo](https://cdn.rawgit.com/DanielaPopova/JS-UI-DOM-TeamWork-SeaBreezeTeam/0af937b971571b1723ab9a0434aa1733b52dafef/index.html)
 
 ## Used libraries
 
