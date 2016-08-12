@@ -129,7 +129,7 @@ canvas {
     margin-bottom:40px;
 }
 #about-us ul{
-    list-style-image: url('../assets/life.png');
+    list-style-image: url('../assets/game-sources/life.png');
 }
 
 #about-us p{
